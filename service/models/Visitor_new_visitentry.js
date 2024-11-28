@@ -43,14 +43,14 @@ const Visitor_new_visitentry = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    // Visit_relation_Id: {
-    //   type: DataTypes.INTEGER,
-    //   defaultValue: 1,
-    //   // references: {
-    //   //   model: visitorRelationship,
-    //   //   key: "Visit_relation_Id",
-    //   // },
-    // },
+    Visit_relation_Id: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+      references: {
+        model: visitorRelationship,
+        key: "Visit_relation_Id",
+      },
+    },
     visit_porpous: {
       type: DataTypes.STRING,
       allowNull: false,

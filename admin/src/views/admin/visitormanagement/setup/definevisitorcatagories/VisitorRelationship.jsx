@@ -147,14 +147,14 @@ const VisitorRelationship = () => {
   return (
     <div>
       <div className="grid grid-cols-3 gap-4">
-        <div>Visitor Relationship</div>
+        <div>Visitor Category</div>
         <div>
           <Input
             // label={<div>First Name</div>}
             type="text"
             value={relationship}
             onChange={handleInput}
-            placeholder={"Visitor Relationship"}
+            placeholder={"Visitor Category"}
             size={"lg"}
           />
         </div>
