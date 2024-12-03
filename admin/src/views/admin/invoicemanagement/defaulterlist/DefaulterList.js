@@ -4,7 +4,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Input from "../../../../components/shared/Input";
 
 const DefaulterList = () => {
-  const paths = ["Invoice Management", "Defaulter List"];
+  const paths = ["User", "Defaulter List"];
   const Heading = ["Defaulter List"];
   return (
     <div className="px-5">

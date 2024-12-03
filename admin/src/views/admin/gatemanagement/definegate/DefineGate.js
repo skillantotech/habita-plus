@@ -9,7 +9,7 @@ import { MdOutlineCancel } from "react-icons/md";
 const DefineGate = () => {
   const [gate, setGate] = useState("");
   const [showallgate, setShowallgate] = useState([]);
-  const paths = ["Gate Management", "Define Gate"];
+  const paths = ["user", "Define Gate"];
   const Heading = ["Define Gate"];
 
   const addgateHandler = () => {
@@ -37,7 +37,7 @@ const DefineGate = () => {
             <Input
               // label={<div>First Name</div>}
               type="text"
-              placeholder={"Enter no of gates"}
+              placeholder={"Enter Your Tower/Building No."}
               size={"lg"}
             />
           </div>

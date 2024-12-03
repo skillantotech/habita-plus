@@ -5,7 +5,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import AddNewNoticeForm from "./AddNewNoticeForm";
 
 const AddnewNotice = () => {
-  const paths = ["Notice Announcement", "Add New Notice"];
+  const paths = ["user", "Add New Notice"];
   const Heading = ["Add New Notice"];
   return (
     <div className="px-5">

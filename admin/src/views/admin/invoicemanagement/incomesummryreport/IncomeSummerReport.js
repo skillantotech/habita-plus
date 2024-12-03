@@ -5,7 +5,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Button from "../../../../components/ui/Button";
 
 const IncomeSummerReport = () => {
-  const paths = ["Invoice Management", "Income Summary Report"];
+  const paths = ["User", "Income Summary Report"];
   const Heading = ["Income Summary Report"];
   return (
     <div className="px-5">

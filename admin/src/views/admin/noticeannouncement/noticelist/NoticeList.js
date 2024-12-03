@@ -18,7 +18,7 @@ import UserGroupHandler from "../../../../handlers/UseGroupHandler";
 import ViewNoticeDetailsModal from "./ViewNoticeDetailsModal";
 
 const NoticeList = () => {
-  const paths = ["Notice Announcement", "Notice List"];
+  const paths = ["users", "Notice List"];
   const Heading = ["Notice List"];
   const [notices, setNotices] = useState([]);
   const { getNoticeHandler, deleteNoticeByIdHandler, updateNoticeHandler } =

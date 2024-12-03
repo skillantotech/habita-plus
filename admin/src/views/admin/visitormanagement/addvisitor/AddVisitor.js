@@ -6,7 +6,7 @@ import Button from "../../../../components/ui/Button";
 import AddVisitorForm from "./AddVisitorForm";
 
 const AddVisitor = () => {
-  const paths = ["Visitors Management", "New Visitor Entry"];
+  const paths = ["User", "New Visitor Entry"];
   const Heading = ["New Visitor Entry"];
   return (
     <div className="px-5 ">

@@ -5,7 +5,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Button from "../../../../components/ui/Button";
 
 const DocumentUploadFacility = () => {
-  const paths = ["Document Management", "Document Upload Facility"];
+  const paths = ["user", "Document Upload Facility"];
   const Heading = ["Document Upload Facility"];
   return (
     <div className="px-5">

@@ -4,7 +4,7 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 
 const InvoiceSetup = () => {
-  const paths = ["Invoice Management", "Invoice Setup"];
+  const paths = ["user", "Invoice Setup"];
   const Heading = ["Invoice Setup"];
   return (
     <div>

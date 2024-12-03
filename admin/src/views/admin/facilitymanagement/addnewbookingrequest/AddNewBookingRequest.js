@@ -17,7 +17,7 @@ const AddNewBookingRequest = () => {
 export default AddNewBookingRequest;
 
 const Addnewbookingfacilityrequest = () => {
-  const paths = ["Facility Management", "Add new Booking Request"];
+  const paths = ["User", "Add new Booking Request"];
   const Heading = ["Add new Booking Request"];
   return (
     <div className="px-5 ">
