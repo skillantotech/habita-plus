@@ -5,9 +5,9 @@ import { IoPersonOutline } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
 import PageHeading from "../../../../components/shared/PageHeading";
 
-const ApprovedUser = () => {
-  const paths = ["User Management", "Approved users"];
-  const Heading = ["Approved Users"];
+const ApprovedGateUser = () => {
+  const paths = ["Gate Management", "Approved Gate Users"];
+  const Heading = ["Approved Gate Users"];
   return (
     <div className="">
       <UrlPath paths={paths} />
@@ -18,13 +18,13 @@ const ApprovedUser = () => {
             Approved Users
           </div> */}
           <div className="flex flex-row font-sans text-lg font-medium text-gray-700">
-            TOTAL 120 UNITS AND 190 USERS
+            TOTAL 12 GATES AND 19 USERS
           </div>
           <div className="flex flex-row mt-4">
             <div className="relative w-full">
               <input
                 type="text"
-                placeholder="Search by Units/Users..."
+                placeholder="Search by Gate/Users..."
                 className="px-4 py-4 border w-full border-gray-300 rounded-md focus:outline-none"
               />
               <FaSearch className="absolute right-7 top-5 text-lg text-gray-500" />
@@ -42,7 +42,7 @@ const ApprovedUser = () => {
                       Last Name
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Role
+                      Gate No.
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Mobile No.
@@ -66,7 +66,7 @@ const ApprovedUser = () => {
                   <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <td className="px-6 py-4">Joseph</td>
                     <td className="px-6 py-4">Stalin</td>
-                    <td className="px-6 py-4">Tenant</td>
+                    <td className="px-6 py-4">5</td>
                     <td className="px-6 py-4">8798766756</td>
                     <td className="px-6 py-4">joseph@gmail.com</td>
                     {/* <td className="px-6 py-4">Approved</td>
@@ -89,7 +89,7 @@ const ApprovedUser = () => {
                   <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <td className="px-6 py-4">Tom</td>
                     <td className="px-6 py-4">Steve</td>
-                    <td className="px-6 py-4">Tenant</td>
+                    <td className="px-6 py-4">5</td>
                     <td className="px-6 py-4">8798766756</td>
                     <td className="px-6 py-4">tom@gmail.com</td>
                     {/* <td className="px-6 py-4">Approved</td>
@@ -154,4 +154,4 @@ const ApprovedUser = () => {
   );
 };
 
-export default ApprovedUser;
+export default ApprovedGateUser;

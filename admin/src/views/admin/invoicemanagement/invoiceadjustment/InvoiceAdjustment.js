@@ -4,7 +4,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Input from "../../../../components/shared/Input";
 
 const InvoiceAdjustment = () => {
-  const paths = ["User", "Invoice Adjustment"];
+  const paths = ["Invoice Management", "Invoice Adjustment"];
   const Heading = ["Invoice Adjustment"];
   return (
     <div className="px-5">

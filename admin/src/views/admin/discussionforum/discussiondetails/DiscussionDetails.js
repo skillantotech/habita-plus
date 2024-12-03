@@ -7,7 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
 const DiscussionDetails = () => {
-  const paths = ["users", "Discussion Details"];
+  const paths = ["Discussion Forum", "Discussion Details"];
   const Heading = ["Discussion Details"];
   return (
     <div className="">

@@ -5,7 +5,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Button from "../../../../components/ui/Button";
 
 const VendorList = () => {
-  const paths = ["User", "Vendor List"];
+  const paths = ["Vendor Management", "Vendor List"];
   const Heading = ["Vendor List"];
   return (
     <div className="px-5">

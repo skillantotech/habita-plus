@@ -135,6 +135,14 @@ exports.SideBarMenu = {
           name: "Gate List",
           url: "gate/view",
         },
+        {
+          name: "Approved Gate Users",
+          url: "gate/approvedusers",
+        },
+        {
+          name: "Deactivated Gate Users",
+          url: "gate/deactivatedusers"
+        }
       ],
     },
     // {

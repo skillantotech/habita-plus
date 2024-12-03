@@ -6,7 +6,7 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 
 const UnapprovedUser = () => {
-  const paths = ["User", "unapproved Users"];
+  const paths = ["User Management", "Unapproved Users"];
   const Heading = ["Unapproved Users"];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [remark, setRemark] = useState("");
@@ -37,8 +37,8 @@ const UnapprovedUser = () => {
           </div>
           <div className="flex mt-[35px]">
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs bg-lime text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className="text-base bg-lime text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       First Name
@@ -73,21 +73,21 @@ const UnapprovedUser = () => {
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-white bg-blue-700 hover:bg-green-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                         onClick={openModal}
                       >
-                        Approved
+                        Approve
                       </button>
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        className="focus:outline-none text-white bg-red-500 hover:bg-green-700 focus:ring-4 focus:ring-red-300 font-medium rounded-tr-xl rounded-bl-xl text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                         onClick={openModal}
                       >
                         Reject
                       </button>
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2"
                       >
                         View
                       </button>
@@ -104,20 +104,20 @@ const UnapprovedUser = () => {
                       <button
                         type="button"
                         onClick={openModal}
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-white bg-blue-700 hover:bg-green-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                       >
-                        Approved
+                        Approve
                       </button>
                       <button
                         type="button"
                         onClick={openModal}
-                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        className="focus:outline-none text-white bg-red-500 hover:bg-green-700 focus:ring-4 focus:ring-red-300 font-medium rounded-tr-xl rounded-bl-xl text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                       >
                         Reject
                       </button>
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2"
                       >
                         View
                       </button>

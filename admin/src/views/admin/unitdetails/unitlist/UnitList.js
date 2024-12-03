@@ -5,7 +5,7 @@ import DefineUnitHandler from "../../../../handlers/DefineUnitHandler";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 
 const UnitList = () => {
-  const paths = ["users", "Unit List"];
+  const paths = ["Building Management", "Unit List"];
   const Heading = ["Unit List"];
 
   // Pagination states
