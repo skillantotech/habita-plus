@@ -18,7 +18,7 @@ const DeactivatedGateUser = () => {
             Approved Users
           </div> */}
           <div className="uppercase flex flex-row font-sans text-lg font-medium text-gray-700">
-            TOTAL 12 GATES AND 3 DEACTIVATED USERS
+            TOTAL 3 DEACTIVATED USERS
           </div>
           <div className="flex flex-row mt-4">
             <div className="relative w-full">

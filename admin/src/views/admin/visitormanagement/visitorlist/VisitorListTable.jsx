@@ -46,6 +46,7 @@ const VisitorListTable = () => {
     { Header: " Date of Entry", accessor: "visit_expect_date_of_entry_date" },
     { Header: "Mobile No.", accessor: "visit_mobileno" },
     { Header: "Status", accessor: "status" },
+    // { Header: "SLNo", accessor:""},
   ];
 
   // search

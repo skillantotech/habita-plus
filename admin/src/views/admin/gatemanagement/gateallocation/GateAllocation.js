@@ -206,10 +206,10 @@ const GateAllocation = () => {
               <select
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
-                className="w-52 mt-1 block border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
+                className="w-28 mt-1 block border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
               >
-                <option value="" disabled>
-                  Select your country code
+                <option value="91">
+                  +91
                 </option>
                 {countryCodes.map((item) => (
                   <option key={item.code} value={item.code}>
@@ -220,7 +220,7 @@ const GateAllocation = () => {
             </div>
             <Input
               className="w-72"
-              label={<div>Mobile no.</div>}
+              label={<div>Mobile No.</div>}
               type="text"
               placeholder={"Enter Mobile Number"}
               value={mobileNumber}

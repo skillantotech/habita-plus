@@ -131,10 +131,10 @@ exports.SideBarMenu = {
           name: "Gate Allocation",
           url: "gate/allocation",
         },
-        {
-          name: "Gate List",
-          url: "gate/view",
-        },
+        // {
+        //   name: "Gate List",
+        //   url: "gate/view",
+        // },
         {
           name: "Approved Gate Users",
           url: "gate/approvedusers",
