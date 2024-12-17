@@ -6,26 +6,26 @@ const BuildingHandler = () => {
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
 
-    const createBuildingHandler = async (buildingName) => {
-        if (!buildingName) {
-            toast.error("Building name is required !");
-            return;
-      }
-        return await createBuildingService({ buildingName, societyId }, token)
-          .then((res) => {
-            if (res.status === 201) {
-              toast.success("Building created");
-            }
-            return res;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-    };
-    
-    const getBuildingshandler = async (data) => {
-        return await getBuildingService({ societyId }, token);
+  const createBuildingHandler = async (buildingName) => {
+    if (!buildingName) {
+      toast.error("Building name is required !");
+      return;
     }
+    return await createBuildingService({ buildingName, societyId }, token)
+      .then((res) => {
+        if (res.status === 201) {
+          toast.success("Building created");
+        }
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getBuildingshandler = async (data) => {
+    return await getBuildingService({ societyId }, token);
+  }
 
   return { createBuildingHandler, getBuildingshandler };
 };

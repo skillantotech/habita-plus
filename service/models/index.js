@@ -4,6 +4,7 @@ const Customer = require("./Customer");
 const SubscriptionPlan = require("./SubscriptionPlan");
 const Role = require("./RoleModel");
 const Building = require("./Building");
+const Gate = require("./Gate");
 const Floor = require("./Floor");
 const UnitType = require("./UnitType");
 const Unit = require("./Unit");
@@ -18,6 +19,10 @@ const Ticket_Summery = require("./Ticket_Summery");
 const ref_ticket_status = require("./ref_ticket_status");
 const ref_ticket_catagorisation = require("./ref_ticket_catagorisation");
 const Socity_HelpDesk_Access_Management = require("./Socity_HelpDesk_Access_Management");
+const GateAllocation = require("./GateAllocation");
+// const { Security } = require("./Security");
+// const { Supervisor } = require("./SupervisorModel");
+// const GateAllocation = require("./GateAllocation");
 
 Address.hasMany(Customer, { foreignKey: "addressId" });
 Customer.belongsTo(Address, { foreignKey: "addressId" });
@@ -40,6 +45,7 @@ User.belongsTo(Address, { foreignKey: "addressId" });
 
 // Unit.hasMany(Customer, { foreignKey: "societyId" });
 // Unit.hasMany(Building, { foreignKey: "buildingId" });
+
 Unit.hasMany(Floor, { foreignKey: "floorId" });
 Unit.hasMany(UnitType, { foreignKey: "unitTypeId" });
 
@@ -64,6 +70,8 @@ module.exports = {
   Customer,
   Role,
   Building,
+  Gate,
+  GateAllocation,
   Floor,
   UnitType,
   Unit,

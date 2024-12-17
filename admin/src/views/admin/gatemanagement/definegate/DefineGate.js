@@ -58,6 +58,7 @@ const DefineGate = () => {
               size={"lg"}
             />
 
+            {/* All Define gates */}
             <div>
               {showallgate.map((data, index) => (
                 <div
