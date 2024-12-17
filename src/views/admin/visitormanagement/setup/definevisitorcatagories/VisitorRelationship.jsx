@@ -31,13 +31,13 @@ const ActionData = ({ data, updateModal, deleteModal, updateForm }) => {
         className="px-2 py-1 text-xs bg-lime text-white rounded-md hover:bg-opacity-90"
         onClick={onUpdateRelation}
       >
-        update
+        Update
       </button>
       <button
         className="px-2 py-1 text-xs bg-gray-900 text-white rounded-md hover:bg-opacity-90"
         onClick={onDeleteRelation}
       >
-        delete
+        Delete
       </button>
     </div>
   );
@@ -98,13 +98,22 @@ const VisitorRelationship = () => {
     setRelationShip(e.target.value);
   };
 
-  const handleSubmit = () => {
-    RelationshipHandler(relationship).then((res) => {
-      fetchVisitorRelation();
+  // const handleSubmit = () => {
+  //   RelationshipHandler(relationship).then((res) => {
+  //     fetchVisitorRelation();
+  //     setRelationShip("");
+  //   });
+  // };
+const handleSubmit = async () => {
+    try {
+      await RelationshipHandler(relationship);
+      await fetchVisitorRelation();
       setRelationShip("");
-    });
+    } catch (err) {
+      console.error("Error submitting relationship:", err.message);
+      toast.error("Failed to add visitor relationship.");
+    }
   };
-
   const deleteHandler = (id) => {
     console.log("deleted data", id);
     deleteVisitorById(id)

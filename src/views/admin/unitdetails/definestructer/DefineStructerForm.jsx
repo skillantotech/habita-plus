@@ -24,7 +24,7 @@ const CreateBuilding = () => {
       onSubmit={handleBuildingSubmit}
       className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
     >
-      <label>Define Tower/Building (Name / No.)</label>
+      <label>Define Tower/Building (Name / No.)  <span className="text-red-500 ml-1">*</span></label>
       <Input
         type="text"
         name="building"
@@ -60,6 +60,7 @@ const CreateFloor = () => {
     await createFloorHandler(floors)
       .then((res) => {
         console.log(res);
+        setFloors({ floorName: "", shortForm: "" });//clear floor data
       })
       .catch((err) => {
         console.log(err);
@@ -71,9 +72,11 @@ const CreateFloor = () => {
       onSubmit={handleFloorsSubmit}
       className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
     >
-      <label>Define Floors</label>
+      <label>Define Floors </label>
       <Input
-        label="Enter Floor name"
+        label={<div className="flex items-center">
+            Enter Floor Name<span className="text-red-500 ml-1">*</span>
+          </div>}
         type="text"
         name="floorName" // Corrected from "floors" to "floorName"
         placeholder="Enter Your Define Floors"
@@ -83,7 +86,9 @@ const CreateFloor = () => {
       />
 
       <Input
-        label="Short Form"
+        label={<div className="flex items-center">
+            Enter Short Form<span className="text-red-500 ml-1">*</span>
+          </div>}
         type="text"
         maxlength="4"
         name="shortForm" // Corrected from "floors" to "floorName"
@@ -123,7 +128,9 @@ const CreateUnitType = () => {
       className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
     >
       <Input
-        label="Define Unit Type (e.g. 1BHK, 2BHK, 3BHK)"
+        label={<div className="flex items-center">
+            EDefine Unit Type (e.g. 1BHK, 2BHK, 3BHK)<span className="text-red-500 ml-1">*</span>
+          </div>}
         type="text"
         name="unitTypeName"
         placeholder="Enter Your Unit Type"

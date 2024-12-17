@@ -9,8 +9,8 @@ import DefineTypeOfVisitor from "./DefineTypeOfVisitor";
 import VisitorRelationship from "./VisitorRelationship";
 
 const DefineVisitorCatagories = () => {
-  const paths = ["user", "Define Visitor catagories"];
-  const Heading = ["Define Visitor catagories"];
+  const paths = ["user", ""];
+  const Heading = [""];
 
   return (
     <div className="px-5">

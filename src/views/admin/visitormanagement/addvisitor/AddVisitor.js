@@ -20,7 +20,7 @@ const AddVisitor = () => {
   );
 };
 
-export default AddVisitor;
+ export default AddVisitor;
 // import React, { useEffect, useState } from "react";
 // import UrlPath from "../../../../components/shared/UrlPath";
 // import PageHeading from "../../../../components/shared/PageHeading";

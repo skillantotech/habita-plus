@@ -151,7 +151,7 @@ const NoticeList = () => {
         <div className="w-full">
           <PageHeading heading={Heading} />
           <div className="flex flex-row font-sans text-lg font-medium text-gray-700">
-            TOTAL {totalNotices} NOTICES
+            TOTAL -{totalNotices} NOTICES
           </div>
 
           {/* Filter Dropdown */}
@@ -289,6 +289,7 @@ const NoticeList = () => {
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
+          <option value="50">50</option>
         </select>
       </div>
 
