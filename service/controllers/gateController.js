@@ -32,6 +32,28 @@ exports.createGate = async (req, res) => {
   }
 };
 
+// exports.createGate = async (req, res) => {
+//   try {
+//     const { societyId, gateName, gateNumber } = req.body;
+
+//     if (!societyId || !gateName || !gateNumber) {
+//       return sendErrorResponse(res, "Society ID, gate name, and gate number are required", 400);
+//     }
+
+//     const buildingExist = await Building.findByPk(societyId);
+//     if (!buildingExist) {
+//       return sendErrorResponse(res, "Building does not exist", 404);
+//     }
+
+//     const newGate = await Gate.create({ societyId, gateName, gateNumber });
+//     return sendSuccessResponse(res, "Gate created successfully", newGate, 201);
+//   } catch (err) {
+//     console.error("Error creating gate:", err);
+//     return sendErrorResponse(res, "Internal server error", 500, err.message);
+//   }
+// };
+
+
 
 exports.getGates = async (req, res) => {
   try {

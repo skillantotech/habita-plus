@@ -23,4 +23,4 @@ export const getBuildingService = (data, token) => {
       query:{data}
   });
 };
-;
+
