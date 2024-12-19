@@ -17,8 +17,10 @@ import UpdateNoticeDetailsModal from "./UpdateNoticeDetailsModal";
 import UserGroupHandler from "../../../../handlers/UseGroupHandler";
 import ViewNoticeDetailsModal from "./ViewNoticeDetailsModal";
 
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+
 const NoticeList = () => {
-  const paths = ["Notice Announcement", "Notice List"];
+  const paths = ["users", "Notice List"];
   const Heading = ["Notice List"];
   const [notices, setNotices] = useState([]);
   const { getNoticeHandler, deleteNoticeByIdHandler, updateNoticeHandler } =
@@ -214,17 +216,17 @@ const NoticeList = () => {
                   {el.noticeHeading}
                 </div>
                 <div className="absolute right-2 top-2 flex flex-row gap-2">
-                  <IoMdEye
-                    className="text-lg text-gray-700 hover:text-yellow-700"
+                  <FaEye
+                    className="text-lg text-yellow-600 hover:text-yellow-700"
                     onClick={() => onViewHandler(el.noticeId)}
                   />
 
-                  <MdEdit
-                    className="text-lg text-gray-700 hover:text-green-700"
+                  <FaEdit
+                    className="text-lg text-green-500 hover:text-green-700"
                     onClick={() => onEditHandler(el.noticeId)}
                   />
-                  <MdDelete
-                    className="text-lg text-gray-700 hover:text-red-700"
+                  <FaTrashAlt
+                    className="text-lg text-red-500 hover:text-red-700"
                     onClick={() => handleDelete(el.noticeId)}
                   />
                 </div>

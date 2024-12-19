@@ -7,7 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 const FacilityBookingDetails = () => {
-  const paths = ["Facility Management", "Facility Booking Details"];
+  const paths = ["User", "Facility Booking Details"];
   const Heading = ["Facility Booking Details"];
   return (
     <div className="px-5">

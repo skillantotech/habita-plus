@@ -4,8 +4,8 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import DefineStructerForm from "./DefineStructerForm";
 
 const DefineStructer = () => {
-  const paths = ["Building Management", "Define Structer"];
-  const Heading = ["Define Structer"];
+  const paths = ["user", "Define Structure"];
+  const Heading = ["Define Structure"];
   return (
     <div className="px-5">
       <div>

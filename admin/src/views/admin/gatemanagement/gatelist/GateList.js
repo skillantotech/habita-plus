@@ -4,7 +4,7 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 
 const GateList = () => {
-  const paths = ["Gate Management", "Gate List"];
+  const paths = ["users", "Gate List"];
   const Heading = ["Gate List"];
   return (
     <div className="">
@@ -21,8 +21,8 @@ const GateList = () => {
 
           <div className="flex flex-col mt-[35px] space-y-3">
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-base bg-lime text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className="text-xs bg-lime text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       Gate No.
@@ -52,7 +52,7 @@ const GateList = () => {
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
                       >
                         View
                       </button>
@@ -67,7 +67,7 @@ const GateList = () => {
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
                       >
                         View
                       </button>

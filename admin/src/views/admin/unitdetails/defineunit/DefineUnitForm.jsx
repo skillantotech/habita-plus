@@ -34,7 +34,7 @@ const DefineUnitForm = () => {
         }));
         console.log(optionData);
         setBuildingOptions([
-          { label: "select building", value: "" },
+          { label: "Select Building", value: "" },
           ...optionData,
         ]);
       })
@@ -53,7 +53,7 @@ const DefineUnitForm = () => {
           shortForm: el.shortForm,
         }));
 
-        setFloorOptions([{ label: "select Floor", value: "" }, ...optionData]);
+        setFloorOptions([{ label: "Select Floor", value: "" }, ...optionData]);
       })
       .catch((err) => {
         console.log(err);
@@ -70,7 +70,7 @@ const DefineUnitForm = () => {
         }));
 
         setUnitTypeOptions([
-          { label: "select UnitType", value: "" },
+          { label: "Select Unit Type", value: "" },
           ...optionData,
         ]);
       })
@@ -84,6 +84,26 @@ const DefineUnitForm = () => {
     getFloors();
     getUnitTypes();
   }, []);
+
+
+  const [errors, setErrors] = useState({}); // State to hold validation errors
+
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!defineUnit.buildingId) newErrors.buildingId = "Building is required.";
+    if (!defineUnit.floorId) newErrors.floorId = "Floor is required.";
+    if (!defineUnit.unitTypeId) newErrors.unitTypeId = "Unit Type is required.";
+    if (!defineUnit.unitNumber) {
+      newErrors.unitNumber = "Unit Number is required.";
+    } else if (!/^\d+$/.test(defineUnit.unitNumber)) {
+      newErrors.unitNumber = "Unit Number must be digits only.";
+    }
+    if (!defineUnit.unitsize) newErrors.unitsize = "Unit Size is required.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const [defineUnit, setDefineUnit] = useState({
     buildingId: "",
@@ -119,6 +139,7 @@ const DefineUnitForm = () => {
 
   const submitHandler = async() => {
     console.log("define unit", defineUnit);
+      //  if (!validateFields()) return;
     const un = unitName.buildingId + unitName.floorId + unitName.unitNumber;
     await CreateDefineUnitHandler({ unitName: un, ...defineUnit }).then((res) => {
       if (res.status === 201) {
@@ -170,7 +191,11 @@ const DefineUnitForm = () => {
     <div className="p-10 my-5 border rounded-lg bg-gray-100">
       <div className="grid grid-cols-3 gap-5 items-center py-6">
         <Select
-          label="Tower /Building (Name / No.)"
+          label={
+              <div>
+                Tower / Building (Name / No.) <span className="text-red-500">*</span>
+              </div>
+            }
           options={buildingOptions}
           value={defineUnit.buildingId}
           onChange={onBuildingChange}
@@ -179,8 +204,12 @@ const DefineUnitForm = () => {
           size="md"
           className="py-[14px]"
         />
-        <Select
-          label="Select Floor"
+        <Select 
+          label={
+              <div>
+                Select Floor<span className="text-red-500">*</span>
+              </div>
+            }
           options={floorOptions}
           value={defineUnit.floorId}
           onChange={onFloorChange}
@@ -190,7 +219,11 @@ const DefineUnitForm = () => {
           className="py-[14px]"
         />
         <Select
-          label="Unit Type"
+          label={
+              <div>
+                Unit Type<span className="text-red-500">*</span>
+              </div>
+            }
           options={unitTypeOptions}
           value={defineUnit.unitTypeId}
           onChange={handleChange}
@@ -200,7 +233,11 @@ const DefineUnitForm = () => {
           className="py-[14px]"
         />
         <Input
-          label={"Unit Number"}
+          label={
+              <div>
+               Unit Number<span className="text-red-500">*</span>
+              </div>
+            }
           type="text"
           name="unitNumber"
           placeholder="Enter Your Floor No"
@@ -209,7 +246,11 @@ const DefineUnitForm = () => {
           onChange={onUnitNumberChange}
         />
         <Input
-          label="Unit Size (Sq.feet)"
+          label= {
+              <div>
+               Unit Size (Sq.feet)<span className="text-red-500">*</span>
+              </div>
+            }
           type="text"
           name="unitsize"
           placeholder="Enter Super Built-up Area"

@@ -5,7 +5,7 @@ import Input from "../../../../components/shared/Input";
 import Button from "../../../../components/ui/Button";
 
 const AddVechicleDetails = () => {
-  const paths = ["Parking Management", "Add Vechicle"];
+  const paths = ["User", "Add Vechicle"];
   const Heading = ["Add Vechicle"];
   return (
     <div className="px-5">

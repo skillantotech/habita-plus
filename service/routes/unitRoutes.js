@@ -1,7 +1,9 @@
-const { createUnit, getAllUnits } = require("../controllers/unitController");
+const express = require("express");
+const router = express.Router();
+const { createUnit, getUnit, getAllUnits } = require("../controllers/unitController");
 
-const unitRouter = require("express").Router();
+router.post("/", createUnit);
+router.get("/", getAllUnits); 
+router.get("/:societyId", getUnit); 
 
-unitRouter.get("/", getAllUnits).post("/", createUnit);
-
-module.exports = unitRouter;
+module.exports = router;

@@ -5,7 +5,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Button from "../../../../components/ui/Button";
 
 const AddnewDiscussion = () => {
-  const paths = ["Discussion Forum", "Add New Discussion"];
+  const paths = ["user", "Add New Discussion"];
   const Heading = ["Add New Discussion"];
   return (
     <div className="px-5">

@@ -1,17 +1,33 @@
-import { SideBarMenu } from "../../config/SideBarConfig";
+import  SideBarMenu  from "../../config/SideBarConfig";
 import Accordion from "../../components/ui/Accordion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const SubSection = ({ data, onClick, isActive }) => {
   return (
-    <div
+    // <div
+    //   onClick={() => onClick(data.url)}
+    //   className={`p-1 rounded-md cursor-pointer ${
+    //     isActive ? "bg-lime text-gray-700" : "text-gray-300 "
+    //   }`} // Apply style when active
+    // >
+    //   {data.name}
+    // </div>
+      <div
       onClick={() => onClick(data.url)}
-      className={`p-1 rounded-md cursor-pointer ${
-        isActive ? "bg-lime text-gray-700" : "text-gray-300 "
+      className={`p-1 rounded-md cursor-pointer flex items-center space-x-2 ${
+        isActive ? "bg-lime text-gray-700" : "text-gray-300"
       }`} // Apply style when active
     >
-      {data.name}
+      {/* Icon with fixed width and height */}
+      {data.icon && (
+        <img
+          src={data.icon}
+          alt={data.name}
+         className="w-6 h-6 object-contain"
+        />
+      )}
+      <span>{data.name}</span>
     </div>
   );
 };
@@ -69,7 +85,12 @@ const Dashboardleftcontent = ({ role = "" }) => {
                   className="py-2 font-bold cursor-pointer"
                   onClick={() => toggleSection(index)} // Toggle section on click
                 >
-                  {item.name}
+                  <div className="flex items-center space-x-2">
+                    <item.icon className="text-lime-500 text-2xl" /> 
+                    <span>{item.name}</span>
+                  </div>
+                  
+                   {/* {item.name}  */}
                 </div>
               }
             >
@@ -86,7 +107,7 @@ const Dashboardleftcontent = ({ role = "" }) => {
 
                       {/* Check if the current section has sub-children */}
                       {data.children && data.children.length > 0 && (
-                        <div className="ml-4 space-y-1">
+                        <div className="ml-4 space-y-1 ">
                           {data.children.map((subData, subIndex) => (
                             <SubSection
                               key={subIndex}

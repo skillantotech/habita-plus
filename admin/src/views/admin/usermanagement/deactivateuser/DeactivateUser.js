@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 const DeactivateUser = () => {
-  const paths = ["User Management", "Deactivate users"];
+  const paths = ["users", "Deactivate users"];
   const Heading = ["Deactivate Users"];
   return (
     <div className="">
@@ -29,8 +29,8 @@ const DeactivateUser = () => {
           </div>
           <div className="flex flex-col mt-[35px] space-y-3">
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-base bg-lime text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className="text-xs bg-lime text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       First Name
@@ -42,10 +42,10 @@ const DeactivateUser = () => {
                       Last Role
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Mobile No.
+                      Unit No.
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Email
+                      Mobile
                     </th>
                     {/* <th scope="col" className="px-6 py-3">
                     Email
@@ -71,19 +71,11 @@ const DeactivateUser = () => {
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
                       >
                         View
                       </button>
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-red-500 hover:bg-green-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tr-xl rounded-bl-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        Activate
-                      </button>
                     </td>
-
-                    
                   </tr>
                   <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <td className="px-6 py-4">Tom</td>
@@ -96,15 +88,9 @@ const DeactivateUser = () => {
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
                       >
                         View
-                      </button>
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-red-500 hover:bg-green-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tr-xl rounded-bl-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        Activate
                       </button>
                     </td>
                   </tr>

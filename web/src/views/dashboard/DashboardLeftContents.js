@@ -47,6 +47,7 @@ const DashboardLeftContents = () => {
       icon: IoGridOutline,
       click: () => customNavigation("/more"),
     },
+    
   ];
 
   const paths = usePathname().split("/").filter(el=>Boolean(el));

@@ -9,7 +9,7 @@ import TextArea from "../../../../components/ui/TextArea";
 const CreateTicketForm = () => {
   const [fileError, setFileError] = useState(""); // State to track file size error
 
-  const paths = ["Socity HelpDesk Management", "Create Ticket"];
+  const paths = ["Software Help Desk", "Create Ticket"];
   const Heading = ["Create Ticket"];
   const { ticketPurpousListView, createTicket, getTicketCatagorisation } =
     SoftwareHelpDeskHandler();

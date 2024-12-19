@@ -9,7 +9,7 @@ import Button from "../../../../components/ui/Button";
 import { MdOutlineCancel } from "react-icons/md";
 
 const AddNewVendor = () => {
-  const paths = ["Vendor Management", "Add new vendor"];
+  const paths = ["User", "Add new vendor"];
   const Heading = ["Add new vendor"];
   return (
     <div className="px-5 ">

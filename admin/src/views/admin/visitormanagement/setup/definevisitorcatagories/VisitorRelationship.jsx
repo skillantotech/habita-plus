@@ -31,13 +31,13 @@ const ActionData = ({ data, updateModal, deleteModal, updateForm }) => {
         className="px-2 py-1 text-xs bg-lime text-white rounded-md hover:bg-opacity-90"
         onClick={onUpdateRelation}
       >
-        update
+        Update
       </button>
       <button
         className="px-2 py-1 text-xs bg-gray-900 text-white rounded-md hover:bg-opacity-90"
         onClick={onDeleteRelation}
       >
-        delete
+        Delete
       </button>
     </div>
   );
@@ -147,14 +147,14 @@ const VisitorRelationship = () => {
   return (
     <div>
       <div className="grid grid-cols-3 gap-4">
-        <div>Visitor Relationship</div>
+        <div>Visitor Category</div>
         <div>
           <Input
             // label={<div>First Name</div>}
             type="text"
             value={relationship}
             onChange={handleInput}
-            placeholder={"Visitor Relationship"}
+            placeholder={"Visitor Category"}
             size={"lg"}
           />
         </div>

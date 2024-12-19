@@ -17,7 +17,7 @@ const AddNewFacility = () => {
 export default AddNewFacility;
 
 const Addnewfacilityform = () => {
-  const paths = ["Facility Management", "Add new Facility"];
+  const paths = ["User", "Add new Facility"];
   const Heading = ["Add new Facility"];
   return (
     <div className="px-5 ">
