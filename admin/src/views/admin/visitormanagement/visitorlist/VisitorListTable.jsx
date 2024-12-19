@@ -673,7 +673,7 @@ const formatDate = (date) => {
       Cell: ({ row }) => (
         <div className="flex space-x-4">
           <button
-            className="text-blue-500 hover:text-blue-700"
+            className="text-yelow-600 hover:text-yellow-700"
             onClick={() => handleView(row.original.visit_entry_Id)}
           >
             <FaEye className="text-sm" />
