@@ -28,7 +28,7 @@ const GateAllocation = sequelize.define('GateAllocation', {
         allowNull: false
     },
     role: {
-        type: DataTypes.ENUM('security', 'supervisor', 'facilities_manager'),
+        type: DataTypes.ENUM('security', 'supervisor', 'facilitie_manager'),
         allowNull: false,
         defaultValue: 'security' // Default to 'security' role
     },

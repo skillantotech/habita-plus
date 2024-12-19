@@ -43,10 +43,6 @@ const Customer = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     subscriptionId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -1,4 +1,5 @@
 const GateAllocation = require('../models/GateAllocation');
+
 // Create a new gate allocation entry with file upload
 exports.createGateAllocation = async (req, res) => {
     try {
@@ -88,3 +89,4 @@ exports.deleteGateAllocation = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+

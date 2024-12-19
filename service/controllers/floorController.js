@@ -52,3 +52,28 @@ exports.getFloors = async (req, res) => {
     return sendErrorResponse(res, "Internal server error", 500, err.message);
   }
 };
+
+exports.getFloorsBySocietyId = async (req, res) => {
+  try {
+    const { societyId } = req.params;
+
+    if (!societyId) {
+      return sendErrorResponse(res, "Society ID is required", 400);
+    }
+
+    const floors = await Floor.findAll({
+      where: {
+        societyId,
+      },
+    });
+
+    if (!floors || floors.length === 0) {
+      return sendErrorResponse(res, "No floors found for this society", 404);
+    }
+
+    return sendSuccessResponse(res, "Floors fetched successfully", floors, 200);
+  } catch (err) {
+    console.error("Error fetching floors by society ID:", err);
+    return sendErrorResponse(res, "Internal server error", 500, err.message);
+  }
+};

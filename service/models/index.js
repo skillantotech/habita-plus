@@ -71,7 +71,7 @@ module.exports = {
   Role,
   Building,
   Gate,
-  GateAllocation,
+ GateAllocation,
   Floor,
   UnitType,
   Unit,

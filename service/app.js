@@ -20,7 +20,6 @@ const buildingRouter = require("./routes/buildingRoutes");
 const floorRouter = require("./routes/floorRoutes");
 const unitTypeRouter = require("./routes/unitTypeRoutes");
 const gateRout = require("./routes/gateRouter");  // Corrected variable name
-const gateAllocationRouter = require("./routes/gateAllocationRouter");
 const {
   User,
   Customer,
@@ -44,6 +43,7 @@ const visitorManagementRouter = require("./routes/visitorManagementRouter");
 const unitRouter = require("./routes/unitRoutes");
 const softwareHelpDeskRouter = require("./routes/softwareHelpDeskRouter");
 const refTicketStatusRouter = require("./routes/refTicketStatusRouter");
+const gateAllocationRouter = require("./routes/gateAllocationRouter");
 
 // testing apis
 app.get("/", (req, res) => {
