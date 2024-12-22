@@ -37,6 +37,8 @@ exports.getAllGateAllocations = async (req, res) => {
     }
 };
 
+
+
 // Fetch a specific gate allocation by ID
 exports.getGateAllocationById = async (req, res) => {
     try {
@@ -45,6 +47,27 @@ exports.getGateAllocationById = async (req, res) => {
             return res.status(404).json({ message: 'Gate allocation not found' });
         }
         res.status(200).json(allocation);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Fetch gate allocations by foreign key (societyId)
+exports.getGateAllocationsBySocietyId = async (req, res) => {
+    try {
+        const { societyId } = req.params; // Extract the societyId from the request parameters
+
+        // Query all gate allocations where societyId matches
+        const allocations = await GateAllocation.findAll({
+            where: { societyId },
+        });
+
+        // Check if any allocations are found
+        if (allocations.length === 0) {
+            return res.status(404).json({ message: 'No gate allocations found for the specified society' });
+        }
+
+        res.status(200).json(allocations);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

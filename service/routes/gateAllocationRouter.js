@@ -15,6 +15,8 @@ gateAllocationRouter.post(
 
 gateAllocationRouter.get('/', gateAllocationController.getAllGateAllocations);
 gateAllocationRouter.get('/:id', gateAllocationController.getGateAllocationById);
+gateAllocationRouter.get('/:societyId',gateAllocationController.getGateAllocationsBySocietyId);
+
 gateAllocationRouter.put(
     '/update/:id',
     upload.fields([

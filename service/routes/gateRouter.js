@@ -9,6 +9,6 @@ gateRout.post('/gates', createGate);
 gateRout.get('/gates', getGates);
 
 
-gateRout.get('/gates/:societyId', getGatesBysocietyId);
+gateRout.get('/:societyId', getGatesBysocietyId);
 
 module.exports = gateRout;

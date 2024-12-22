@@ -1,13 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
 import PageHeading from "../../../../components/shared/PageHeading";
+import DeactivatedGateUserHandler from "../../../../handlers/DeactivatedGateUserHandler";
+import ReusableTable from "../../../../components/shared/ReusableTable";
 
 const DeactivatedGateUser = () => {
   const paths = ["Gate Management", "Deactivate Gate Users"];
   const Heading = ["Deactivated Gate Users"];
+
+
+  const [data, setData] = useState([]);
+  const { getDeactivatedUserHandler } = DeactivatedGateUserHandler()
+
+  const transformGateDeactivatedUserData = (data) => {
+    return data.map((element) => {
+      return {}
+    })
+  }
+
+  // Pagination states
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    getDeactivatedUserHandler({ page: pageIndex, limit: pageSize })
+      .then((res) => {
+        console.log(res.data.data);
+        setData(transformGateDeactivatedUserData(res.data.data));
+        setTotalCount(res.data.total);
+        setTotalPages(res.data.totalPages);
+      })
+      .catch((err) => console.log(err));
+  }, [pageIndex, pageSize]);
+
+  const columns = [
+    { Header: "FIRST NAME", accessor: "firstName" },
+    { Header: "LAST NAME", accessor: "lastNumber" },
+    { Header: "GATE NO.", accessor: "gateNo" },
+    { Header: "MOBILE NO.", accessor: "mobileNo" },
+    { Header: "EMAIL", accessor: "email" },
+    { Header: "VIEW", accessor: "view" }
+  ];
+
+
   return (
     <div className="">
       <UrlPath paths={paths} />
@@ -32,85 +72,16 @@ const DeactivatedGateUser = () => {
           </div>
           <div className="flex flex-col mt-[35px] space-y-3">
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-base bg-lime text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      First Name
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Last Name
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Gate No.
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Mobile No.
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Email
-                    </th>
-                    {/* <th scope="col" className="px-6 py-3">
-                      Email
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Status
-                    </th> */}
-
-                    <th scope="col" className="px-6 py-3">
-                      View
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td className="px-6 py-4">Joseph</td>
-                    <td className="px-6 py-4">Stalin</td>
-                    <td className="px-6 py-4">4</td>
-                    <td className="px-6 py-4">8798766756</td>
-                    <td className="px-6 py-4">joseph@gmail.com</td>
-                    {/* <td className="px-6 py-4">Approved</td>
-                    <td className="px-6 py-4">Belong to this appartment</td> */}
-                    <td className="px-6 py-4">
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        View
-                      </button>
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-red-500 hover:bg-green-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tr-xl rounded-bl-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        Activate
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td className="px-6 py-4">Tom</td>
-                    <td className="px-6 py-4">Steve</td>
-                    <td className="px-6 py-4">7</td>
-                    <td className="px-6 py-4">8798766756</td>
-                    <td className="px-6 py-4">tom@gmail.com</td>
-                    {/* <td className="px-6 py-4">Approved</td>
-                    <td className="px-6 py-4">Belong to this appartment</td> */}
-                    <td className="px-6 py-4">
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        View
-                      </button>
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-red-500 hover:bg-green-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tr-xl rounded-bl-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        Activate
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <ReusableTable
+                columns={columns}
+                data={data}
+                pageIndex={pageIndex}
+                pageSize={pageSize}
+                totalCount={totalCount}
+                totalPages={totalPages}
+                setPageIndex={(index) => setPageIndex(index)}
+                setPageSize={(size) => setPageSize(size)}
+              />  
             </div>
           </div>
         </div>
