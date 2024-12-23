@@ -6,7 +6,7 @@ import Button from "../../../../components/ui/Button";
 // import Select from "../../../../components/ui/Select";
 
 const DefineVisitorcatagories = () => {
-  const paths = ["user", "Define Visitor catagories"];
+  const paths = ["Visitors Management", "Setup", "Define Visitor catagories"];
   const Heading = ["Define Visitor catagories"];
   const visitorOptions = ["Recurring", "Onetime"];
   return (
@@ -48,7 +48,7 @@ const DefineVisitorcatagories = () => {
             </select>
           </div>
           <div>
-            <Button className="max-w-sm" type="" size="md">
+            <Button className="max-w-sm" type="submit" size="md">
               Submit
             </Button>
           </div>
@@ -57,7 +57,7 @@ const DefineVisitorcatagories = () => {
           <div>Visitor Relationship</div>
           <div>
             <Input
-              // labelsubmit={<div>First Name</div>}
+              // label={<div>First Name</div>}
               type="text"
               placeholder={"Visitor Relationship"}
               size={"lg"}

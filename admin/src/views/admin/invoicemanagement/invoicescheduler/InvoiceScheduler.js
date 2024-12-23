@@ -5,7 +5,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import Button from "../../../../components/ui/Button";
 
 const InvoiceScheduler = () => {
-  const paths = ["user", "Invoice Scheduler"];
+  const paths = ["Invoice Management", "Invoice Scheduler"];
   const Heading = ["Invoice Scheduler"];
   return (
     <div>

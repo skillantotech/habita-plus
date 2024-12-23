@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { createUnitTypeService, getUnitTypeBySocietyIdService } from "../../services/building_management/unitTypeService";
+import { createUnitTypeService, getUnitTypeService } from "../../services/building_management/unitTypeService";
 
 const UnitTypeHandler = () => {
   const token = useSelector((state) => state.auth.token);
@@ -28,13 +28,10 @@ const UnitTypeHandler = () => {
       });
   };
 
-  const getUnitTypeHandler = async () => {
-    return await getUnitTypeBySocietyIdService(societyId, token)
-    .then((res) => res)
- .catch((err) => {
-  console.error(err);
-  });
-  }
+  const getUnitTypeHandler = async (data) => {
+    return await getUnitTypeService(data, token);
+  };
+
   return { createUnitTypeHandler, getUnitTypeHandler };
 };
 

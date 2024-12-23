@@ -19,6 +19,7 @@ const adminRouter = require("./routes/adminRoutes");
 const buildingRouter = require("./routes/buildingRoutes");
 const floorRouter = require("./routes/floorRoutes");
 const unitTypeRouter = require("./routes/unitTypeRoutes");
+const gateRout = require("./routes/gateRouter");  // Corrected variable name
 const {
   User,
   Customer,
@@ -41,6 +42,7 @@ const visitorManagementRouter = require("./routes/visitorManagementRouter");
 const unitRouter = require("./routes/unitRoutes");
 const softwareHelpDeskRouter = require("./routes/softwareHelpDeskRouter");
 const refTicketStatusRouter = require("./routes/refTicketStatusRouter");
+const gateAllocationRouter = require("./routes/gateAllocationRouter");
 
 // testing apis
 app.get("/", (req, res) => {
@@ -66,6 +68,11 @@ app.use("/api/unitType", unitTypeRouter);
 app.use("/api/unit", unitRouter);
 // app.use create user ref group superadmin api
 app.use("/api/refusergroup", refUserGroupRouter);
+
+// gate routes
+app.use("/api/gate", gateRout); 
+// gate allocation router
+app.use("/api/gateallocation",gateAllocationRouter);
 
 // notice announcement
 app.use("/api/noticeAnnouncement", noticeAnnouncementRouter);

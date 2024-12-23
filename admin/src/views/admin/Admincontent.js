@@ -16,8 +16,11 @@ import VisitorList from "./visitormanagement/visitorlist/VisitorList";
 import AddnewDiscussion from "./discussionforum/addnewdiscussion/AddnewDiscussion";
 import DiscussionDetails from "./discussionforum/discussiondetails/DiscussionDetails";
 import DefineGate from "./gatemanagement/definegate/DefineGate";
+import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
 import GateAllocation from "./gatemanagement/gateallocation/GateAllocation";
 import GateList from "./gatemanagement/gatelist/GateList";
+import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
+import DeactivatedGateUser from "./gatemanagement/deactivategateusers/DeactivateGateUsers";
 import DocumentUploadFacility from "./documentmanagement/documentuploadfacility/DocumentUploadFacility";
 import AddNewVendor from "./vendormanagement/addnewvendor/AddNewVendor";
 import AddNewParkingSlot from "./parkingmanagement/addnewparkingslot/AddNewParkingSlot";
@@ -40,9 +43,11 @@ import CalenderSetting from "./socityadminconfugaration/calendersetting/Calender
 import ApprovalMatrix from "./socityhelpdesk/setup/approvalmatrix/ApprovalMatrix";
 import DefinePorpous from "./socityhelpdesk/setup/defineporpous/DefinePorpous";
 import TicketList from "./socityhelpdesk/ticketlist/TicketList";
+
 import ApprovalMatrixVisitor from "./visitormanagement/setup/approvalmatrix/ApprovalMatrixVisitor";
 import DefineVisitorCatagories from "./visitormanagement/setup/definevisitorcatagories/DefineVisitorCatagories";
 import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
+
 // import CreateResident from "./resident/create/CreateResident";
 // import CreateFloorInformation from "./floorinformation/create/CreateFloorInformation";
 // import CreateVendor from "./vendorinformation/create/CreateVendor";
@@ -118,8 +123,12 @@ const Admincontent = () => {
       <Route path="/discussion/create" element={<AddnewDiscussion />} />
       <Route path="/discussion/list" element={<DiscussionDetails />} />
       <Route path="/gate/definegate" element={<DefineGate />} />
-      <Route path="/gate/allocation" element={<GateAllocation />} />
+      <Route path="/gate/guardprofilecreation" element={<GuardUserCreation />} />
+      <Route path="/gate/gateallocation" element={<GateAllocation />} />      
       <Route path="/gate/view" element={<GateList />} />
+      <Route path="/gate/approvedusers" element={<ApprovedGateUser/>} />
+      <Route path="/gate/deactivatedusers" element={<DeactivatedGateUser/>} />
+
       <Route path="/document/upload" element={<DocumentUploadFacility />} />
       <Route path="/document/view" element={<div>Document List</div>} />
 

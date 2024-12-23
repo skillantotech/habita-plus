@@ -594,7 +594,6 @@ const AddUser = () => {
     alternateCountryCode: "",
     alternateNumber: "",
     email: "",
-    password: "",
     address: {
       addressLine1: "",
       addressLine2: "",
@@ -754,15 +753,6 @@ const AddUser = () => {
             placeholder={"Enter Your Email"}
             size={"lg"}
           />
-          <Input
-            label={<div>Password</div>}
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder={"Enter Your Password"}
-            size={"lg"}
-          />
         </div>
       </div>
 
@@ -835,7 +825,7 @@ const AddUser = () => {
           Unit Allocation
         </div>
 
-        <UnitAllocationForUser />
+        <UnitAllocationForUser/>
 
         {/* <div className="grid grid-cols-5 gap-5 items-center">
           <Input

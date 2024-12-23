@@ -22,9 +22,9 @@ const CreateBuilding = () => {
   return (
     <form
       onSubmit={handleBuildingSubmit}
-      className=" items-center gap-4 mb-4 bg-gray-100 p-4 rounded-lg grid grid-cols-4"
+      className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
     >
-      <label>Define Tower/Building(Name / No.)<span className="text-red-500">*</span></label>
+      <label>Define Tower/Building (Name / No.)</label>
       <Input
         type="text"
         name="building"
@@ -60,7 +60,6 @@ const CreateFloor = () => {
     await createFloorHandler(floors)
       .then((res) => {
         console.log(res);
-        setFloors({ floorName: "", shortForm: "" }); 
       })
       .catch((err) => {
         console.log(err);
@@ -70,13 +69,13 @@ const CreateFloor = () => {
   return (
     <form
       onSubmit={handleFloorsSubmit}
-      className=" items-center gap-4 mb-4 bg-gray-100 p-4 rounded-lg grid grid-cols-4"
+      className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
     >
-      <label>Define Floors <span className="text-red-500">*</span></label>
+      <label>Define Floors</label>
       <Input
         label="Enter Floor name"
         type="text"
-        name="floorName" 
+        name="floorName" // Corrected from "floors" to "floorName"
         placeholder="Enter Your Define Floors"
         size="lg"
         value={floors.floorName}
@@ -84,11 +83,11 @@ const CreateFloor = () => {
       />
 
       <Input
-        label="Short Form (MaxLength-4)"
+        label="Short Form"
         type="text"
         maxlength="4"
-        name="shortForm" 
-        placeholder="Enter Your Short From"
+        name="shortForm" // Corrected from "floors" to "floorName"
+        placeholder="Enter Your Define Floors"
         size="lg"
         value={floors.shortForm}
         onChange={onFloorChange}
@@ -121,13 +120,11 @@ const CreateUnitType = () => {
   return (
     <form
       onSubmit={handleUnitTypeSubmit}
-      // className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
-      className=" items-center gap-4 mb-4 bg-gray-100 p-4 rounded-lg grid grid-cols-4"
+      className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
     >
-
-      <label>Define Unit Type(e.g. 1BHK, 2BHK, 3BHK)<span className="text-red-500">*</span></label>
       <Input
-       type="text"
+        label="Define Unit Type (e.g. 1BHK, 2BHK, 3BHK)"
+        type="text"
         name="unitTypeName"
         placeholder="Enter Your Unit Type"
         size="lg"
