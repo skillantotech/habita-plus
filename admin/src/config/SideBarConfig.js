@@ -128,8 +128,14 @@ exports.SideBarMenu = {
           url: "gate/definegate",
         },
         {
-          name: "Gate Allocation",
-          url: "gate/allocation",
+          name: "Guard Profile Creation",
+          url: "gate/guardprofilecreation",
+          children:[
+            {
+              name: "Gate Allocation",
+              url:"gate/gateallocation"
+            }
+          ]
         },
         // {
         //   name: "Gate List",

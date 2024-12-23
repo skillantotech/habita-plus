@@ -16,6 +16,7 @@ import VisitorList from "./visitormanagement/visitorlist/VisitorList";
 import AddnewDiscussion from "./discussionforum/addnewdiscussion/AddnewDiscussion";
 import DiscussionDetails from "./discussionforum/discussiondetails/DiscussionDetails";
 import DefineGate from "./gatemanagement/definegate/DefineGate";
+import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
 import GateAllocation from "./gatemanagement/gateallocation/GateAllocation";
 import GateList from "./gatemanagement/gatelist/GateList";
 import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
@@ -122,7 +123,8 @@ const Admincontent = () => {
       <Route path="/discussion/create" element={<AddnewDiscussion />} />
       <Route path="/discussion/list" element={<DiscussionDetails />} />
       <Route path="/gate/definegate" element={<DefineGate />} />
-      <Route path="/gate/allocation" element={<GateAllocation />} />
+      <Route path="/gate/guardprofilecreation" element={<GuardUserCreation />} />
+      <Route path="/gate/gateallocation" element={<GateAllocation />} />      
       <Route path="/gate/view" element={<GateList />} />
       <Route path="/gate/approvedusers" element={<ApprovedGateUser/>} />
       <Route path="/gate/deactivatedusers" element={<DeactivatedGateUser/>} />
