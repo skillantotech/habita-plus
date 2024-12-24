@@ -276,8 +276,9 @@ const NoticeList = () => {
         </div>
 
         {/* Display current notice range / total notices */}
-        <div className="text-gray-700">
-          Showing {startNotice} - {endNotice} of {totalNotices}
+        <div className="text-gray-700 text-lg">
+          {/* Showing {startNotice} - {endNotice} of {totalNotices} */}
+          Total {totalNotices} Announcement. Selected {pageSize}
         </div>
 
         {/* Page size dropdown */}

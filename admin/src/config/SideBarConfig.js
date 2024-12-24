@@ -1,8 +1,13 @@
-exports.SideBarMenu = {
+import { FaUserAlt, FaIdCard,FaBuilding, FaBullhorn, FaComments, FaFileAlt, FaFileInvoice, FaParking, FaCog, FaHeadset, FaLaptopCode, FaUserFriends, FaHome, FaUserTie } from 'react-icons/fa';
+
+import { GiGate } from 'react-icons/gi';
+
+const SideBarMenu = {
   society_moderator: [
     {
       name: "User Management",
       isAvailable: true,
+       icon: FaUserAlt,
       children: [
         {
           name: "Unapproved user",
@@ -39,9 +44,10 @@ exports.SideBarMenu = {
     {
       name: "Building Management",
       isAvailable: true,
+       icon: FaBuilding,
       children: [
         {
-          name: "Define Structer",
+          name: "Define Structure",
           url: "unit/structer",
         },
         {
@@ -61,6 +67,8 @@ exports.SideBarMenu = {
     {
       name: "Notice Announcement",
       isAvailable: true,
+       icon: FaBullhorn,
+      
       children: [
         {
           name: "Add New Notice",
@@ -75,6 +83,7 @@ exports.SideBarMenu = {
     {
       name: "Discussion Forum",
       isAvailable: true,
+       icon: FaComments,
       children: [
         {
           name: "Add New Discussion",
@@ -89,6 +98,7 @@ exports.SideBarMenu = {
     {
       name: "Visitors Management",
       isAvailable: true,
+      icon:FaIdCard ,
       children: [
         {
           name: "Setup",
@@ -122,6 +132,7 @@ exports.SideBarMenu = {
     {
       name: "Gate Management",
       isAvailable: true,
+     icon: GiGate ,
       children: [
         {
           name: "Define Gate",
@@ -172,6 +183,7 @@ exports.SideBarMenu = {
     {
       name: "Vendor Management",
       isAvailable: true,
+      icon:FaUserTie,
       children: [
         {
           name: "Setup",
@@ -190,6 +202,7 @@ exports.SideBarMenu = {
     {
       name: "Document Management",
       isAvailable: true,
+      icon:FaFileAlt ,
       children: [
         {
           name: "Document Upload Facility",
@@ -205,6 +218,7 @@ exports.SideBarMenu = {
     {
       name: "Invoice Management",
       isAvailable: true,
+      icon:FaFileInvoice ,
       children: [
         {
           name: "Define New Charge",
@@ -243,6 +257,7 @@ exports.SideBarMenu = {
     {
       name: "Facility Management",
       isAvailable: true,
+      icon:FaHome ,
       children: [
         {
           name: "Add New Facility",
@@ -266,6 +281,7 @@ exports.SideBarMenu = {
     {
       name: "Parking Management",
       isAvailable: true,
+      icon:FaParking ,
       children: [
         {
           name: "Add New Parking Slot",
@@ -293,6 +309,7 @@ exports.SideBarMenu = {
     {
       name: "Socity Admin Confugaration",
       isAvailable: true,
+      icon:FaCog ,
       children: [
         {
           name: "Socity Financial Confugaration",
@@ -323,6 +340,7 @@ exports.SideBarMenu = {
     {
       name: "Socity HelpDesk Management",
       isAvailable: true,
+      icon:FaHeadset ,
       children: [
         {
           name: "SetUp",
@@ -351,6 +369,143 @@ exports.SideBarMenu = {
     {
       name: "Software HelpDesk Management",
       isAvailable: true,
+      icon:FaLaptopCode,
+      children: [
+        // {
+        //   name: "SetUp",
+        //   url: "softwarehelpdesk/softwarehelpdesksetup",
+        //   children: [
+        //     {
+        //       name: "Approval Matrix",
+        //       url: "softwarehelpdesk/softwarehelpdesksetup/softwareapprovalmatrix",
+        //     },
+        //     {
+        //       name: "Define Purpose",
+        //       url: "softwarehelpdesk/softwarehelpdesksetup/softwaredefinepurpose",
+        //     },
+        //   ],
+        // },
+        {
+          name: "Create Ticket",
+          url: "softwarehelpdesk/softwarehelpdeskcreateticket",
+        },
+        {
+          name: "Ticket List",
+          url: "softwarehelpdesk/softwarehelpdeskticketlist",
+        },
+      ],
+    },
+  ],
+  // super_admin: [
+  //   {
+  //     name: "Society Management",
+  //     isAvailable: true,
+  //     children: [
+  //       {
+  //         name: "Create Society",
+  //         url: "society/create",
+  //       },
+  //       {
+  //         name: "Societies List",
+  //         url: "society/view",
+  //       },
+  //       {
+  //         name: "Create Society User",
+  //         url: "society/createuser",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     name: "Product Subscription Management",
+  //     isAvailable: true,
+  //     children: [
+  //       {
+  //         name: "Create Product",
+  //         url: "product/create",
+  //       },
+  //       {
+  //         name: "Subscription List",
+  //         url: "society/view",
+  //       },
+  //       {
+  //         name: "Module",
+  //         url: "module/create",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     name: "Vendor Management",
+  //     isAvailable: true,
+  //     children: [
+  //       {
+  //         name: "Create Vendor",
+  //         url: "vendor/create",
+  //       },
+  //       {
+  //         name: "Vendor List",
+  //         url: "vendor/view",
+  //       },
+  //     ],
+  //   },
+  // ],
+  super_admin: [
+    {
+      name: "Society Management",
+      isAvailable: true,
+      icon: FaBuilding, 
+      children: [
+        {
+          name: "Create Society",
+          url: "society/create",
+        },
+        {
+          name: "Societies List",
+          url: "society/view",
+        },
+        {
+          name: "Create Society User",
+          url: "society/createuser",
+        },
+      ],
+    },
+    {
+      name: "Product Subscription Management",
+      isAvailable: true,
+      icon: FaCog, 
+      children: [
+        {
+          name: "Create Product",
+          url: "product/create",
+        },
+        {
+          name: "Subscription List",
+          url: "society/view",
+        },
+        {
+          name: "Module",
+          url: "module/create",
+        },
+      ],
+    },
+    {
+      name: "Vendor Management",
+      isAvailable: true,
+      icon: FaUserTie, 
+      children: [
+        {
+          name: "Create Vendor",
+          url: "vendor/create",
+        },
+        {
+          name: "Vendor List",
+          url: "vendor/view",
+        },
+      ],
+    },
+     {
+      name: "Software HelpDesk Management",
+      isAvailable: true,
+      icon:FaLaptopCode,
       children: [
         {
           name: "SetUp",
@@ -376,57 +531,6 @@ exports.SideBarMenu = {
         },
       ],
     },
-  ],
-  super_admin: [
-    {
-      name: "Society Management",
-      isAvailable: true,
-      children: [
-        {
-          name: "Create Society",
-          url: "society/create",
-        },
-        {
-          name: "Societies List",
-          url: "society/view",
-        },
-        {
-          name: "Create Society User",
-          url: "society/createuser",
-        },
-      ],
-    },
-    {
-      name: "Product Subscription Management",
-      isAvailable: true,
-      children: [
-        {
-          name: "Create Product",
-          url: "product/create",
-        },
-        {
-          name: "Subscription List",
-          url: "society/view",
-        },
-        {
-          name: "Module",
-          url: "module/create",
-        },
-      ],
-    },
-    {
-      name: "Vendor Management",
-      isAvailable: true,
-      children: [
-        {
-          name: "Create Vendor",
-          url: "vendor/create",
-        },
-        {
-          name: "Vendor List",
-          url: "vendor/view",
-        },
-      ],
-    },
-  ],
+  ]
 };
+export default SideBarMenu;

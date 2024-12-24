@@ -1,57 +1,6 @@
+
+
 const { Unit, UnitType, Floor } = require("../models");
-
-// const createUnit = async (req, res) => {
-//   console.log("Create Unit Called!");
-//   try {
-//     const {
-//       societyId,
-//       unitName,
-//       buildingId,
-//       floorId,
-//       unitTypeId,
-//       unitNumber,
-//       unitsize,
-//     } = req.body;
-
-//     // Validate required fields
-//     if (
-//       !societyId ||
-//       !unitName ||
-//       !buildingId ||
-//       !floorId ||
-//       !unitTypeId ||
-//       !unitNumber
-//     ) {
-//       return res.status(400).json({ message: "All fields are required!" });
-//     }
-
-//     const isUnitExists = await Unit.findOne({ where: unitName });
-
-//     if (isUnitExists) {
-//       return sendErrorResponse("Unit Already Exists", 400);
-//     }
-//     // Create new unit
-//     const newUnit = await Unit.create({
-//       societyId,
-//       unitName,
-//       buildingId,
-//       floorId,
-//       unitTypeId,
-//       unitNumber,
-//       unitsize,
-//     });
-
-//     // Respond with created unit
-//     res
-//       .status(201)
-//       .json({ message: "Unit created successfully!", data: newUnit });
-//   } catch (error) {
-//     console.error("Error creating unit: ", error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
-
-// Get a unit by ID or query params
 
 const createUnit = async (req, res) => {
   console.log("Create Unit Called!");
@@ -102,31 +51,56 @@ const createUnit = async (req, res) => {
   }
 };
 
+
 const getUnit = async (req, res) => {
-  console.log("Get Unit Called!");
   try {
-    const { unitId } = req.query;
+    console.log("Get Unit Called!");
+    console.log(req.query);
 
-    // Validate the input
-    if (!unitId) {
-      return res.status(400).json({ message: "Unit ID is required!" });
+    const { unitName, unitNumber, unitsize, floorId, unitTypeId } = req.query;
+
+    const societyId = req.params.societyId;
+
+    if (!societyId) {
+      return res.status(400).json({ message: "Society ID is required!" });
     }
 
-    // Find unit by ID
-    const unit = await Unit.findOne({ where: { unitId } });
+    const whereClause = { societyId }; 
 
-    // Check if the unit exists
-    if (!unit) {
-      return res.status(404).json({ message: "Unit not found!" });
+    if (unitName) whereClause.unitName = unitName;
+    if (unitNumber) whereClause.unitNumber = unitNumber;
+    if (unitsize) whereClause.unitsize = unitsize;
+    if (floorId) whereClause.floorId = floorId;
+    if (unitTypeId) whereClause.unitTypeId = unitTypeId;
+
+    const units = await Unit.findAll({
+      where: whereClause,
+      include: [
+        {
+          model: UnitType,
+          attributes: ["unitTypeId", "unitTypeName"],
+        },
+        {
+          model: Floor,
+          attributes: ["floorId", "floorName"], 
+        },
+      ],
+    });
+
+    if (units.length === 0) {
+      return res.status(404).json({ message: "No units found for the specified filters!" });
     }
 
-    // Respond with found unit
-    res.status(200).json({ message: "Unit found!", data: unit });
+    return res.status(200).json({
+      message: "Units fetched successfully!",
+      data: units,
+    });
   } catch (error) {
     console.error("Error fetching unit: ", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 const getAllUnits = async (req, res) => {
   try {
@@ -138,7 +112,6 @@ const getAllUnits = async (req, res) => {
     const whereClause = {};
     console.log(req.query);
 
-    // const units = await Unit.findAll();
 
     const { count, rows } = await Unit.findAndCountAll({
       where: whereClause,
@@ -147,11 +120,11 @@ const getAllUnits = async (req, res) => {
       include: [
         {
           model: UnitType,
-          attributes: ["unitTypeId", "unitTypeName"], // specify fields you need
+          attributes: ["unitTypeId", "unitTypeName"], 
         },
         {
           model: Floor,
-          attributes: ["floorId", "floorName"], // specify fields you need
+          attributes: ["floorId", "floorName"], 
         },
       ],
     });
@@ -175,4 +148,4 @@ const getAllUnits = async (req, res) => {
   }
 };
 
-module.exports = { createUnit, getUnit, getAllUnits };
+module.exports = { createUnit, getUnit, getAllUnits };

@@ -11,7 +11,7 @@ const DashboardLayout = ({ header, leftContent, rightContent }) => {
   };
 
   return (
-    <div className="h-full bg-gray-50">
+    <div className="h-full bg-black-50">
       <div className="w-full sticky top-0 z-20">{header}</div>
       <div className="flex max-w-full">
         {/* left section */}

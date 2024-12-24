@@ -3,7 +3,6 @@ const sequelize = require("../config/database");
 const Building = require("./Building");
 const Floor = require("./Floor");
 const UnitType = require("./UnitType");
-// const Customer = require("./Customer");
 
 const Unit = sequelize.define(
   "unit",
@@ -29,10 +28,6 @@ const Unit = sequelize.define(
       },
       allowNull: false,
     },
-    // societyId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    // },
     buildingId: {
       type: DataTypes.INTEGER,
       references: {
@@ -71,8 +66,6 @@ const Unit = sequelize.define(
 // Unit Model (Unit.js)
 
 Unit.belongsTo(Floor, { foreignKey: "floorId" });  // Floor should be an object
-// Unit.belongsTo(Customer, { foreignKey: "customerId" });  // Floor should be an object
-
 Unit.belongsTo(UnitType, { foreignKey: "unitTypeId" }); // UnitType should be an object
 
 module.exports = Unit;

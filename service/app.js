@@ -24,7 +24,6 @@ const {
   User,
   Customer,
   Floor,
-  Gate,  // Corrected the spelling of "Gate"
   UnitType,
   UserGroup,
   Unit,
@@ -62,20 +61,18 @@ app.use("/api", subscriptionPlanRoutes);
 app.use("/api/role", roleRouter);
 app.use("/api/admin", adminRouter);
 
-// gate routes
-app.use("/api/gate", gateRout);  
-// gate allocation router
-app.use("/api/gateallocation",gateAllocationRouter);  
-
-
 // building routes
 app.use("/api/building", buildingRouter);
 app.use("/api/floor", floorRouter);
 app.use("/api/unitType", unitTypeRouter);
 app.use("/api/unit", unitRouter);
-
 // app.use create user ref group superadmin api
 app.use("/api/refusergroup", refUserGroupRouter);
+
+// gate routes
+app.use("/api/gate", gateRout); 
+// gate allocation router
+app.use("/api/gateallocation",gateAllocationRouter);
 
 // notice announcement
 app.use("/api/noticeAnnouncement", noticeAnnouncementRouter);
@@ -93,7 +90,6 @@ app.use("/api/softwarehelpdesk", refTicketStatusRouter);
 app.get("/init-database", initController);
 app.get("/create-super-admin", createSuperAdmin);
 app.get("/create-admin", createAdmin);
-
 app.use(errorHandler);
 
 // Ticket_Details.sync({ alter: true }) 

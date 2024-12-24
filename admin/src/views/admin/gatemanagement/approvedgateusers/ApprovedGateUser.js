@@ -15,6 +15,8 @@ const ApprovedGateUser = () => {
 
   const [data, setData] = useState([]);
 
+  const handleViewDetails = () =>{}
+
   const transformGateData = (data) => {
     return data.map((element) => {
       return {
@@ -53,7 +55,18 @@ const ApprovedGateUser = () => {
     { Header: "GATE NO.", accessor: "gateNo" },
     { Header: "MOBILE NO.", accessor: "mobileNo" },
     { Header: "EMAIL", accessor: "email" },
-    // { Header: "VIEW", accessor: "view" }
+    { 
+      Header: "VIEW",
+      accessor: "id",
+      Cell: ({ value }) => (
+        <button
+          onClick={() => handleViewDetails(value)}
+          className="px-1 py-1 text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Details
+        </button>
+      )
+    }
   ];
 
   return (
