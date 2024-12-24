@@ -137,9 +137,12 @@ const NoticeList = () => {
   };
 
   const onViewHandler = (noticeId) => {
+    console.log(notices);
     const viewNoticeData = notices.find(
       (element) => element.noticeId == noticeId
     );
+    console.log(typeof(viewNoticeData));
+    console.log(viewNoticeData);
     setShowViewFormData(viewNoticeData); // Set the selected notice data to view
     setViewModal(true); // Open the modal
   };

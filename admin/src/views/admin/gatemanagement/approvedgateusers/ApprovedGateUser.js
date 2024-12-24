@@ -6,6 +6,7 @@ import { FaCar } from "react-icons/fa";
 import PageHeading from "../../../../components/shared/PageHeading";
 import ApprovedGateUserHandler from "../../../../handlers/ApprovedGateUserHandler";
 import ReusableTable from "../../../../components/shared/ReusableTable";
+import ViewGateUserDetails from "./ViewGateUserDetails";
 
 const ApprovedGateUser = () => {
   const paths = ["Gate Management", "Approved Gate Users"];
@@ -15,7 +16,19 @@ const ApprovedGateUser = () => {
 
   const [data, setData] = useState([]);
 
-  const handleViewDetails = () =>{}
+  const [guardProfile, setGuardProfile] = useState([]);
+
+
+  // on View Handler
+  const [viewmodal, setViewModal] = useState(false);
+  const [showViewFormData, setShowViewFormData] = useState(null);
+  const toggleViewNoticeDetailModal = () => {
+    setViewModal((prev) => !prev); // Toggle modal visibility
+  };
+
+
+  
+
 
   const transformGateData = (data) => {
     return data.map((element) => {
@@ -25,7 +38,8 @@ const ApprovedGateUser = () => {
         lastName: element.lastName,
         gateNo: element.gateAllocationId,
         mobileNo: element.mobileNo,
-        email: element.mobileNo
+        email: element.mobileNo,
+        id: element.gateAllocationId
       }
     })
   }
@@ -41,11 +55,28 @@ const ApprovedGateUser = () => {
     getApprovedGateUserHandler({ page: pageIndex, limit: pageSize })
       .then((res) => {
         setData(transformGateData(res.data));
+        setGuardProfile(res.data);
         setTotalCount(res.data.total);
         setTotalPages(res.data.totalPages);
+
       })
+
       .catch((err) => console.log(err));
   }, [pageIndex, pageSize]);
+
+
+  const onViewHandler = (idValue) => {
+    const findGuardById = (guardProfile, targetId) => {
+      return guardProfile.find(guard => guard.gateAllocationId === targetId);
+    };
+
+    const foundGuard = findGuardById(guardProfile, idValue);
+    console.log(guardProfile);
+    console.log(foundGuard);
+    console.log(typeof(foundGuard));
+    setShowViewFormData(foundGuard);
+    setViewModal(true);
+  }
 
 
 
@@ -60,7 +91,7 @@ const ApprovedGateUser = () => {
       accessor: "id",
       Cell: ({ value }) => (
         <button
-          onClick={() => handleViewDetails(value)}
+          onClick={() => onViewHandler(value)}
           className="px-1 py-1 text-blue-600 hover:text-blue-800 font-medium"
         >
           Details
@@ -142,6 +173,14 @@ const ApprovedGateUser = () => {
           <div className="border  mx-[45px] border-gray-800"></div>
         </div>{" "} */}
       </div>
+
+      
+      {setViewModal && (<ViewGateUserDetails 
+      isOpen={viewmodal} // Modal open state
+      onClose={toggleViewNoticeDetailModal} // Close modal handler
+      formData={showViewFormData} // The data to display in the modal
+      />)}
+
     </div>
   );
 };
