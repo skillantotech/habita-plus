@@ -19,6 +19,7 @@ const adminRouter = require("./routes/adminRoutes");
 const buildingRouter = require("./routes/buildingRoutes");
 const floorRouter = require("./routes/floorRoutes");
 const unitTypeRouter = require("./routes/unitTypeRoutes");
+const jobProfileRouter = require("./routes/jobProfileRoutes");
 const gateRout = require("./routes/gateRouter");  // Corrected variable name
 const {
   User,
@@ -85,6 +86,9 @@ app.use("/api/softwarehelpdesk", softwareHelpDeskRouter);
 
 // softwarehelpdesk refticketstatus
 app.use("/api/softwarehelpdesk", refTicketStatusRouter);
+
+// Job Profile
+app.use("/api/jobprofile",jobProfileRouter)
 
 // creating automatic users
 app.get("/init-database", initController);

@@ -1,11 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
+import ReusableTable from "../../../../components/shared/ReusableTable";
+import GateListHandler from "../../../../handlers/GateListHandler";
 
 const GateList = () => {
   const paths = ["Gate Management", "Gate List"];
   const Heading = ["Gate List"];
+
+  const [data, setData] = useState([]);
+
+  const { getGateListHandler } = GateListHandler();
+
+  const transformGateData = (response) => {
+    if (!response?.data) return [];
+    
+    return response.data.map(element => ({
+      ...element,
+      gateNumbar: element.gateNumber,
+      gateName: element.gateName,
+      societyId: element.societyId
+    }));
+  };
+ 
+  // Pagination states
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+
+  const columns = [
+    { Header: "GATE NO.", accessor: "gateNumbar" },
+    { Header: "GATE NAME", accessor: "gateName" },
+    { Header: "SOCIETY ID", accessor: "societyId" }
+  ];
+
+  useEffect(()=>{
+    getGateListHandler({ page: pageIndex, limit: pageSize })
+    .then((res)=>{
+      setData(transformGateData(res.data));
+      setTotalCount(res.data.total);
+      setTotalPages(res.data.totalPages);
+    })
+  })
+
+
+
+
   return (
     <div className="">
       <UrlPath paths={paths} />
@@ -21,60 +64,16 @@ const GateList = () => {
 
           <div className="flex flex-col mt-[35px] space-y-3">
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-lg text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-base bg-lime text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      Gate No.
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      First Name
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Last Name
-                    </th>
-
-                    <th scope="col" className="px-6 py-3">
-                      Mobile
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      View
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td className="px-6 py-4">Gate 1</td>
-                    <td className="px-6 py-4">Rabi</td>
-                    <td className="px-6 py-4">Hota</td>
-                    <td className="px-6 py-4">8798766756</td>
-
-                    <td className="px-6 py-4">
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td className="px-6 py-4">Gate 1</td>
-                    <td className="px-6 py-4">biswajit</td>
-                    <td className="px-6 py-4">dash</td>
-                    <td className="px-6 py-4">8798766756</td>
-
-                    <td className="px-6 py-4">
-                      <button
-                        type="button"
-                        className="focus:outline-none text-white bg-lime hover:bg-green-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-tl-xl rounded-br-xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-                      >
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <ReusableTable
+                columns={columns}
+                data={data}
+                pageIndex={pageIndex}
+                pageSize={pageSize}
+                totalCount={totalCount}
+                totalPages={totalPages}
+                setPageIndex={(index) => setPageIndex(index)}
+                setPageSize={(size) => setPageSize(size)}
+              />
             </div>
           </div>
         </div>

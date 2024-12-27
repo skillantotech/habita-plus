@@ -28,8 +28,6 @@ const ApprovedGateUser = () => {
 
 
   
-
-
   const transformGateData = (data) => {
     return data.map((element) => {
       return {

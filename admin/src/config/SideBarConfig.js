@@ -148,10 +148,10 @@ const SideBarMenu = {
             }
           ]
         },
-        // {
-        //   name: "Gate List",
-        //   url: "gate/view",
-        // },
+        {
+          name: "Gate List",
+          url: "gate/view",
+        },
         {
           name: "Approved Gate Users",
           url: "gate/approvedusers",

@@ -12,10 +12,10 @@ exports.createGate = async (req, res) => {
     }
 
     // Check if the society exists
-    const buildingExist = await Building.findByPk(societyId);
-    if (!buildingExist) {
-      return sendErrorResponse(res, "Building does not exist", 404);
-    }
+    // const buildingExist = await Building.findByPk(societyId);
+    // if (!buildingExist) {
+    //   return sendErrorResponse(res, "Building does not exist", 404);
+    // }
 
     // Create a new gate
     const newGate = await Gate.create({
