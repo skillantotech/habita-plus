@@ -53,9 +53,9 @@ const User = sequelize.define(
     email: {
       type: DataTypes.STRING,
       validate: {
-        isEmail: true,
+        isEmail: false,
       },
-      allowNull: true,
+      allowNull: false,
     },
     addressId: {
       type: DataTypes.INTEGER,

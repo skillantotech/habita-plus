@@ -15,10 +15,7 @@ const VisitorRelationshipHandler = () => {
 
   const RelationshipHandler = async (data) => {
     console.log("relationship", data);
-    console.log(societyId, senderId);
-
-
-   
+    console.log(societyId, senderId); 
     return await CreateVisitorRelationshipService(
       { Visit_relation_Description: data, societyId, senderId },
       token

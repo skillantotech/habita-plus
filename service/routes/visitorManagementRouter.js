@@ -1,3 +1,5 @@
+const express = require("express");
+const visitorManagementRouter = express.Router();
 const {
   createTypeOfEntryController,
 } = require("../controllers/createTypeOfEntryController");
@@ -10,7 +12,12 @@ const {
 } = require("../controllers/visitorApprovalMatrix");
 const {
   createVisitorNewVisitEntryController,
-  newvisitorlisttable,
+  newVisitorListTable,
+  // CreateQRCode,
+  deleteVisitorController,
+  getVisiterEntry,
+  getVisitorById,
+  getQRCode
 } = require("../controllers/visitorNewVisitEntryController");
 const {
   createVisitorRelation,
@@ -19,30 +26,50 @@ const {
   updateVisitorData,
 } = require("../controllers/visitorRelationshipController");
 
-const visitorManagementRouter = require("express").Router();
+// Routes for Type of Entry
+visitorManagementRouter.post("/type-of-entry", createTypeOfEntryController);
 
-visitorManagementRouter.post("/createtypeofentry", createTypeOfEntryController);
-visitorManagementRouter.post("/createvisitortype", createVisitorType);
-visitorManagementRouter.get("/createvisitortype", getVisitorType);
-visitorManagementRouter.post("/visitorrelationship", createVisitorRelation);
-visitorManagementRouter.get("/visitorrelationship", getVisitorData);
+// Routes for Visitor Type
+visitorManagementRouter.post("/visitor-type", createVisitorType);
+visitorManagementRouter.get("/visitor-type", getVisitorType);
+
+// Routes for Visitor Relationship
+visitorManagementRouter.post("/visitor-relationship", createVisitorRelation);
+visitorManagementRouter.get("/visitor-relationship", getVisitorData);
 visitorManagementRouter.delete(
-  "/visitorrelationship/:Visit_relation_Id",
+  "/visitor-relationship/:Visit_relation_Id",
   deleteVisitorData
 );
 visitorManagementRouter.put(
-  "/visitorrelationship/:Visit_relation_Id",
+  "/visitor-relationship/:Visit_relation_Id",
   updateVisitorData
 );
 
-visitorManagementRouter.get("/visitorapprovalmatrix", visitorapprovalmatrix);
+// Routes for Approval Matrix
+visitorManagementRouter.get("/approval-matrix", visitorapprovalmatrix);
 
+// Routes for New Visit Entry
 visitorManagementRouter.post(
-  "/visitornewvisitentry",
+  "/new-visit-entry",
   createVisitorNewVisitEntryController
 );
 
-// visitor table
-visitorManagementRouter.get("/visitorlisttable", newvisitorlisttable);
+// Delete a visitor by ID
+visitorManagementRouter.delete("/visitor-list/:visit_entry_Id", deleteVisitorController);
+//Get data by ID
+visitorManagementRouter.get("/visitor/:visit_entry_Id", getVisitorById);
+
+// Visitor Table Routes
+visitorManagementRouter.get("/visitor-list", newVisitorListTable);
+
+// QR Code Generation Route
+// visitorManagementRouter.post("/generate-qrCode", CreateQRCode);
+// visitorManagementRouter.get("/qrCode/:visit_entry_Id",getQRCode);
+
+visitorManagementRouter.get("/qrCode/:visit_entry_Id", getQRCode);
+
+visitorManagementRouter.get("/visitorapprovalmatrix", visitorapprovalmatrix);
+// Qr Code View By Id
+visitorManagementRouter.get("/:visit_entry_Id", getVisiterEntry);
 
 module.exports = visitorManagementRouter;

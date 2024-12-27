@@ -29,16 +29,16 @@ const SideBarMenu = {
           url: "user/deactivated",
           path: ["user", "setting"],
         },
-        {
-          name: "User Access",
-          url: "user/access",
-          path: ["user", "setting"],
-        },
-        {
-          name: "User Report",
-          url: "user/access",
-          path: ["user", "setting"],
-        },
+        // {
+        //   name: "User Access",
+        //   url: "user/access",
+        //   path: ["user", "setting"],
+        // },
+        // {
+        //   name: "User Report",
+        //   url: "user/access",
+        //   path: ["user", "setting"],
+        // },
       ],
     },
     {
@@ -58,10 +58,10 @@ const SideBarMenu = {
           name: "Unit List",
           url: "unit/view",
         },
-        {
-          name: "Report",
-          url: "unit/report",
-        },
+        // {
+        //   name: "Report",
+        //   url: "unit/report",
+        // },
       ],
     },
     {
@@ -123,10 +123,10 @@ const SideBarMenu = {
           name: "Visitor List",
           url: "visitor/visitorlist",
         },
-        {
-          name: "Visitor Report",
-          url: "visitor/report",
-        },
+        // {
+        //   name: "Visitor Report",
+        //   url: "visitor/report",
+        // },
       ],
     },
     {

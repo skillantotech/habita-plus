@@ -566,11 +566,13 @@ import { useSelector } from "react-redux";
 import AddUserHandler from "../../../../handlers/AddUserHandler";
 import Select from "../../../../components/ui/Select";
 import UnitAllocationForUser from "./components/UnitAllocationForUser";
+import UserHandler from "../../../../handlers/UserHandler";
+
 
 const AddUser = () => {
   const paths = ["User", "Add"];
   const Heading = ["Add Resident User"];
-
+ const token = useSelector((state) => state.auth.token);
   const selectOption = {
     salutation: [
       { label: "Select Salutation", value: "" },
@@ -583,6 +585,8 @@ const AddUser = () => {
   };
 
   const { CreateAddUserHandler } = AddUserHandler();
+   const { createSocietyResidentUserHandler } = UserHandler();
+
 
   const [formData, setFormData] = useState({
     salutation: "",
@@ -612,11 +616,29 @@ const AddUser = () => {
     managementDesignation: "",
   });
 
-  const submitHandler = () => {
-    console.log(formData);
-    // CreateAddUserHandler(formData);
-  };
+  // const submitHandler = () => {
+  //   console.log(formData);
+  //   // CreateAddUserHandler(formData);
+  // };
 
+    const submitProfileUser = async () => {
+    const formattedFormData = {
+      ...formData,
+      address: {
+        addressLine1: formData.address.addressLine1,
+        addressLine2: formData.address.addressLine2,
+        city: formData.address.city,
+        state: formData.address.state,
+        country: formData.address.country,
+        zipCode: formData.address.zipCode,
+        countryCode: formData.countryCode,
+      },
+    };
+    
+    console.log(formattedFormData);
+    await createSocietyResidentUserHandler(formattedFormData, token);
+  };
+ 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name in formData.address) {
@@ -677,6 +699,7 @@ const AddUser = () => {
         </div> */}
 
         <div className="grid grid-cols-3 gap-3 items-center py-6">
+       
           <Select
             label="Salutation"
             options={selectOption.salutation}
@@ -693,7 +716,7 @@ const AddUser = () => {
             name="firstName"
             value={formData.firstName}
             onChange={handleInputChange}
-            placeholder={"Enter Your First Name"}
+            placeholder={"Enter First Name"}
             size={"lg"}
           />
           <Input
@@ -702,7 +725,7 @@ const AddUser = () => {
             name="lastName"
             value={formData.lastName}
             onChange={handleInputChange}
-            placeholder={"Enter Your Last Name"}
+            placeholder={"Enter Last Name"}
             size={"lg"}
           />
         </div>
@@ -718,16 +741,16 @@ const AddUser = () => {
             className="py-[14px]"
           />
           <Input
-            label="Mobile no. (Primary)"
+            label="Mobile No. (Primary)"
             type="number"
-            placeholder="Enter Your Mobile Number"
+            placeholder="Enter Mobile Number"
             name="mobileNumber"
             value={formData.mobileNumber}
             onChange={handleInputChange}
             size="lg"
           />
           <Select
-            label="Alternate Country Code"
+            label=" Country Code"
             options={countryCodesList}
             value={formData.alternateCountryCode}
             onChange={handleInputChange}
@@ -735,9 +758,9 @@ const AddUser = () => {
             className="py-[14px]"
           />
           <Input
-            label="Alternate Mobile no."
+            label="Alternate Mobile No."
             type="number"
-            placeholder="Enter Your Alternate Mobile Number"
+            placeholder="Enter Alt. Mobile Number"
             name="alternateNumber"
             value={formData.alternateNumber}
             onChange={handleInputChange}
@@ -751,33 +774,24 @@ const AddUser = () => {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            placeholder={"Enter Your Email"}
+            placeholder={"Enter Email"}
             size={"lg"}
           />
-          <Input
-            label={<div>Password</div>}
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder={"Enter Your Password"}
-            size={"lg"}
-          />
+        
         </div>
-      </div>
 
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        <div className="text-xl font-sans font-semibold text-lime">
+ {/* <div className="p-10 my-5 border rounded-lg bg-gray-100"> */}
+        <div className="text-xl font-sans font-semibold text-lime mt-10">
           Address Details
         </div>
-        <div className="grid grid-cols-3 gap-5 items-center">
+        <div className="grid grid-cols-3 gap-3 items-center py-6 ">
           <Input
             label={<div>Address line 1</div>}
             type="text"
             name="addressLine1"
             value={formData.address.addressLine1}
             onChange={handleInputChange}
-            placeholder={"Enter Your Address"}
+            placeholder={"Enter Address"}
             size={"lg"}
           />
           <Input
@@ -786,7 +800,7 @@ const AddUser = () => {
             name="addressLine2"
             value={formData.address.addressLine2}
             onChange={handleInputChange}
-            placeholder={"Enter Your Address"}
+            placeholder={"Enter Address"}
             size={"lg"}
           />
         </div>
@@ -797,7 +811,7 @@ const AddUser = () => {
             name="state"
             value={formData.address.state}
             onChange={handleInputChange}
-            placeholder={"Enter Your State"}
+            placeholder={"Enter State"}
             size={"lg"}
           />
           <Input
@@ -806,7 +820,7 @@ const AddUser = () => {
             name="city"
             value={formData.address.city}
             onChange={handleInputChange}
-            placeholder={"Enter Your City"}
+            placeholder={"Enter City"}
             size={"lg"}
           />
           <Input
@@ -815,7 +829,7 @@ const AddUser = () => {
             name="pin"
             value={formData.address.pin}
             onChange={handleInputChange}
-            placeholder={"Enter Your Pin"}
+            placeholder={"Enter Postal Pin"}
             size={"lg"}
           />
           <Input
@@ -824,62 +838,18 @@ const AddUser = () => {
             name="country"
             value={formData.address.country}
             onChange={handleInputChange}
-            placeholder={"Enter Your Country"}
+            placeholder={"Enter Country"}
             size={"lg"}
           />
         </div>
-      </div>
+      {/* </div> */}
 
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        <div className="text-xl font-sans font-semibold text-lime">
-          Unit Allocation
-        </div>
-
-        <UnitAllocationForUser />
-
-        {/* <div className="grid grid-cols-5 gap-5 items-center">
-          <Input
-            label={"Tower/Block number "}
-            type="text"
-            value={tower}
-            onChange={handleTowerChange}
-            placeholder={"Enter Tower No."}
-            size={"lg"}
-          />
-          <Input
-            label={"Floor number "}
-            type="text"
-            value={floor}
-            onChange={handleFloorChange}
-            placeholder={"Enter Floor No."}
-            size={"lg"}
-          />
-          <Input
-            label={"Unit number "}
-            type="text"
-            value={unit}
-            onChange={handleUnitChange}
-            placeholder={"Enter Unit No."}
-            size={"lg"}
-          />
-          <Input
-            label={"Select Unit number"}
-            type="text"
-            value={unitnumber} // Display the combined unit number here
-            readOnly
-            placeholder={"Combined Unit No."}
-            size={"lg"}
-          />
-          <FaPlus className="text-lime text-2xl" onClick={handleAddField} />
-        </div> */}
-      </div>
-
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        <div className="text-xl font-sans font-semibold text-lime">
+       {/* <div className="p-10 my-5 border rounded-lg bg-gray-100"> */}
+        <div className="text-xl font-sans font-semibold text-lime mt-10">
           Role Allocation
         </div>
 
-        <div className="grid grid-cols-6 gap-5 items-center my-5">
+        <div className="grid grid-cols-6 gap-5 items-center my-5 py-6">
           <div className="flex flex-row items-center gap-3">
             <label className="text-lg">Owner</label>
             <input
@@ -968,13 +938,73 @@ const AddUser = () => {
               name="remark"
               value={formData.remark}
               onChange={handleInputChange}
-              placeholder={"Enter Your Mobile Number"}
+              placeholder={"Enter Mobile Number"}
               size={"lg"}
             />
           </div>
         </div>
+      {/* </div> */}
+
+          <div className="flex justify-center mt-5">
+        <Button
+          className="max-w-sm"
+          type="Submit"
+          onClick={submitProfileUser}
+          size="lg"
+        >
+          Add Profile
+        </Button>
       </div>
-      <div className="flex justify-center mt-5">
+      </div>
+
+     
+
+      <div className="p-10 my-5 border rounded-lg bg-gray-100">
+        <div className="text-xl font-sans font-semibold text-lime">
+          Unit Allocation
+        </div>
+
+        <UnitAllocationForUser />
+
+        {/* <div className="grid grid-cols-5 gap-5 items-center">
+          <Input
+            label={"Tower/Block number "}
+            type="text"
+            value={tower}
+            onChange={handleTowerChange}
+            placeholder={"Enter Tower No."}
+            size={"lg"}
+          />
+          <Input
+            label={"Floor number "}
+            type="text"
+            value={floor}
+            onChange={handleFloorChange}
+            placeholder={"Enter Floor No."}
+            size={"lg"}
+          />
+          <Input
+            label={"Unit number "}
+            type="text"
+            value={unit}
+            onChange={handleUnitChange}
+            placeholder={"Enter Unit No."}
+            size={"lg"}
+          />
+          <Input
+            label={"Select Unit number"}
+            type="text"
+            value={unitnumber} // Display the combined unit number here
+            readOnly
+            placeholder={"Combined Unit No."}
+            size={"lg"}
+          />
+          <FaPlus className="text-lime text-2xl" onClick={handleAddField} />
+        </div> */}
+      </div>
+
+     
+      {/* <div className="flex justify-center mt-5">
         <Button
           className="max-w-sm"
           type="submit"
@@ -983,7 +1013,7 @@ const AddUser = () => {
         >
           Add User
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

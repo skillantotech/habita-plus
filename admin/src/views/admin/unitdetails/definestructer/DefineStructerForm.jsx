@@ -22,20 +22,26 @@ const CreateBuilding = () => {
   return (
     <form
       onSubmit={handleBuildingSubmit}
-      className=" items-center gap-4 mb-4 bg-gray-100 p-4 rounded-lg grid grid-cols-4"
+      className="  items-center gap-4 mb-4 bg-gray-100 p-4 rounded-lg grid grid-cols-4"
     >
-      <label>Define Tower/Building(Name / No.)<span className="text-red-500">*</span></label>
+ <label className="flex flex-col float-end ">
+  <span>Define Tower/Building <span className="text-red-500">*</span></span>
+  <span className="font-light text-xs mt-1">(e.g-Name / No.)</span>
+ </label>
       <Input
         type="text"
         name="building"
-        placeholder="Enter Your Tower/Building No."
+        placeholder="Enter Tower/Building No."
         size="lg"
         value={building}
         onChange={(e) => setBuilding(e.target.value)}
+      
       />
-      <Button className="max-w-sm" type="submit" size="md">
-        Submit
-      </Button>
+        <div className="flex justify-end w-full">
+        <Button className="max-w-sm" type="submit" size="md">
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };
@@ -74,29 +80,32 @@ const CreateFloor = () => {
     >
       <label>Define Floors <span className="text-red-500">*</span></label>
       <Input
-        label="Enter Floor name"
+        label="Enter Floor Name"
         type="text"
         name="floorName" 
-        placeholder="Enter Your Define Floors"
+        placeholder="Enter Define Floors"
         size="lg"
         value={floors.floorName}
         onChange={onFloorChange}
       />
 
-      <Input
-        label="Short Form (MaxLength-4)"
+      
+      <Input 
+        label="Short Form"
         type="text"
         maxlength="4"
         name="shortForm" 
-        placeholder="Enter Your Short From"
+        placeholder="Enter Short From (Max-4)"
         size="lg"
         value={floors.shortForm}
         onChange={onFloorChange}
       />
-
-      <Button className="max-w-sm" type="submit" size="md">
-        Submit
-      </Button>
+   
+      <div className="flex justify-end w-full">
+        <Button className="max-w-sm" type="submit" size="md">
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };
@@ -124,19 +133,24 @@ const CreateUnitType = () => {
       // className="grid grid-cols-3 gap-4 mb-4 bg-gray-100"
       className=" items-center gap-4 mb-4 bg-gray-100 p-4 rounded-lg grid grid-cols-4"
     >
-
-      <label>Define Unit Type(e.g. 1BHK, 2BHK, 3BHK)<span className="text-red-500">*</span></label>
+ <label className="flex flex-col">
+  <span>Define Unit Type <span className="text-red-500">*</span></span>
+  <span className="font-light text-xs mt-1">(e.g. 1BHK, 2BHK, 3BHK) </span>
+ </label>
+ 
       <Input
        type="text"
         name="unitTypeName"
-        placeholder="Enter Your Unit Type"
+        placeholder="Enter  Unit Type"
         size="lg"
         value={unitType}
         onChange={(e) => setUnitType(e.target.value)}
       />
-      <Button className="max-w-sm" type="submit" size="md">
-        Submit
-      </Button>
+    <div className="justify-end">
+        <Button className="max-w-sm" type="submit" size="md">
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };

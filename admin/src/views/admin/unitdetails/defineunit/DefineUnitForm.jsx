@@ -240,7 +240,7 @@ const DefineUnitForm = () => {
             }
           type="text"
           name="unitNumber"
-          placeholder="Enter Your Floor No"
+          placeholder="Enter Unit No"
           size="lg"
           value={defineUnit.unitNumber}
           onChange={onUnitNumberChange}
