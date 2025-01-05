@@ -11,7 +11,7 @@ import GuardUserCreationHandler from "../../../../handlers/GuardUserCreationHand
 import { MdOutlineCancel } from "react-icons/md";
 
 const GuardUserCreation = () => {
-  const paths = ["Gate Management", "Gate Allocation"];
+  const paths = ["Gate Management", "Guard Profile Creation"];
   const Heading = ["Security Guard User Creation"];
   const fileInputRef = useRef(null);
   const [profilePhoto, setProfilePhoto] = useState(null);

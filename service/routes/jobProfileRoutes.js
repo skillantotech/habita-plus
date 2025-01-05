@@ -20,6 +20,7 @@ jobProfileRouter.get(
   "/society/:societyId",
   JobProfileController.getJobProfilesBySocietyId
 );
+
 jobProfileRouter.put(
   "/update/:id",
   upload.fields([

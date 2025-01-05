@@ -1,17 +1,5 @@
 import axios from "axios";
 
-// export const GuardUserCreationService = (data, token) => {
-//     const url = `${process.env.REACT_APP_PUBLIC_API_URL}/jobprofile/create`;
-//     console.log("Submitting data to: ", url, "Payload: ", data);
-
-//     return axios.post(url, data, {
-//         headers: {
-//             Authorization: `Bearer ${token}`,
-//             // "Content-Type": "application/json",
-//             "Content-Type": "multipart/form-data",
-//         },
-//     });
-// };
 
 export const GuardUserCreationService = (data, token) => {
     const url = `${process.env.REACT_APP_PUBLIC_API_URL}/jobprofile/create`;

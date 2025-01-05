@@ -44,7 +44,7 @@ const GateList = () => {
       setTotalCount(res.data.total);
       setTotalPages(res.data.totalPages);
     })
-  })
+  },[])
 
 
 
