@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <DashboardLayout
       header={<Header />}
-      leftContent={<Dashboardleftcontent/>}
+      leftContent={<Dashboardleftcontent />}
       rightContent={<Admincontent />}
     />
   );

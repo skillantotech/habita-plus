@@ -24,7 +24,11 @@ const Gate = sequelize.define("gate", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-}
+},
+  {
+    timestamps: true,
+    tableName: "Gate",
+  }
 );
 
 Customer.hasMany(Gate, { foreignKey: "societyId" });

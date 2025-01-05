@@ -3,12 +3,12 @@ const gateRout = express.Router();
 const { createGate, getGates,getGatesBysocietyId} = require('../controllers/gateController');
 
 
-gateRout.post('/gates', createGate);
+gateRout.post('/create', createGate);
 
 
 gateRout.get('/gates', getGates);
 
 
-gateRout.get('/:societyId', getGatesBysocietyId);
+gateRout.get('/society/:societyId', getGatesBysocietyId);
 
 module.exports = gateRout;
