@@ -4,7 +4,7 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
 import PageHeading from "../../../../components/shared/PageHeading";
-import ApprovedGateUserHandler from "../../../../handlers/ApprovedGateUserHandler";
+import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import ViewGateUserDetails from "./ViewGateUserDetails";
 
@@ -12,8 +12,7 @@ const ApprovedGateUser = () => {
   const paths = ["Gate Management", "Approved Gate Users"];
   const Heading = ["Approved Gate Users"];
 
-  const { getApprovedGateUserHandler } = ApprovedGateUserHandler()
-
+  const { getGateUserList } = GateUserListnHandler();
   const [data, setData] = useState([]);
 
   const [guardProfile, setGuardProfile] = useState([]);
@@ -27,20 +26,26 @@ const ApprovedGateUser = () => {
   };
 
 
-  
-  const transformGateData = (data) => {
-    return data.map((element) => {
-      return {
-        ...element,
-        firstName: element.firstName,
-        lastName: element.lastName,
-        gateNo: element.gateAllocationId,
-        mobileNo: element.mobileNo,
-        email: element.mobileNo,
-        id: element.gateAllocationId
-      }
-    })
-  }
+
+  const transformSecurityUserData = (response) => {
+    if (!response || !Array.isArray(response)) return [];
+
+    return response.map(element => ({
+      profileId: element.profileId, // Keep profileId if needed
+      firstName: element.firstName || '', // Default to empty string if undefined
+      lastName: element.lastName || '',
+      email: element.email || '',
+      mobileNo: element.mobileNo || '', // Include mobile number if needed
+      profilePhoto: element.profilePhoto || null, // Handle profile photo
+      idProof: element.idProof || null, // Handle ID proof
+      roleId: element.roleId || null, // Include roleId
+      status: element.status || 'inactive', // Default status if needed
+      createdAt: element.createdAt || null, // Include createdAt
+      updatedAt: element.updatedAt || null // Include updatedAt
+    }));
+  };
+
+  // console.log(guardProfile[0].firstName);
 
   // Pagination states
   const [pageIndex, setPageIndex] = useState(0);
@@ -50,28 +55,24 @@ const ApprovedGateUser = () => {
 
 
   useEffect(() => {
-    getApprovedGateUserHandler({ page: pageIndex, limit: pageSize })
-      .then((res) => {
-        setData(transformGateData(res.data));
-        setGuardProfile(res.data);
-        setTotalCount(res.data.total);
-        setTotalPages(res.data.totalPages);
+    getGateUserList().then((res) => {
+      setGuardProfile(transformSecurityUserData(res));
+      setTotalCount(res.length);
+    })
+  }, [])
 
-      })
-
-      .catch((err) => console.log(err));
-  }, [pageIndex, pageSize]);
+  // console.log(totalCount);
 
 
   const onViewHandler = (idValue) => {
+    console.log("View clicked: ", idValue);
     const findGuardById = (guardProfile, targetId) => {
-      return guardProfile.find(guard => guard.gateAllocationId === targetId);
+      return guardProfile.find(guard => guard.profileId === targetId);
     };
 
     const foundGuard = findGuardById(guardProfile, idValue);
-    console.log(guardProfile);
-    console.log(foundGuard);
-    console.log(typeof(foundGuard));
+    // console.log("Found Guard",foundGuard);
+    // console.log(typeof (foundGuard));
     setShowViewFormData(foundGuard);
     setViewModal(true);
   }
@@ -84,9 +85,9 @@ const ApprovedGateUser = () => {
     { Header: "GATE NO.", accessor: "gateNo" },
     { Header: "MOBILE NO.", accessor: "mobileNo" },
     { Header: "EMAIL", accessor: "email" },
-    { 
+    {
       Header: "VIEW",
-      accessor: "id",
+      accessor: "profileId",
       Cell: ({ value }) => (
         <button
           onClick={() => onViewHandler(value)}
@@ -124,7 +125,7 @@ const ApprovedGateUser = () => {
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
               <ReusableTable
                 columns={columns}
-                data={data}
+                data={guardProfile}
                 pageIndex={pageIndex}
                 pageSize={pageSize}
                 totalCount={totalCount}
@@ -135,48 +136,13 @@ const ApprovedGateUser = () => {
             </div>
           </div>
         </div>
-        {/* <div className="w-1/2 ">
-          <div className="px-[45px] text-xl font-semibold">
-            UNIT : <span>A-013</span>
-          </div>
-          <div className="border my-[30px] mx-[45px] border-gray-800"></div>
-          <div className="flex flex-col space-y-2 px-[45px] ">
-            <div className="font-sans text-[15px] text-gray-600">
-              {" "}
-              Bill to name : Praveen
-            </div>
-            <div className="font-sans text-[15px] text-gray-600">
-              Unit no :A-013{" "}
-            </div>
-            <div className="font-sans text-[15px] text-gray-600">
-              Physical Unit Address:{" "}
-            </div>
-
-            <div className="font-sans text-[15px] text-gray-600">
-              Billing Address{" "}
-            </div>
-          </div>
-          <div className="text-lime px-[45px] pt-[40px] font-sans">
-            View/Edit Unit and Address details
-          </div>
-          <div className="flex flex-row items-center py-[30px] px-[45px]">
-            <IoPersonOutline className="text-xl mr-[30px]" />{" "}
-            <div className="text-lg font-sans font-base">Unit Members(2)</div>
-          </div>
-          <div className="border  mx-[45px] border-gray-800"></div>
-          <div className="flex flex-row items-center py-[30px] px-[45px]">
-            <FaCar className="text-xl mr-[30px]" />{" "}
-            <div className="text-lg font-sans font-base">Vehicle(1)</div>
-          </div>
-          <div className="border  mx-[45px] border-gray-800"></div>
-        </div>{" "} */}
       </div>
 
-      
-      {setViewModal && (<ViewGateUserDetails 
-      isOpen={viewmodal} // Modal open state
-      onClose={toggleViewNoticeDetailModal} // Close modal handler
-      formData={showViewFormData} // The data to display in the modal
+
+      {setViewModal && (<ViewGateUserDetails
+        isOpen={viewmodal} // Modal open state
+        onClose={toggleViewNoticeDetailModal} // Close modal handler
+        formData={showViewFormData} // The data to display in the modal
       />)}
 
     </div>

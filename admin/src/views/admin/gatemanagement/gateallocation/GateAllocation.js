@@ -5,33 +5,85 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import { FaPlus } from "react-icons/fa";
 import Button from "../../../../components/ui/Button";
 import GateListHandler from "../../../../handlers/GateListHandler";
-import GateAllocationHandler from "../../../../handlers/GateUserListHandler";
+import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
+import toast from "react-hot-toast";
 
 function GateAllocation() {
     const paths = ["Gate Management", "Guard Profile Creation", "Gate Allocation"];
 
-    const [gateData, setGateData] = useState([]);
-    const [securityUserData, setSecurityUserData] = useState([]);
+    const [gateName, setGateName] = useState("");
+    const [guardName, setGuardName] = useState("");
+    const [allocatedGate, setAllocatedGate] = useState([]); //Onbord gate Allocation Data
+
+    const [gateData, setGateData] = useState([]);  // Comming Gate data
+    const [securityUserData, setSecurityUserData] = useState([]); // Comming Security Data
 
     const { getGateListHandler } = GateListHandler();
-    const { getGateUserList } = GateAllocationHandler();
+    const { getGateUserList } = GateUserListnHandler();
+
+    const allocateGateHandler = () => {
+        // Store current values to use in allocation
+        const currentGate = gateName;
+        const currentGuard = guardName;
+
+        if (!currentGate || !currentGuard) {
+            toast.error("Please select both a gate and a guard before allocating.");
+            return;
+        }
+
+        // Check if this combination already exists
+        const isDuplicate = allocatedGate.some(
+            allocation => allocation.gate === currentGate && allocation.allocatedTo === currentGuard
+        );
+
+        if (isDuplicate) {
+            toast.error("This gate and guard combination has already been allocated.");
+            return;
+        }
+
+        // Add new allocation using the stored current values
+        setAllocatedGate(prevAllocations => [
+            ...prevAllocations,
+            {
+                gate: currentGate,
+                allocatedTo: currentGuard,
+                // Add these for display purposes
+                // gateName: gateData.find(g => g.gateId === currentGate)?.gateName,
+                // guardName: securityUserData.find(s => s.profileId === currentGuard)?.firstName
+            }
+        ]);
+
+        console.log(allocatedGate);
+
+
+        // Reset selection fields after allocation is done
+        setGateName("");
+        setGuardName("");
+    };
+
+
+    const removeAllocation = (index) => {
+        setAllocatedGate(prevAllocations =>
+            prevAllocations.filter((_, i) => i !== index)
+        );
+    };
 
     const transformGateData = (response) => {
         if (!response?.data) return [];
-        
-        return response.data.map(element => ({
-          ...element,
-          gateNumbar: element.gateNumber,
-          gateName: element.gateName,
-          societyId: element.societyId,
-          gateId: element.gateId
-        }));
-      };
 
-    
-      const transformSecurityUserData = (response) => {
+        return response.data.map(element => ({
+            ...element,
+            gateNumbar: element.gateNumber,
+            gateName: element.gateName,
+            societyId: element.societyId,
+            gateId: element.gateId
+        }));
+    };
+
+
+    const transformSecurityUserData = (response) => {
         if (!response || !Array.isArray(response)) return [];
-    
+
         return response.map(element => ({
             profileId: element.profileId, // Keep profileId if needed
             firstName: element.firstName || '', // Default to empty string if undefined
@@ -46,7 +98,7 @@ function GateAllocation() {
             updatedAt: element.updatedAt || null // Include updatedAt
         }));
     };
-    
+
 
     const countryCodes = [
         { gateNo: "1", gateName: "Gate One" },
@@ -56,23 +108,23 @@ function GateAllocation() {
         // Add more country codes as needed
     ];
 
-    useEffect(()=>{
+    useEffect(() => {
         getGateListHandler()
-        .then((res)=>{
-            setGateData(transformGateData(res.data));
-        });
+            .then((res) => {
+                setGateData(transformGateData(res.data));
+            });
 
         getGateUserList()
-        .then((res)=>{
-            setSecurityUserData(transformSecurityUserData(res));
-        })
+            .then((res) => {
+                setSecurityUserData(transformSecurityUserData(res));
+            })
 
-    },[])
+    }, [])
 
     // console.log(gateData);
     // console.log("Index Zero: ",gateData[0]);
 
-    console.log("Gate user Data: ", securityUserData);
+    // console.log("Gate user Data: ", securityUserData);
 
 
     return (
@@ -86,9 +138,11 @@ function GateAllocation() {
 
                 <div className="grid grid-cols-3 gap-5 items-center">
                     <select
+                        value={gateName}
+                        onChange={(e) => setGateName(e.target.value)}
                         className="w-[15rem] mt-8 block border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
                     >
-                        <option value={null}>
+                        <option>
                             Select Your Gate Gate No.
                         </option>
                         {gateData.map((item) => (
@@ -101,9 +155,11 @@ function GateAllocation() {
 
 
                     <select
+                        value={guardName}
+                        onChange={(e) => setGuardName(e.target.value)}
                         className="w-[15rem] mt-8 block border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
                     >
-                        <option value={null}>
+                        <option>
                             Select Guard Profile
                         </option>
                         {securityUserData.map((item) => (
@@ -116,18 +172,38 @@ function GateAllocation() {
 
                     <div className="mt-8">
                         <Button
-                            // onClick={addGateHandler} 
+                            onClick={allocateGateHandler}
                             className="flex items-center">
-                            <FaPlus className="mr-2" /> Add Gate
+                            <FaPlus className="mr-2" /> Allocate
                         </Button>
                     </div>
 
                 </div>
 
+                <div className="flex justify-center">
+                    <div className="mt-4">
+                        {allocatedGate.map((value, index) => (
+                            <div
+                                key={index}
+                                className="justify-center w-[28rem] relative p-4 mb-4 border rounded-lg bg-white shadow-md"
+                            >
+                                <MdOutlineCancel
+                                    onClick={() => removeAllocation(index)}
+                                    className="absolute right-3 top-3 text-red-600 cursor-pointer text-xl"
+                                />
+                                <p className="font-medium text-gray-700">
+                                    <strong>Gate:</strong> {value.gate} (AllocatedTo User:{" "}
+                                    {value.allocatedTo})
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="max-w-md mx-auto mt-6 flex justify-center">
-                    <Button 
-                    // onClick={handleSubmit} 
-                    size="md">
+                    <Button
+                        // onClick={handleSubmit} 
+                        size="md">
                         Submit
                     </Button>
                 </div>

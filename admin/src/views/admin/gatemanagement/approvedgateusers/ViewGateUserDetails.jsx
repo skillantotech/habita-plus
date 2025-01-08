@@ -15,14 +15,14 @@ function ViewGateUserDetails({ isOpen, onClose, formData }) {
 
                 <div className="flex mt-28 justify-center">
                     <div className="flex">
-                        <img className="h-56 w-44 border-2 rounded-md" src="C:/Users/ARJUN/Downloads/Sabya-formal.jpg" alt="No Photo Available." />
+                        <img className="h-56 w-44 border-2 rounded-md" src={noticeViewForm?.profilePhoto} alt="No Photo Available." />
                     </div>
 
 
                     <div className="flex-col ml-40 space-y-4 text-gray-800">
                         <p className="text-xl">Name: &nbsp; {noticeViewForm?.firstName} {noticeViewForm?.lastName}</p>
-                        <p className="text-xl">Society Id: &nbsp; {noticeViewForm?.societyId}</p>
-                        <p className="text-xl">Job Roll: {noticeViewForm?.role}</p>
+                        <p className="text-xl">Status: &nbsp; {noticeViewForm?.status}</p>
+                        <p className="text-xl">Job Roll: {noticeViewForm?.roleId}</p>
                         <p className="text-xl">Email: {noticeViewForm?.email}</p>
                         <p className="text-xl">Mobile Number: {noticeViewForm?.mobileNo}</p>
                     </div>

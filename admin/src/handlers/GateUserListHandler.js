@@ -3,7 +3,7 @@ import { gateUserListService } from "../services/gateUserListService";
 import React from 'react'
 
 
-const GateAllocationHandler = () => {
+const GateUserListnHandler = () => {
     const token = useSelector((state) => state.auth.token);
     const societyId = useSelector((state) => state.auth.user.Customer.customerId);
 
@@ -25,4 +25,4 @@ const GateAllocationHandler = () => {
     };
 };
 
-export default GateAllocationHandler;
+export default GateUserListnHandler;
