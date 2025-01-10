@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaCheck, FaSearch, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaCheck, FaSearch, FaEye, FaTimes, FaCross } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
@@ -51,23 +51,18 @@ const ApprovedUser = () => {
       accessor: "action",
       Cell: ({ row }) => (
         <div className="flex space-x-4">
-          <button
-            className="text-green-600 hover:text-green-700"
-            onClick={() => handleApproveUser(row.original.id, row.original.unitId)}
-          >
-            <FaCheck className="text-sm" />
-          </button>
+         
           <button
             className="text-yellow-500 hover:text-yellow-700"
             onClick={() => handleView(row.original.id)}
           >
-            <FaEye className="text-sm" />
+            <FaEye className="text-lg" />
           </button>
           <button
             className="text-red-500 hover:text-red-700"
             onClick={() => handleDelete(row.original.id)}
           >
-            <FaTrashAlt className="text-sm" />
+            <FaTimes className="text-lg" />
           </button>
         </div>
       ),

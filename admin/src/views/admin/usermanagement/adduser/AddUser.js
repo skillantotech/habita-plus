@@ -554,7 +554,7 @@
 // };
 
 // export default AddUser;
-
+import toast from 'react-hot-toast';
 import React, { useEffect, useRef, useState } from "react";
 import Input from "../../../../components/shared/Input";
 import UrlPath from "../../../../components/shared/UrlPath";
@@ -572,7 +572,11 @@ import UserHandler from "../../../../handlers/UserHandler";
 const AddUser = () => {
   const paths = ["User", "Add"];
   const Heading = ["Add Resident User"];
- const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state) => state.auth.token);
+  const countryCodesList = useSelector(
+    (state) => state.countryCode.countryCodes
+  );
+
   const selectOption = {
     salutation: [
       { label: "Select Salutation", value: "" },
@@ -584,15 +588,10 @@ const AddUser = () => {
     ],
   };
 
-  const { CreateAddUserHandler } = AddUserHandler();
-   const { createSocietyResidentUserHandler } = UserHandler();
-
-
   const [formData, setFormData] = useState({
     salutation: "",
     firstName: "",
     lastName: "",
-    photo: "",
     countryCode: "",
     mobileNumber: "",
     alternateCountryCode: "",
@@ -608,40 +607,45 @@ const AddUser = () => {
       zipCode: "",
     },
     societyId: "",
-    unitId: "",
     roleId: "",
-    livesHere: "",
-    primaryContact: "",
-    isManagementCommittee: "",
-    managementDesignation: "",
+    role: "",
+    liveshere: false,
+    primarycontact: false,
+    ismaemberofassociationcommite: false,
+    membertype: "",
+    remark: "",
   });
 
-  // const submitHandler = () => {
-  //   console.log(formData);
-  //   // CreateAddUserHandler(formData);
-  // };
+  const { createSocietyResidentUserHandler, getUserByIdHandler } = UserHandler();
 
-    const submitProfileUser = async () => {
-    const formattedFormData = {
-      ...formData,
-      address: {
-        addressLine1: formData.address.addressLine1,
-        addressLine2: formData.address.addressLine2,
-        city: formData.address.city,
-        state: formData.address.state,
-        country: formData.address.country,
-        zipCode: formData.address.zipCode,
-        countryCode: formData.countryCode,
-      },
+  const [roleAndSocietyData, setRoleAndSocietyData] = useState({
+    roles: [],
+    societies: [],
+  });
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchRolesAndSocieties = async () => {
+      try {
+        const data = await getUserByIdHandler(token);
+        setRoleAndSocietyData({
+          roles: data?.roleId || [],
+          societies: data?.societyId || [],
+        });
+      } catch (err) {
+        setError("Failed to load role and society data.");
+        console.error(err);
+      }
     };
-    
-    console.log(formattedFormData);
-    await createSocietyResidentUserHandler(formattedFormData, token);
-  };
- 
+    fetchRolesAndSocieties();
+  }, [token]);
+
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name in formData.address) {
+    const { name, value, type, checked } = event.target;
+    if (type === "checkbox") {
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else if (name in formData.address) {
       setFormData((prev) => ({
         ...prev,
         address: { ...prev.address, [name]: value },
@@ -651,10 +655,16 @@ const AddUser = () => {
     }
   };
 
-  const countryCodesList = useSelector(
-    (state) => state.countryCode.countryCodes
-  );
-
+const submitProfileUser = async () => {
+  try {
+    console.log("FormData:", formData); // Check form data
+    await createSocietyResidentUserHandler(formData, token);
+    toast.success("User created successfully!");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to create user.");
+  }
+};
   return (
     <div className="px-5 ">
       <div className="text-sm font-semibold my-2 flex items-center gap-2 text-gray-200">
@@ -826,8 +836,8 @@ const AddUser = () => {
           <Input
             label={<div>Pin</div>}
             type="number"
-            name="pin"
-            value={formData.address.pin}
+            name="zipCode"
+            value={formData.address.zipCode}
             onChange={handleInputChange}
             placeholder={"Enter Postal Pin"}
             size={"lg"}

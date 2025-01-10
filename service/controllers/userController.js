@@ -1,38 +1,23 @@
-
-const { User, Address, } = require("../models");
-const {
-  getAllUsersService,
-  getUserByIdService,
-} = require("../services/userService");
-
-
-// const bcrypt = require("bcrypt");
-
-const { validationResult } = require("express-validator");
-const { generateRandomPassword } = require("../utils/password");
-
-const createAddress = async (data) => {
-  await Address.create(data);
-};
+const { User } = require("../models");
+const { getAllUsersService, getUserByIdService } = require("../services/userService");
+const addressService = require("../services/addressService");
 
 const createSocietyModerator = async (req, res) => {
-  console.log("Create Society Moderator called !");
   try {
-    const { address, email, ...customerdata } = req.body;
+    const { address, email, ...customerData } = req.body;
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" });
     }
-    const addressData = await Address.create(address);
+
+    const addressData = await addressService.createAddress(address);
     const addressId = addressData.addressId;
-    console.log(addressId);
-    // const password = generateRandomPassword(6);
-    const password = "admin";
-    console.log(customerdata);
+
+    const password = "admin"; // Default password
 
     const result = await User.create({
-      ...customerdata,
+      ...customerData,
       email,
       addressId,
       password,
@@ -42,48 +27,35 @@ const createSocietyModerator = async (req, res) => {
       managementDesignation: "admin",
     });
 
-    res
-      .status(201)
-      .json({ message: "Society Moderator created successfully", result });
+    res.status(201).json({
+      message: "Society Moderator created successfully",
+      result,
+    });
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error creating society moderator:", error);
     res.status(500).json({ error: error.message });
   }
 };
 
 const createSocietyResident = async (req, res) => {
-  console.log("Create Society Resident called");
   try {
-    const {
-      address,
-      email,
-      salutation,
-      firstName,
-      lastName,
-      mobileNumber,
-      alternateNumber,
-      roleId,
-      societyId,
-    } = req.body;
+    const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
+    const { societyId } = req.params;
 
-    // Validate required fields
-    if (!email || !firstName || !lastName || !mobileNumber || !roleId || !societyId) {
-      return res.status(400).json({ message: "Missing required fields" });
+    if (!societyId) {
+      return res.status(400).json({ message: "Society ID is required in the URL" });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    // Create address
-    const addressData = await Address.create(address);
-    const addressId = addressData.id;
+    const addressData = await addressService.createAddress(address);
+    const addressId = addressData.addressId;
 
-    const password = "himansu"; // Default password for residents
+    const password = "Himansu"; // Replace with a secure password strategy
 
-    // Prepare user details
     const residentDetails = {
       salutation,
       firstName,
@@ -103,23 +75,22 @@ const createSocietyResident = async (req, res) => {
       societyId,
     };
 
-    // Create user
     const result = await User.create(residentDetails);
 
-    res
-      .status(201)
-      .json({ message: "Society Resident created successfully", result });
+    res.status(201).json({
+      message: "Society Resident created successfully",
+      result,
+    });
   } catch (error) {
-    console.error("Error creating resident:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error creating society resident:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
-const getResidentBySocityId = async (req, res) => {
-  console.log("Get Resident By Society ID called");
+const getResidentBySocietyId = async (req, res) => {
   try {
-    const { societyId } = req.params;
-
+  //  const { societyId } = req.params;
+ const societyId = req.params.societyId;
     if (!societyId) {
       return res.status(400).json({ message: "Society ID is required" });
     }
@@ -146,39 +117,45 @@ const getResidentBySocityId = async (req, res) => {
     if (!residents || residents.length === 0) {
       return res.status(404).json({ message: "No residents found for the given Society ID" });
     }
-    res.status(200).json({ message: "Residents fetched successfully", residents });
+
+    res.status(200).json({
+      message: "Residents fetched successfully",
+      residents,
+    });
   } catch (error) {
     console.error("Error fetching residents:", error);
     res.status(500).json({ error: error.message });
   }
 };
 
-
 const createUser = async (req, res) => {
   try {
-    const { address, ...customerdata } = req.body;
-    console.log(req.body);
+    const { address, ...customerData } = req.body;
+    const addressData = await addressService.createAddress(address);
+    const addressId = addressData.addressId;
 
-    const addressData = createAddress(address);
-    const addressId = addressData._id;
-    console.log(address);
+    const result = await User.create({ ...customerData, addressId });
 
-    const result = await User.create({ ...customerdata, addressId });
-    if (result)
-      res.status(201).json({ message: "User created successfully", result });
-    else throw new Error("Error creating user");
+    if (result) {
+      res.status(201).json({
+        message: "User created successfully",
+        result,
+      });
+    } else {
+      throw new Error("Error creating user");
+    }
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: error.message });
   }
 };
 
 const getAllUsers = async (req, res) => {
   try {
     const users = await getAllUsersService();
-    return res.status(200).json(users);
+    res.status(200).json(users);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -188,59 +165,69 @@ const getUserById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    return res.status(200).json(user);
+    res.status(200).json(user);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
-// const createResident = async (req, res) => {
-  // console.log("Create Resident called!");
-  // try {
-    // const { address, email, societyId, ...residentData } = req.body;
-// 
-    // const existingSociety = await Customer.findOne({ where: { customerId: societyId } });
-    // if (!existingSociety) {
-      // return res.status(400).json({ message: "Invalid society ID" });
-    // }
-// 
-    // const existingUser = await User.findOne({ where: { email } });
-    // if (existingUser) {
-      // return res.status(400).json({ message: "Email already in use" });
-    // }
-//  
-    // const addressData = await Address.create(address);
-    // const addressId = addressData.addressId;
-// 
-    // const password = await bcrypt.hash("resident123", 10);
-// 
-    // const result = await User.create({
-      // ...residentData,
-      // email,
-      // password,
-      // addressId, // Save the address ID
-      // societyId, // Save the society ID
-      // managementDesignation: "resident", // Set management designation as "resident"
-      // livesHere: true,
-      // primaryContact: true,
-    // });
-// 
-    // res.status(201).json({
-      // message: "Resident created successfully",
-      // result,
-    // });
-  // } catch (error) {
-    // console.error("Error creating resident:", error);
-    // res.status(500).json({ error: error.message });
-  // }
-// };
 
+// Approve User
+
+const approveUser = async (req, res) => {
+  const { userId, unitId } = req.body;
+
+  if (!userId || !unitId) {
+    return res.status(400).json({ message: "Both userId and unitId are required" });
+  }
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.status = "active";
+    user.unitId = unitId;
+    await user.save();
+
+    res.status(200).json({
+      message: "User approved successfully",
+      user: {
+        id: user.id,
+        status: user.status,
+        unitId: user.unitId,
+      },
+    });
+  } catch (err) {
+    console.error("Error approving user:", err);
+    res.status(500).json({ error: "Failed to approve user", details: err.message });
+  }
+};
+
+// Reject User
+const rejectUser = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.status = "inactive";
+    user.unitId = null;
+    await user.save();
+
+    res.status(200).json({ message: "User rejected successfully", user });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to reject user", details: err.message });
+  }
+};
 
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
   createSocietyModerator,
-  // createResident,
   createSocietyResident,
-  getResidentBySocityId,
+  getResidentBySocietyId,
+  approveUser,
+  rejectUser,
 };

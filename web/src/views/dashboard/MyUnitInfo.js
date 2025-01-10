@@ -82,15 +82,15 @@ const MyUnitInfo = () => {
     <section className="space-y-10">
       <UnitInfo user={user} />
       <Info />
-      <PaymentDueReminder
+      {/* <PaymentDueReminder
         amountDue={4000}
         dueDate={new Date().toLocaleDateString()}
-      />
-      <PaymentHistory />
-      <Document />
+      /> */}
+      {/* <PaymentHistory /> */}
+      {/* <Document /> */}
       <Visitor />
-      <CreatePost />
-      <Tenant />
+      {/* <CreatePost /> */}
+      {/* <Tenant /> */}
     </section>
   );
 };

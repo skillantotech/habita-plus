@@ -53,9 +53,9 @@ const User = sequelize.define(
     email: {
       type: DataTypes.STRING,
       validate: {
-        isEmail: false,
+        isEmail: true,
       },
-      allowNull: false,
+      allowNull: true,
     },
     addressId: {
       type: DataTypes.INTEGER,
@@ -99,7 +99,7 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: false,
     },
-    isManagementCommittee: {
+   isManagementCommittee: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,

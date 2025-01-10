@@ -220,7 +220,7 @@ const CreateUserForm = () => {
             onChange={handleInputChange}
             size="lg"
           />
-          <Input
+          {/* <Input
             label="Password"
             type="password"
             placeholder="Enter Your Password"
@@ -228,7 +228,7 @@ const CreateUserForm = () => {
             value={formData.password}
             onChange={handleInputChange}
             size="lg"
-          />
+          /> */}
         </div>
 
         {/* Address Details */}

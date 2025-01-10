@@ -35,18 +35,18 @@ const DashboardLeftContents = () => {
       icon: FiUsers,
       click: () => customNavigation("/community"),
     },
-    {
-      url: "find",
-      name: "Find",
-      icon: IoSearch,
-      click: () => customNavigation("/find"),
-    },
-    {
-      url: "more",
-      name: "More",
-      icon: IoGridOutline,
-      click: () => customNavigation("/more"),
-    },
+    // {
+    //   url: "find",
+    //   name: "Find",
+    //   icon: IoSearch,
+    //   click: () => customNavigation("/find"),
+    // },
+    // {
+    //   url: "more",
+    //   name: "More",
+    //   icon: IoGridOutline,
+    //   click: () => customNavigation("/more"),
+    // },
     
   ];
 

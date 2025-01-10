@@ -27,7 +27,7 @@ const Announcement = () => {
     setExpanded(!expanded);
   };
 
-  const truncatedText = `There are many miracles (leelas) done by Lord Venkateshwara at Tirumala. In the year 1979, there was scarcity of water and no rain...`;
+  const truncatedText = `...`;
 
   const fullText = `There are many miracles (leelas) done by Lord Venkateshwara at Tirumala. In the year 1979, there was scarcity of water and no rain. The water in Gogarbham dam (dam at Tirumala) was almost empty. At that time, EO of TTD, PVRK Prasad talked with the engineers about the situation. They said that water in Gogarbham dam will be sufficient only for a week. Without water, the pilgrims at Tirumala will face many issues. PVRK Prasad then talked with Sri Uppuluri Ganapati Shastri. Sri Ganapathi Shastri smiled and said the golden words, "The problem comes because the solution is there!!". Shastri suggested to do Varuna Japam. But the challenge is to find people who are willing to do Varuna Japam in this age of Kali Yuga. There is a solution for every problem in our life in our scriptures. Prasad believed in it and searched for people who are willing to do Varuna Japam. Many people went back because of some reasons. Some people came forward to perform the Varuna Japam. After finalizing the auspicious days of doing Varuna Japam, some people are selected.`;
 

@@ -392,13 +392,13 @@ import helpIcon from "../../assets/svg&pngicon/helpdesk-icon.png";
 import noticeIcon from "../../assets/svg&pngicon/notice-icon.png";
 import vendorIcon from "../../assets/svg&pngicon/vendor-icons.png";
 import announcementIcon from "../../assets/svg&pngicon/annoucment-icon.png";
-
+import directoryIcon from "../../assets/svg&pngicon/directoryIcon.png";
 export const QuickLinks = {
   resident: {
     menulinks: {
       myunit: [
         {
-          name: "Notice",
+          name: "Post",
           url: "/posts",
           icon: noticeIcon, 
           linkOf: "community",
@@ -409,12 +409,12 @@ export const QuickLinks = {
           icon: tentantIcon,
           linkOf: "myUnit",
         },
-        {
-          name: "Vendors",
-          url: "/vendors",
-          icon: vendorIcon, 
-          linkOf: "community",
-        },
+        // {
+        //   name: "Vendors",
+        //   url: "/vendors",
+        //   icon: vendorIcon, 
+        //   linkOf: "community",
+        // },
         {
           name: "Visitors",
           url: "/visitors",
@@ -422,27 +422,33 @@ export const QuickLinks = {
           linkOf: "myUnit",
         },
         {
-          name: "Society HelpDesk",
-          url: "/helpdesk",
-          icon: helpIcon, 
+          name: "Directories",
+          url: "/communityDirectories",
+          icon: directoryIcon, 
           linkOf: "myUnit",
         },
-        {
-          name: "Documents",
-          url: "/documents",
-          icon: documentIcon, 
-          linkOf: "myUnit",
-        },
+        // {
+        //   name: "Society HelpDesk",
+        //   url: "/helpdesk",
+        //   icon: helpIcon, 
+        //   linkOf: "myUnit",
+        // },
+        // {
+        //   name: "Documents",
+        //   url: "/documents",
+        //   icon: documentIcon, 
+        //   linkOf: "myUnit",
+        // },
       ],
       community: [
+        // {
+        //   name: "Vendor List",
+        //   url: "/vendors",
+        //   icon: vendorIcon, 
+        //   linkOf: "myUnit",
+        // },
         {
-          name: "Vendor List",
-          url: "/vendors",
-          icon: vendorIcon, 
-          linkOf: "myUnit",
-        },
-        {
-          name: "Notice",
+          name: "Post",
           url: "/notice",
           icon: noticeIcon, 
           linkOf: "myUnit",
@@ -456,7 +462,7 @@ export const QuickLinks = {
       ],
       home: [
         {
-          name: "Notice",
+          name: "Post",
           url: "/posts",
           icon: noticeIcon, 
           linkOf: "myUnit",
@@ -473,10 +479,16 @@ export const QuickLinks = {
           icon: visitorIcon, 
           linkOf: "myUnit",
         },
-        {
-          name: "Vendor List",
-          url: "/directories",
-          icon: vendorIcon, 
+        // {
+        //   name: "Vendor List",
+        //   url: "/directories",
+        //   icon: vendorIcon, 
+        //   linkOf: "myUnit",
+        // },
+         {
+          name: "Directories",
+          url: "/communityDirectories",
+          icon: directoryIcon, 
           linkOf: "myUnit",
         },
       ],

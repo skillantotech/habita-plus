@@ -115,19 +115,23 @@ const NoticeList = () => {
       </div>
 
       <div className="flex flex-row justify-end mt-4">
-        <select
-          name="userGroupId"
-          onChange={(e) => setUserGroupId(e.target.value)}
-          className="py-2 border border-gray-300 rounded-md"
-        >
-          <option value="">Select Option</option>
-          {selectedOption.map((item) => (
-            <option key={item.userGroupId} value={item.userGroupId}>
-              {item.userGroupName}
-            </option>
-          ))}
-        </select>
-      </div>
+  <select
+    name="userGroupId"
+    onChange={(e) => setUserGroupId(e.target.value)}
+    className="py-2 border border-gray-300 rounded-md uppercase"
+  >
+    <option value="">Select Option</option>
+    {/* Map over the selectedOption array and ensure no duplicates */}
+    {selectedOption && selectedOption.length > 0 &&
+      selectedOption.map((item) => (
+        <option key={item.userGroupId} value={item.userGroupId}>
+          {item.userGroupName}
+        </option>
+      ))
+    }
+  </select>
+</div>
+
 
       <div className="flex flex-row mt-4">
         <div className="relative w-full">
