@@ -13,7 +13,6 @@ const ApprovedGateUser = () => {
   const Heading = ["Approved Gate Users"];
 
   const { getGateUserList } = GateUserListnHandler();
-  const [data, setData] = useState([]);
 
   const [guardProfile, setGuardProfile] = useState([]);
 
@@ -45,7 +44,7 @@ const ApprovedGateUser = () => {
     }));
   };
 
-  // console.log(guardProfile[0].firstName);
+  // console.log(guardProfile);
 
   // Pagination states
   const [pageIndex, setPageIndex] = useState(0);
@@ -109,7 +108,7 @@ const ApprovedGateUser = () => {
             Approved Users
           </div> */}
           <div className="flex flex-row font-sans text-lg font-medium text-gray-700">
-            TOTAL 12 GATES AND 19 USERS
+            TOTAL 12 GATES AND {totalCount} USERS
           </div>
           <div className="flex flex-row mt-4">
             <div className="relative w-full">
