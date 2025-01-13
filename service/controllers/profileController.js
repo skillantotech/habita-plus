@@ -1,16 +1,12 @@
 
+
+
+
 const JobProfile = require('../models/JobProfile');
 
 exports.createJobProfile = async (req, res) => {
     try {
         const { firstName, lastName, societyId, roleId, email, mobileNo, status } = req.body;
-
-        // if (!req.files?.profilePhoto){
-        //     console.log("Profile Photo is missing");
-        // }
-        // if(!req.files?.idProof){
-        //     console.log("Id is missing");
-        // }
 
         if (!req.files?.profilePhoto || !req.files?.idProof) {
             return res.status(400).json({ error: "Profile photo and ID proof are required." });
@@ -31,7 +27,7 @@ exports.createJobProfile = async (req, res) => {
             status
         });
 
-        res.status(201).json({ message: 'Job profile created successfully.!!', data: newJobProfile });
+        res.status(201).json({ message: 'Job profile created successfully', data: newJobProfile });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

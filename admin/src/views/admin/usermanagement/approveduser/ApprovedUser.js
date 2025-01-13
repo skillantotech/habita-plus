@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaCheck, FaSearch, FaEye, FaTimes, FaCross } from "react-icons/fa";
+import { FaSearch, FaEye, FaTimes } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
-// import ApproveHandler from '../../../../handlers/user_management/ApproveHandler';
+import UserHandler from "../../../../handlers/UserHandler";
+import { useSelector } from "react-redux";
 
 const ApprovedUser = () => {
   const [page, setPage] = useState(0);
@@ -12,74 +13,74 @@ const ApprovedUser = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
 
-  // const { getUnapprovedUserHandler, approveUserHandler } = ApproveHandler();
+  const { getAllApprovedUserDataHandler } = UserHandler();
+  const token = useSelector((state) => state.auth.token);
+  const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
 
   const paths = ["User", "Approved Users"];
   const Heading = ["Approved Users"];
 
   useEffect(() => {
-    const fetchApprovedUserList = async () => {
-      try {
-        const result = await getUnapprovedUserHandler({ page, pageSize });
-        if (result && result.data) {
-          setTransformedData(result.data);
-          setTotal(result.total || 0);
-          setTotalPages(result.totalPages || 1);
-        } else {
-          console.error("API response does not contain 'data'");
-        }
-      } catch (err) {
-        console.error("Error fetching unapproved users:", err);
-      }
-    };
-    fetchApprovedUserList();
-  }, [page, pageSize]);
-
-  const columns = [
-    {
-      Header: "Sl. No",
-      accessor: "serialNumber",
-      Cell: ({ row }) => page * pageSize + row.index + 1,
-    },
-    { Header: "First Name", accessor: "firstName" },
-    { Header: "Last Name", accessor: "lastName" },
-    { Header: "Role", accessor: "roleId" },
-    { Header: "Mobile No.", accessor: "mobileNumber" },
-    { Header: "Unit No", accessor: "unitno" },
-    {
-      Header: "Action",
-      accessor: "action",
-      Cell: ({ row }) => (
-        <div className="flex space-x-4">
-         
-          <button
-            className="text-yellow-500 hover:text-yellow-700"
-            onClick={() => handleView(row.original.id)}
-          >
-            <FaEye className="text-lg" />
-          </button>
-          <button
-            className="text-red-500 hover:text-red-700"
-            onClick={() => handleDelete(row.original.id)}
-          >
-            <FaTimes className="text-lg" />
-          </button>
-        </div>
-      ),
-    },
-  ];
-
-  const handleApproveUser = async (id, unitId) => {
-    try {
-      const result = await approveUserHandler(id, unitId);
-      console.log("User approved successfully:", result);
-      // Refresh the unapproved user list
+    if (societyId && page >= 0 && pageSize > 0) {
       fetchApprovedUserList();
+    } else {
+      console.error("Invalid parameters: Ensure societyId, page, and pageSize are valid.");
+    }
+  }, [societyId, page, pageSize]);
+
+  const fetchApprovedUserList = async () => {
+    try {
+      if (!societyId || !token) {
+        console.error("Missing societyId or token");
+        return;
+      }
+
+      const result = await getAllApprovedUserDataHandler(societyId, token, { page, pageSize });
+
+      if (result && Array.isArray(result.users)) {
+        setTransformedData(result.users);
+        setTotal(result.total || result.users.length); // Use total if available, else fallback to length
+        setTotalPages(Math.ceil((result.total || result.users.length) / pageSize));
+      } else {
+        console.error("Unexpected API response structure:", result);
+      }
     } catch (err) {
-      console.error("Failed to approve user:", err);
+      console.error("Error fetching approved users:", err);
     }
   };
 
+ const columns = [
+  {
+    Header: "Sl. No",
+    accessor: "serialNumber",
+    Cell: ({ row }) => page * pageSize + row.index + 1,
+  },
+  { Header: "First Name", accessor: "firstName" },
+  { Header: "Last Name", accessor: "lastName" },
+  { Header: "Role", accessor: "roleId" },
+  { Header: "Mobile No.", accessor: "mobileNumber" },
+  { Header: "Status", accessor: "status" },
+  {
+    Header: "Action",
+    accessor: "action",
+    Cell: ({ row }) => (
+      <div className="flex space-x-4">
+        <button
+          className="text-yellow-500 hover:text-yellow-700"
+          onClick={() => handleView(row.original.id)}
+        >
+          <FaEye className="text-lg" />
+        </button>
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={() => handleDelete(row.original.id)}
+        >
+          <FaTimes className="text-lg" />
+        </button>
+      </div>
+    ),
+  },
+];
   const handleView = (id) => {
     console.log("View user details with ID:", id);
   };

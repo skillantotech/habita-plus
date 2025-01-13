@@ -93,3 +93,32 @@ export const rejectUserService = (userId, token) => {
     }
   );
 };
+
+
+export const getAllApprovedUserDataService = (societyId, token, { page, pageSize }) => {
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/approvedUser/${societyId}`;
+
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      page,
+      pageSize,
+    },
+  });
+};
+
+
+export const getAllDeactiveUserDataService = (societyId, token, { page, pageSize }) => {
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/deactive/${societyId}`;
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      page,
+      pageSize,
+    },
+  });
+};

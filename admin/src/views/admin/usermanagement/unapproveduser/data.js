@@ -4,10 +4,10 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import UserHandler from "../../../../handlers/UserHandler";
-import { useSelector } from 'react-redux';
-import ViewUserDetailsModal from "./ViewUserDetailsModal";
-import toast from 'react-hot-toast';
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import Input from "../../../../components/shared/Input";
+import ViewUserAllDetailsModal from "../deactivateuser/ViewUserAllDetailsModal";
 
 const UnapprovedUser = () => {
   const [page, setPage] = useState(0);
@@ -15,21 +15,15 @@ const UnapprovedUser = () => {
   const [transformedData, setTransformedData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
-  const [viewmodal, setViewModal] = useState(false);
-  const [showViewFormData, setShowViewFormData] = useState(null);
+  const [modalType, setModalType] = useState(null); // 'approve' or 'reject'
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isUnApprovedModalOpen, setUnApprovedModal] = useState(false);
   const { getResidentBySocietyIdHandler, approveUserHandler, rejectUserHandler } = UserHandler();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    societyId: "", 
-    unitId: "",
-    userId: "", 
-  });
-  const paths = ["User", "Unapproved Users"];
-  const Heading = ["Unapproved Users"];
-
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
- //const societyId =8;
+  const userId = useSelector((state) => state.auth.user?.userId);
+  const paths = ["User", "Unapproved Users"];
+  const Heading = ["Unapproved Users"];
 
   useEffect(() => {
     if (societyId) {
@@ -58,59 +52,73 @@ const UnapprovedUser = () => {
     }
   };
 
-  const openApproveModal = (userId) => {
-    setFormData({ ...formData, userId }); 
-    setIsModalOpen(true);
+  const openModal = (type, user) => {
+    setModalType(type); // 'approve' or 'reject'
+    setSelectedUser({
+      id: user.id, // Ensure the correct user ID is set
+      userId: user.userId, // Preserve userId for display purposes
+      unitId: user.unitId || "", // Optional field for approval
+    });
   };
 
-  const closeApproveModal = () => {
-    setIsModalOpen(false);
-    setFormData({ userId: "", unitId: "" });
+  const closeModal = () => {
+    setModalType(null);
+    setSelectedUser(null);
   };
 
-  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
-
-  const openRejectModal = (userId) => {
-    setFormData({ ...formData, userId });
-    setIsRejectModalOpen(true);
+  const viewUnapprovedData = (type, user) => {
+    setUnApprovedModal(type);
+    setSelectedUser({
+      id: user.id,
+      userId: user.userId,
+      ...user,
+    });
   };
 
-  const closeRejectModal = () => {
-    setIsRejectModalOpen(false);
-    setFormData({ userId: "", unitId: "" });
+  const closeViewModal = () => {
+    setUnApprovedModal(false);
+    setSelectedUser(null);
+  };
+
+  const handleApproveSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { id, unitId } = selectedUser;
+      if (!id || !unitId) {
+        toast.error("User ID or Unit ID is missing.");
+        return;
+      }
+      const response = await approveUserHandler(id, unitId, token);
+      if (response?.status === 200) {
+        toast.success("User approved successfully!");
+        setTransformedData((prevData) => prevData.filter((user) => user.id !== id));
+        closeModal();
+      } else {
+        toast.error("Failed to approve user.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while approving the user.");
+    }
   };
 
   const handleRejectSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await rejectUserHandler(formData.userId, token, { page, pageSize });
-      if (result?.status === 200) {
-        toast.success("User rejected successfully!");
-        setTransformedData((prevData) => prevData.filter((user) => user.id !== formData.userId));
-        closeRejectModal();
-      } else {
-       // toast.error("Failed to reject user.");
+      const { id } = selectedUser;
+      if (!id) {
+        toast.error("User ID is missing.");
+        return;
       }
-    } catch (error) {
-      toast.error("Failed to reject user.");
-    }
-  };
-
-  const handleApproveSubmit = async (e) => {
-    e.preventDefault(); 
-    try {
-      const response = await approveUserHandler(formData.userId, formData.unitId, token);
+      const response = await rejectUserHandler(id, token);
       if (response?.status === 200) {
-        toast.success("User approved successfully!");
-        setTimeout(() => {
-          setTransformedData((prevData) => prevData.filter((user) => user.id !== formData.userId));
-          closeApproveModal();
-        }, 1000);
+        toast.success("User rejected successfully!");
+        setTransformedData((prevData) => prevData.filter((user) => user.id !== id));
+        closeModal();
       } else {
-        toast.error("Failed to approve user.");
+        toast.error("Failed to reject user.");
       }
     } catch (error) {
-      toast.error("Failed to approve user.");
+      toast.error("An error occurred while rejecting the user.");
     }
   };
 
@@ -120,7 +128,7 @@ const UnapprovedUser = () => {
       accessor: "serialNumber",
       Cell: ({ row }) => page * pageSize + row.index + 1,
     },
-    // { Header: "User Id", accessor: "userId" },
+    { Header: "User Id", accessor: "userId" },
     { Header: "First Name", accessor: "firstName" },
     { Header: "Last Name", accessor: "lastName" },
     { Header: "Role", accessor: "roleId" },
@@ -133,19 +141,19 @@ const UnapprovedUser = () => {
         <div className="flex space-x-4">
           <button
             className="text-green-600 hover:text-green-700"
-            onClick={() => openApproveModal(row.original.id)}
+            onClick={() => openModal("approve", row.original)}
           >
             <FaCheck className="text-lg" />
           </button>
           <button
             className="text-yellow-500 hover:text-yellow-700"
-            onClick={() => handleView(row.original.id)}
+            onClick={() => viewUnapprovedData("view", row.original)}
           >
             <FaEye className="text-lg" />
           </button>
           <button
             className="text-red-500 hover:text-red-700"
-            onClick={() => openRejectModal(row.original.id)}
+            onClick={() => openModal("reject", row.original)}
           >
             <FaTimes className="text-lg" />
           </button>
@@ -153,25 +161,6 @@ const UnapprovedUser = () => {
       ),
     },
   ];
-
-  const handleView = async (userId) => {
-    try {
-      const viewData = await getUserByIdHandler(userId, token);
-      if (viewData?.data) {
-        setShowViewFormData(viewData.data);
-        setViewModal(true);
-      } else {
-        console.error("No data found for user:", userId);
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   return (
     <div>
@@ -204,42 +193,32 @@ const UnapprovedUser = () => {
             setPageIndex={setPage}
             setPageSize={setPageSize}
           />
-          
-          {viewmodal && (
-            <ViewUserDetailsModal
-              isOpen={viewmodal}
-              onClose={() => setViewModal(false)}
-              formData={showViewFormData}
-            />
-          )}
 
-          {isModalOpen && (
+          {modalType === "approve" && (
             <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-                <h2 className="text-xl font-bold mb-4">Enter Details</h2>
+                <h2 className="text-xl font-bold mb-4">Approve User</h2>
                 <form onSubmit={handleApproveSubmit}>
                   <Input
-                    label={<div>User Id <span className="text-red-500">*</span></div>}
+                    label="User Id"
                     type="text"
-                    placeholder="Enter User Id"
-                    size="lg"
-                    name="userId"
-                    value={formData.userId}
-                    onChange={handleChange}
+                    value={selectedUser?.userId}
+                    readOnly
                   />
                   <Input
-                    label={<div>Unit Id<span className="text-red-500">*</span></div>}
+                    label="Unit Id"
                     type="text"
                     placeholder="Enter Unit Id"
-                    size="lg"
                     name="unitId"
-                    value={formData.unitId}
-                    onChange={handleChange}
+                    value={selectedUser?.unitId || ""}
+                    onChange={(e) =>
+                      setSelectedUser({ ...selectedUser, unitId: e.target.value })
+                    }
                   />
                   <div className="flex justify-end mt-4">
                     <button
                       type="button"
-                      onClick={closeApproveModal}
+                      onClick={closeModal}
                       className="mr-2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
                     >
                       Cancel
@@ -248,7 +227,7 @@ const UnapprovedUser = () => {
                       type="submit"
                       className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
                     >
-                      Submit
+                      Approve
                     </button>
                   </div>
                 </form>
@@ -256,23 +235,21 @@ const UnapprovedUser = () => {
             </div>
           )}
 
-          {isRejectModalOpen && (
+          {modalType === "reject" && (
             <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-96">
                 <h2 className="text-xl font-bold mb-4">Reject User</h2>
                 <form onSubmit={handleRejectSubmit}>
                   <Input
-                    label="user Id"
+                    label="User Id"
                     type="text"
-                    placeholder="Enter user Id"
-                    name="unitId"
-                    value={formData.userId}
-                    onChange={(e) => setFormData({ ...formData, userId: e.target.value })}
+                    value={selectedUser?.userId}
+                    readOnly
                   />
                   <div className="flex justify-end mt-4">
                     <button
                       type="button"
-                      onClick={closeRejectModal}
+                      onClick={closeModal}
                       className="mr-2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
                     >
                       Cancel
@@ -289,12 +266,20 @@ const UnapprovedUser = () => {
             </div>
           )}
         </div>
+        {isUnApprovedModalOpen && (
+          <ViewUserAllDetailsModal
+            isOpen={isUnApprovedModalOpen}
+            onClose={closeViewModal}
+            formData={selectedUser}
+          />
+        )}
       </div>
     </div>
   );
 };
 
 export default UnapprovedUser;
+
 
 // import { React, useState } from "react";
 // import { FaSearch } from "react-icons/fa";

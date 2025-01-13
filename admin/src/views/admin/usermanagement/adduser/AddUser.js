@@ -569,7 +569,7 @@ import UserRoleHandler from '../../../../handlers/UserRoleHandler';
 const AddUser = () => {
   const paths = ["User", "Add"];
   const Heading = ["Add Resident User"];
-  const societyId = useSelector((state) => state.auth.user?.Customer?.customerId); // Moved here for early initialization
+  const societyId = useSelector((state) => state.auth.user?.Customer?.customerId); 
   const countryCodesList = useSelector((state) => state.countryCode.countryCodes);
   
   const { createSocietyResidentUserHandler } = UserHandler();

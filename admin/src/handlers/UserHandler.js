@@ -4,7 +4,7 @@ import {
   createSocietyResidentService,
   getResidentBySocietyIdService,
   getUserByIdService,
-  getAllUserDataService,approveUserService,rejectUserService,
+  getAllUserDataService,approveUserService,rejectUserService,getAllApprovedUserDataService,getAllDeactiveUserDataService,
 } from '../services/userService';
 import { useSelector } from 'react-redux';
 import ResponseHandler from './ResponseHandler';
@@ -12,6 +12,7 @@ import ResponseHandler from './ResponseHandler';
 const UserHandler = () => {
   const token = useSelector((state) => state.auth.token);
   const { handleResponse } = ResponseHandler();
+const userId = useSelector((state) => state.auth.user?.userId);
 
   // Create Society Moderator Handler
   const createSocietyModeratorHandler = async (formData) => {
@@ -98,9 +99,44 @@ const approveUserHandler = async (userId, unitId) => {
     }
   };
 
+  // Get All User Data Handler
+  // const getAllApprovedUserDataHandler = async (token) => {
+  //   try {
+  //     const response = await getAllApprovedUserDataService(token);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   }
+  // };
+//  const getAllApprovedUserDataHandler = async (data) => {
+//     console.log("visitor list table", data);
+//     return await getAllApprovedUserDataService({ ...data, userId }, token)
+//       .then((res) => {
+//         return res;
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   };
 
-
-
+const getAllApprovedUserDataHandler = async (societyId, token, { page, pageSize }) => {
+  try {
+    const response = await getAllApprovedUserDataService(societyId, token, { page, pageSize });
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error("Error fetching approved user data:", error);
+    return null;
+  }
+};
+const getAllDeactiveUserDataHandler = async (societyId, token, { page, pageSize }) => {
+  try {
+    const response = await getAllDeactiveUserDataService(societyId, token, { page, pageSize });
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error("Error fetching deactivate user data:", error);
+    return null;
+  }
+};
 
 
   return {
@@ -111,6 +147,8 @@ const approveUserHandler = async (userId, unitId) => {
     getAllUserDataHandler,
     approveUserHandler,
     rejectUserHandler,
+    getAllApprovedUserDataHandler,
+    getAllDeactiveUserDataHandler,
   };
 };
 

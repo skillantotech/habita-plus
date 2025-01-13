@@ -1,5 +1,5 @@
 "use client";
-import Logo from "../../../assets/logo/cocacola2.jpg";
+import Logo from "../../../assets/logo/logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -25,9 +25,11 @@ const Navbar = () => {
         </div>
 
         <div className="flex flex-row justify-end items-center mr-[80px] gap-7">
-          <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
+         <Link href="/Home">
+         <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             Home
           </div>
+         </Link>
           <div className=" text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             Services
           </div>
@@ -39,9 +41,11 @@ const Navbar = () => {
           <div className="  text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             About Us
           </div>
-          <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
+        <Link href="/contact">
+        <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             Contact
           </div>
+        </Link>
           <div>
             {isAuthenticated ? (
               <Link href="/user">

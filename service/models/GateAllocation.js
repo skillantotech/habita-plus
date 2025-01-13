@@ -1,54 +1,63 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); // Database connection file
+const Customer = require('./Customer');
+const Gate = require('./Gate');
+const JobProfile = require('./JobProfile');
 
 const GateAllocation = sequelize.define('GateAllocation', {
     gateAllocationId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
-    },
-    firstName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    profilePhoto: {
-        type: DataTypes.STRING, // File path for profile photo
-        allowNull: true
-    },
-    idProof: {
-        type: DataTypes.STRING, // File path for ID proof
-        allowNull: true
+        primaryKey: true,
     },
     societyId: {
         type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    role: {
-        type: DataTypes.ENUM('security', 'supervisor', 'facilitie_manager'),
+        references: {
+            model: Customer,
+            key: "customerId",
+        },
         allowNull: false,
-        defaultValue: 'security' // Default to 'security' role
     },
-    email: {
-        type: DataTypes.STRING,
+    gateId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Gate,
+            key: "gateId",
+        },
         allowNull: false,
-        validate: {
-            isEmail: true // Email validation
-        }
     },
-    mobileNo: {
-        type: DataTypes.STRING,
+    profileId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: JobProfile,
+            key: "profileId",
+        },
         allowNull: false,
-        validate: {
-            is: /^[0-9]{10}$/ // Validate mobile number (10 digits)
-        }
     }
 }, {
     tableName: 'GateAllocations',
-    timestamps: true // Add timestamps (createdAt, updatedAt)
+    timestamps: true, // Add timestamps (createdAt, updatedAt)
 });
 
+// Relationships
+Customer.hasMany(GateAllocation, { foreignKey: "societyId" });
+GateAllocation.belongsTo(Customer, { foreignKey: "societyId" });
+
+Gate.hasMany(GateAllocation, { foreignKey: "gateId" });
+GateAllocation.belongsTo(Gate, { foreignKey: "gateId" });
+
+JobProfile.hasMany(GateAllocation, { foreignKey: "profileId" });
+GateAllocation.belongsTo(JobProfile, { foreignKey: "profileId" });
+
 module.exports = GateAllocation;
+
+
+
+  
+  
+
+
+
+
+
+

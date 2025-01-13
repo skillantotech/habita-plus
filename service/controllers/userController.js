@@ -40,9 +40,8 @@ const createSocietyModerator = async (req, res) => {
 const createSocietyResident = async (req, res) => {
   try {
     const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
-   // const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber } = req.body;
     const { societyId } = req.params;
-     //const { roleId } = req.params;
+    
 
     if (!societyId) {
       return res.status(400).json({ message: "Society ID is required in the URL" });
@@ -103,6 +102,7 @@ const getResidentBySocietyId = async (req, res) => {
         isManagementCommittee: false,
       },
       attributes: [
+        "userId",
         "salutation",
         "firstName",
         "lastName",
@@ -223,6 +223,115 @@ const rejectUser = async (req, res) => {
   }
 };
 
+
+// const getAllApprovedUsers = async (req, res) => {
+//   try {
+//     const approvedUsers = await User.findAll({
+//       where: {
+//         status: "active",
+//       },
+//     });
+
+//     if (approvedUsers.length === 0) {
+//       return res.status(404).json({ message: "No approved users found" });
+//     }
+
+//     res.status(200).json({
+//       message: "Approved users retrieved successfully",
+//       users: approvedUsers.map(user => ({
+//         id: user.id,
+//         status: user.status,
+//         unitId: user.unitId,
+//       })),
+//     });
+//   } catch (err) {
+//     console.error("Error retrieving approved users:", err);
+//     res.status(500).json({ error: "Failed to retrieve approved users", details: err.message });
+//   }
+// };
+const getAllApprovedUsers = async (req, res) => {
+  const { societyId } = req.params; // Get societyId from the request params
+
+  try {
+    // Ensure that societyId is provided
+    if (!societyId) {
+      return res.status(400).json({ error: "Society ID is required" });
+    }
+// if (!unitId) {
+//       return res.status(400).json({ error: "unitId  is required" });
+//     }
+    const approvedUsers = await User.findAll({
+      where: {
+        status: "active",
+        societyId: societyId,
+      
+      },
+    });
+
+    if (approvedUsers.length === 0) {
+      return res.status(404).json({ message: "No approved users found for this society" });
+    }
+
+    res.status(200).json({
+      message: "Approved users retrieved successfully",
+      users: approvedUsers.map(user => ({
+       id: user.id,
+    firstName: user.firstName, 
+    lastName: user.lastName, 
+    roleId: user.roleId,     
+    mobileNumber: user.mobileNumber, 
+    status: user.status,      
+       
+      })),
+    });
+  } catch (err) {
+    console.error("Error retrieving approved users:", err);
+    res.status(500).json({ error: "Failed to retrieve approved users", details: err.message });
+  }
+};
+
+const getAllDeactiveUsers = async (req, res) => {
+  const { societyId } = req.params; // Get societyId from the request params
+
+  try {
+    // Ensure that societyId is provided
+    if (!societyId) {
+      return res.status(400).json({ error: "Society ID is required" });
+    }
+
+    // Fetch deactivated users with the given criteria
+    const deactiveUsers = await User.findAll({
+      where: {
+        status: "inactive", // Status should be inactive
+        societyId: societyId, // Match the given societyId
+        unitId: null, // Ensure unitId is null
+      },
+    });
+
+    // Check if any users were found
+    if (deactiveUsers.length === 0) {
+      return res.status(404).json({ message: "No deactivated users found for this society" });
+    }
+
+    // Respond with the retrieved users
+    res.status(200).json({
+      message: "Deactivated users retrieved successfully",
+      users: deactiveUsers.map(user => ({
+        userId: user.userId,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        roleId: user.roleId,
+        mobileNumber: user.mobileNumber,
+        status: user.status,
+      })),
+    });
+  } catch (err) {
+    console.error("Error retrieving deactivated users:", err);
+    res.status(500).json({ error: "Failed to retrieve deactivated users", details: err.message });
+  }
+};
+
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -232,4 +341,6 @@ module.exports = {
   getResidentBySocietyId,
   approveUser,
   rejectUser,
+  getAllApprovedUsers,
+  getAllDeactiveUsers,
 };
