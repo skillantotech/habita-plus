@@ -555,29 +555,56 @@
 
 // export default AddUser;
 import toast from 'react-hot-toast';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../../components/shared/Input";
 import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
-import { FaCamera } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
 import Button from "../../../../components/ui/Button";
 import { useSelector } from "react-redux";
-import AddUserHandler from "../../../../handlers/AddUserHandler";
+import UserHandler from "../../../../handlers/UserHandler";
 import Select from "../../../../components/ui/Select";
 import UnitAllocationForUser from "./components/UnitAllocationForUser";
-import UserHandler from "../../../../handlers/UserHandler";
-
+import UserRoleHandler from '../../../../handlers/UserRoleHandler';
 
 const AddUser = () => {
   const paths = ["User", "Add"];
   const Heading = ["Add Resident User"];
-  const token = useSelector((state) => state.auth.token);
-  const countryCodesList = useSelector(
-    (state) => state.countryCode.countryCodes
-  );
+  const societyId = useSelector((state) => state.auth.user?.Customer?.customerId); // Moved here for early initialization
+  const countryCodesList = useSelector((state) => state.countryCode.countryCodes);
+  
+  const { createSocietyResidentUserHandler } = UserHandler();
+  const { getUserRolesHandler } = UserRoleHandler();
 
-  const selectOption = {
+  const [roles, setRoles] = useState([]);
+  const [selectedRoleId, setSelectedRoleId] = useState(null);
+  const [formData, setFormData] = useState({
+    salutation: "",
+    firstName: "",
+    lastName: "",
+    countryCode: "",
+    mobileNumber: "",
+    alternateCountryCode: "",
+    alternateNumber: "",
+    email: "",
+    address: {
+      addressLine1: "",
+      addressLine2: "",
+      state: "",
+      city: "",
+      country: "",
+      zipCode: "",
+    },
+    liveshere: false,
+    primarycontact: false,
+    ismaemberofassociationcommite: false,
+    membertype: "",
+    remark: "",
+    societyId: "",
+    roleId: "",
+  });
+
+
+    const selectOption = {
     salutation: [
       { label: "Select Salutation", value: "" },
       { label: "Mr", value: "mr" },
@@ -588,58 +615,16 @@ const AddUser = () => {
     ],
   };
 
-  const [formData, setFormData] = useState({
-    salutation: "",
-    firstName: "",
-    lastName: "",
-    countryCode: "",
-    mobileNumber: "",
-    alternateCountryCode: "",
-    alternateNumber: "",
-    email: "",
-    password: "",
-    address: {
-      addressLine1: "",
-      addressLine2: "",
-      state: "",
-      city: "",
-      country: "",
-      zipCode: "",
-    },
-    societyId: "",
-    roleId: "",
-    role: "",
-    liveshere: false,
-    primarycontact: false,
-    ismaemberofassociationcommite: false,
-    membertype: "",
-    remark: "",
-  });
-
-  const { createSocietyResidentUserHandler, getUserByIdHandler } = UserHandler();
-
-  const [roleAndSocietyData, setRoleAndSocietyData] = useState({
-    roles: [],
-    societies: [],
-  });
-
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchRolesAndSocieties = async () => {
-      try {
-        const data = await getUserByIdHandler(token);
-        setRoleAndSocietyData({
-          roles: data?.roleId || [],
-          societies: data?.societyId || [],
-        });
-      } catch (err) {
-        setError("Failed to load role and society data.");
-        console.error(err);
-      }
-    };
-    fetchRolesAndSocieties();
-  }, [token]);
+    if (societyId) {
+      setFormData((prev) => ({
+        ...prev,
+        societyId: societyId,
+      }));
+    }
+  }, [societyId]);
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -655,16 +640,74 @@ const AddUser = () => {
     }
   };
 
+  const validateForm = () => {
+    if (!formData.firstName || !formData.lastName || !formData.email) {
+      setError("First Name, Last Name, and Email are required.");
+      return false;
+    }
+    if (!formData.mobileNumber) {
+      setError("Mobile Number is required.");
+      return false;
+    }
+    return true;
+  };
+
 const submitProfileUser = async () => {
+  if (!selectedRoleId) {
+    toast.error("Please select a role.");
+    return;
+  }
+  if (!validateForm()) return; // Prevent form submission if validation fails
+
   try {
-    console.log("FormData:", formData); // Check form data
-    await createSocietyResidentUserHandler(formData, token);
+    const updatedFormData = { ...formData, societyId, roleId: selectedRoleId };
+
+    // Avoid triggering multiple submissions by checking if 'isSubmitting' is already true
+    if (formData.isSubmitting) return; // Prevent multiple submissions
+    setFormData((prev) => ({ ...prev, isSubmitting: true })); // Set submitting state
+
+    console.log("FormData before submission:", updatedFormData);
+
+    await createSocietyResidentUserHandler(societyId, updatedFormData); // Assuming this is where the backend call is happening
     toast.success("User created successfully!");
   } catch (error) {
-    console.error(error);
+    console.error("Error creating resident:", error);
     toast.error("Failed to create user.");
+  } finally {
+    setFormData((prev) => ({ ...prev, isSubmitting: false })); // Reset submitting state
   }
 };
+   useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const result = await getUserRolesHandler(); // Assuming it's defined elsewhere
+        const filteredRoles = result.data
+          .filter((el) =>
+            ["society_owner_family", "society_tenant", "society_owner", "society_tenant_family"].includes(el.roleCategory)
+          )
+          .map((el) => ({ label: el.roleCategory, value: el.roleId }));
+
+        // Only set the roles if they have changed
+        setRoles((prevRoles) => {
+          // Compare new roles with the previous state to avoid unnecessary re-renders
+          if (JSON.stringify(prevRoles) !== JSON.stringify(filteredRoles)) {
+            return filteredRoles;
+          }
+          return prevRoles;
+        });
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+        toast.error("Failed to load roles.");
+      }
+    };
+
+    fetchRoles();  // Trigger fetching roles
+  }, []);  // Empty dependency array ensures this effect runs only once, similar to componentDidMount
+
+  // Handle radio button change for role selection
+  const handleRadioChange = (roleId) => {
+    setSelectedRoleId(roleId);
+  };
   return (
     <div className="px-5 ">
       <div className="text-sm font-semibold my-2 flex items-center gap-2 text-gray-200">
@@ -678,36 +721,7 @@ const submitProfileUser = async () => {
           Profile Details
         </div>
 
-        {/* <div className="flex flex-row mt-5">
-          <div className="flex items-center gap-5">
-            <div
-              className="relative h-28 w-28 rounded-full border-2 border-lime"
-              style={{
-                backgroundImage: profilePhoto ? `url(${profilePhoto})` : "none",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <FaCamera
-                onClick={handleIconClick}
-                className="absolute bottom-0 right-0 bg-lime text-white text-[30px] p-2 rounded-full cursor-pointer"
-                size={38}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
-            <div>
-              <h2>Choose profile photo</h2>
-              <div className="text-red-700">{photomsg}</div>
-            </div>
-          </div>
-        </div> */}
-
+ 
         <div className="grid grid-cols-3 gap-3 items-center py-6">
        
           <Select
@@ -859,7 +873,7 @@ const submitProfileUser = async () => {
           Role Allocation
         </div>
 
-        <div className="grid grid-cols-6 gap-5 items-center my-5 py-6">
+        {/* <div className="grid grid-cols-6 gap-5 items-center my-5 py-6">
           <div className="flex flex-row items-center gap-3">
             <label className="text-lg">Owner</label>
             <input
@@ -900,7 +914,29 @@ const submitProfileUser = async () => {
               onChange={handleInputChange}
             />
           </div>
-        </div>
+        </div> */}
+
+          {/* <div className="text-xl font-sans font-semibold text-lime mt-10">Role Allocation</div> */}
+          <div className="grid grid-cols-6 gap-5 items-center my-5 py-6">
+          <div className="flex flex-row items-center gap-3">
+      {roles.length > 0 ? (
+        roles.map((role) => (
+          <div key={role.value} className="flex items-center gap-3">
+            <input
+              type="radio"
+              name="role"
+              value={role.value}
+              checked={selectedRoleId === role.value}
+              onChange={() => handleRadioChange(role.value)}
+            />
+            <label>{role.label}</label>
+          </div>
+        ))
+      ) : (
+        <div>No roles available</div> // A fallback message if no roles are fetched
+      )}
+      </div></div>
+   
         <div className="space-y-4">
           <div className=" flex flex-row items-center gap-3">
             <label>Lives Here?</label>

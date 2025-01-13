@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import {
   createSocietyModeratorService,
-  createSocietyResident,
+  createSocietyResidentService,
   getResidentBySocietyIdService,
   getUserByIdService,
   getAllUserDataService,approveUserService,rejectUserService,
@@ -27,41 +27,30 @@ const UserHandler = () => {
   };
 
   // Create Society Resident User Handler
-  // const createSocietyResidentUserHandler = async (societyId, formData) => {
-  //   try {
-  //     const response = await createSocietyResident(societyId, token, formData);
-  //     if (response.status === 201) {
-  //       toast.success("Society Resident created successfully!");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error creating resident:", error);
-  //     toast.error(error.response?.data?.message || error.message);
-  //   }
-  // };
-
-   const createSocietyResidentUserHandler = async ( formData) => {
-    try {
-      const response = await createSocietyResident( token, formData);
-      if (response.status === 201) {
-        toast.success("Society Resident created successfully!");
-      }
-    } catch (error) {
-      console.error("Error creating resident:", error);
-      toast.error(error.response?.data?.message || error.message);
+const createSocietyResidentUserHandler = async (societyId, formData) => {
+  try {
+    const response = await createSocietyResidentService(societyId, token, formData);
+    if (response.status === 201) {
+      toast.success("Society Resident created successfully!");
     }
-  };
+  } catch (error) {
+    console.error("Error creating resident:", error);
+    toast.error(error.response?.data?.message || error.message);
+  }
+};
 
 
-  // Get Residents by Society ID Handler
-  const getResidentBySocietyIdHandler = async (societyId) => {
-    try {
-      const response = await getResidentBySocietyIdService(societyId, token);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching residents:", error);
-      toast.error("Failed to fetch residents.");
-    }
-  };
+
+const getResidentBySocietyIdHandler = async (societyId, token, { page, pageSize }) => {
+  try {
+    // Call the service with the appropriate parameters
+    const response = await getResidentBySocietyIdService(societyId, token, { page, pageSize });
+
+    return response.data;  // Return the response data
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+};
 
   // Get All User Data Handler
   const getAllUserDataHandler = async (token) => {

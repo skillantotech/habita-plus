@@ -14,19 +14,8 @@ export const createSocietyModeratorService = (data, token) => {
   });
 };
 
-export const createSocietyResidentUserService = (data, token) =>{
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/create-resident`;
 
-  return axios.post(url, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      // "Content-Type": "multipart/form-data",
-      "Content-Type": "application/json",
-    },
-  });
-}
-
-export const getResidentBySocietyIdService = (societyId, token) => {
+export const getResidentBySocietyIdService = (societyId, token, { page, pageSize }) => {
   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/${societyId}`;
 
   return axios.get(url, {
@@ -34,7 +23,10 @@ export const getResidentBySocietyIdService = (societyId, token) => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-   
+    params: {
+      page,      
+      pageSize,  
+    },
   });
 };
 
@@ -48,9 +40,9 @@ export const getUserByIdService = (id, token) => {
 };
 
 
-export const createSocietyResident = async (societyId, token, data) => {
+export const createSocietyResidentService = async (societyId, token, data) => {
  
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/${societyId}`;
+  const url =`${process.env.REACT_APP_PUBLIC_API_URL}/users/create-resident/${societyId}`;
 
   return axios.post(url, data, {
     headers: {
@@ -59,6 +51,8 @@ export const createSocietyResident = async (societyId, token, data) => {
     },
   });
 };
+
+
 
 export const getAllUserDataService = (data, token) => {
   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users`;

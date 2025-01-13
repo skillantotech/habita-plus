@@ -40,7 +40,9 @@ const createSocietyModerator = async (req, res) => {
 const createSocietyResident = async (req, res) => {
   try {
     const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
+   // const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber } = req.body;
     const { societyId } = req.params;
+     //const { roleId } = req.params;
 
     if (!societyId) {
       return res.status(400).json({ message: "Society ID is required in the URL" });
@@ -89,8 +91,8 @@ const createSocietyResident = async (req, res) => {
 
 const getResidentBySocietyId = async (req, res) => {
   try {
-  //  const { societyId } = req.params;
- const societyId = req.params.societyId;
+   const { societyId } = req.params;
+ //const societyId = req.params.societyId;
     if (!societyId) {
       return res.status(400).json({ message: "Society ID is required" });
     }

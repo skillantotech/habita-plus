@@ -28,8 +28,8 @@ const UnapprovedUser = () => {
   const Heading = ["Unapproved Users"];
 
   const token = useSelector((state) => state.auth.token);
- // const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
- const societyId =8;
+  const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
+ //const societyId =8;
 
   useEffect(() => {
     if (societyId) {

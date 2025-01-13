@@ -11,7 +11,6 @@ userRouter.get("/:id", userController.getUserById);
 userRouter.post("/create-resident/:societyId",userController.createSocietyResident);
 userRouter.get("/resident/:societyId" ,userController.getResidentBySocietyId);
 
-
 userRouter.post("/resident/approve", userController.approveUser);
 userRouter.post("/resident/reject", userController.rejectUser);
 
