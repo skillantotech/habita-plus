@@ -43,6 +43,7 @@ import TicketList from "./socityhelpdesk/ticketlist/TicketList";
 import ApprovalMatrixVisitor from "./visitormanagement/setup/approvalmatrix/ApprovalMatrixVisitor";
 import DefineVisitorCatagories from "./visitormanagement/setup/definevisitorcatagories/DefineVisitorCatagories";
 import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
+import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
 // import CreateResident from "./resident/create/CreateResident";
 // import CreateFloorInformation from "./floorinformation/create/CreateFloorInformation";
 // import CreateVendor from "./vendorinformation/create/CreateVendor";
@@ -119,6 +120,7 @@ const Admincontent = () => {
       <Route path="/discussion/list" element={<DiscussionDetails />} />
       <Route path="/gate/definegate" element={<DefineGate />} />
       <Route path="/gate/allocation" element={<GateAllocation />} />
+        <Route path="/gate/guardCreation" element={<GuardUserCreation />} />
       <Route path="/gate/view" element={<GateList />} />
       <Route path="/document/upload" element={<DocumentUploadFacility />} />
       <Route path="/document/view" element={<div>Document List</div>} />

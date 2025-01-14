@@ -133,19 +133,43 @@ const SideBarMenu = {
       name: "Gate Management",
       isAvailable: true,
      icon: GiGate ,
-      children: [
+     children: [
         {
           name: "Define Gate",
           url: "gate/definegate",
         },
         {
-          name: "Gate Allocation",
-          url: "gate/allocation",
+          name: "Guard Profile Creation",
+          url: "gate/guardCreation",
+          children:[
+            {
+              name: "Gate Allocation",
+              url:"gate/allocation"
+            }
+          ]
         },
         {
           name: "Gate List",
           url: "gate/view",
         },
+
+        // {
+        //   name: "Gate Allocation",
+        //   url: "gate/allocation",
+        // },
+        // {
+        //   name: "Gate List",
+        //   url: "gate/view",
+        // },
+
+        // {
+        //   name: "Approved Gate Users",
+        //   url: "gate/approvedusers",
+        // },
+        // {
+        //   name: "Deactivated Gate Users",
+        //   url: "gate/deactivatedusers"
+        // }
       ],
     },
     // {
