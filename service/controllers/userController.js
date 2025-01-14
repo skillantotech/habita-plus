@@ -1,7 +1,7 @@
 const { User } = require("../models");
 const { getAllUsersService, getUserByIdService } = require("../services/userService");
 const addressService = require("../services/addressService");
-
+const { Op } = require('sequelize');
 const createSocietyModerator = async (req, res) => {
   try {
     const { address, email, ...customerData } = req.body;
@@ -41,7 +41,6 @@ const createSocietyResident = async (req, res) => {
   try {
     const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
     const { societyId } = req.params;
-    
 
     if (!societyId) {
       return res.status(400).json({ message: "Society ID is required in the URL" });
@@ -88,10 +87,10 @@ const createSocietyResident = async (req, res) => {
   }
 };
 
+
 const getResidentBySocietyId = async (req, res) => {
   try {
    const { societyId } = req.params;
- //const societyId = req.params.societyId;
     if (!societyId) {
       return res.status(400).json({ message: "Society ID is required" });
     }
@@ -100,6 +99,8 @@ const getResidentBySocietyId = async (req, res) => {
       where: {
         societyId,
         isManagementCommittee: false,
+         isDeleted:0,
+        status: "active",
       },
       attributes: [
         "userId",
@@ -173,38 +174,29 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Approve User
 
 const approveUser = async (req, res) => {
-  const { userId, unitId } = req.body;
-
-  if (!userId || !unitId) {
-    return res.status(400).json({ message: "Both userId and unitId are required" });
-  }
-
+  const { userId } = req.body;
   try {
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    user.status = "active";
-    user.unitId = unitId;
+    
+    user.status = "active"; 
+    user.isDeleted=1;
     await user.save();
 
-    res.status(200).json({
-      message: "User approved successfully",
-      user: {
-        id: user.id,
-        status: user.status,
-        unitId: user.unitId,
-      },
-    });
+    res.status(200).json({ message: "User approved successfully", user });
   } catch (err) {
-    console.error("Error approving user:", err);
+    console.error("Error approving user:", err.message);
     res.status(500).json({ error: "Failed to approve user", details: err.message });
   }
 };
+
+
+
 
 // Reject User
 const rejectUser = async (req, res) => {
@@ -214,7 +206,8 @@ const rejectUser = async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found" });
 
     user.status = "inactive";
-    user.unitId = null;
+    //user.unitId = null;
+     user.isDeleted=0;
     await user.save();
 
     res.status(200).json({ message: "User rejected successfully", user });
@@ -224,87 +217,50 @@ const rejectUser = async (req, res) => {
 };
 
 
-// const getAllApprovedUsers = async (req, res) => {
-//   try {
-//     const approvedUsers = await User.findAll({
-//       where: {
-//         status: "active",
-//       },
-//     });
 
-//     if (approvedUsers.length === 0) {
-//       return res.status(404).json({ message: "No approved users found" });
-//     }
-
-//     res.status(200).json({
-//       message: "Approved users retrieved successfully",
-//       users: approvedUsers.map(user => ({
-//         id: user.id,
-//         status: user.status,
-//         unitId: user.unitId,
-//       })),
-//     });
-//   } catch (err) {
-//     console.error("Error retrieving approved users:", err);
-//     res.status(500).json({ error: "Failed to retrieve approved users", details: err.message });
-//   }
-// };
 const getAllApprovedUsers = async (req, res) => {
-  const { societyId } = req.params; // Get societyId from the request params
+ try {
+    const { societyId } = req.params;
 
-  try {
-    // Ensure that societyId is provided
     if (!societyId) {
-      return res.status(400).json({ error: "Society ID is required" });
+      return res.status(400).json({ message: "societyId is required" });
     }
-// if (!unitId) {
-//       return res.status(400).json({ error: "unitId  is required" });
-//     }
-    const approvedUsers = await User.findAll({
+
+    
+    const activeUsers = await User.findAll({
       where: {
-        status: "active",
-        societyId: societyId,
-      
+        societyId,  
+        status:"approveUser",
+        status: "active",  
+        isDeleted:1,
+        //unitId: { [Op.ne]: null },  
+        managementDesignation: "Resident", 
       },
     });
 
-    if (approvedUsers.length === 0) {
-      return res.status(404).json({ message: "No approved users found for this society" });
+    if (activeUsers.length === 0) {
+      return res.status(404).json({ message: "No approved users found" });
     }
 
-    res.status(200).json({
-      message: "Approved users retrieved successfully",
-      users: approvedUsers.map(user => ({
-       id: user.id,
-    firstName: user.firstName, 
-    lastName: user.lastName, 
-    roleId: user.roleId,     
-    mobileNumber: user.mobileNumber, 
-    status: user.status,      
-       
-      })),
-    });
-  } catch (err) {
-    console.error("Error retrieving approved users:", err);
-    res.status(500).json({ error: "Failed to retrieve approved users", details: err.message });
+    return res.status(200).json(activeUsers);
+  } catch (error) {
+    console.error("Error fetching approved users:", error);
+    return res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
 
+
 const getAllDeactiveUsers = async (req, res) => {
-  const { societyId } = req.params; // Get societyId from the request params
+  const { societyId } = req.params; 
 
   try {
-    // Ensure that societyId is provided
     if (!societyId) {
       return res.status(400).json({ error: "Society ID is required" });
     }
-
-    // Fetch deactivated users with the given criteria
     const deactiveUsers = await User.findAll({
       where: {
-        status: "inactive", // Status should be inactive
-        societyId: societyId, // Match the given societyId
-        unitId: null, // Ensure unitId is null
+        status: "inactive", 
+        societyId: societyId,   
       },
     });
 

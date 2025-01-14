@@ -6,11 +6,8 @@ import ReusableTable from "../../../../components/shared/ReusableTable";
 import UserHandler from "../../../../handlers/UserHandler";
 import { useSelector } from "react-redux";
 import ViewUserAllDetailsModal from "./ViewUserAllDetailsModal";
-
-
-
-
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DeactivateUser = () => {
   const [page, setPage] = useState(0);
@@ -21,7 +18,7 @@ const DeactivateUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
   const [selectedUser, setSelectedUser] = useState(null); // Selected user data
 
-  const { getAllDeactiveUserDataHandler } = UserHandler();
+  const { getAllDeactiveUserDataHandler ,approveUserHandler} = UserHandler();
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
 
@@ -82,7 +79,7 @@ const DeactivateUser = () => {
           </button>
           <button
             className="text-green-500 hover:text-green-700"
-            onClick={() => handleApproveUser(row.original.id)}
+            onClick={() => handleApproveUser(row.original.userId)}
           >
             <FaCheck className="text-lg" />
           </button>
@@ -91,15 +88,16 @@ const DeactivateUser = () => {
     },
   ];
 
-  const handleApproveUser = async (id) => {
+  const handleApproveUser = async (userId) => {
     try {
-      const result = await UserHandler.approveUserHandler(id);
-      console.log("User approved successfully:", result);
+       await approveUserHandler(userId);
+        toast.success("User rejected successfully!"); 
       fetchDeactiveUserList(); // Refresh the user list
-    } catch (err) {
-      // console.error("Failed to approve user:", err);
-    }
-  };
+   } catch (error) {
+       console.error("Error rejecting user:", error);
+       toast.error("Error rejecting user: " + (error.response?.data?.message || error.message));
+     }
+    };
 
   const handleView = (user) => {
     setSelectedUser(user); // Set the selected user data

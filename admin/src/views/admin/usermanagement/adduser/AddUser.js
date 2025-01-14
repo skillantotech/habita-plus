@@ -669,10 +669,10 @@ const submitProfileUser = async () => {
     console.log("FormData before submission:", updatedFormData);
 
     await createSocietyResidentUserHandler(societyId, updatedFormData); // Assuming this is where the backend call is happening
-    toast.success("User created successfully!");
+   // toast.success("User created successfully!");
   } catch (error) {
     console.error("Error creating resident:", error);
-    toast.error("Failed to create user.");
+    //toast.error("Failed to create user.");
   } finally {
     setFormData((prev) => ({ ...prev, isSubmitting: false })); // Reset submitting state
   }

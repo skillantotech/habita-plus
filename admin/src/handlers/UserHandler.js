@@ -36,7 +36,7 @@ const createSocietyResidentUserHandler = async (societyId, formData) => {
     }
   } catch (error) {
     console.error("Error creating resident:", error);
-    toast.error(error.response?.data?.message || error.message);
+    toast.error(error?.response?.data?.message || "An error occurred. Please try again.");
   }
 };
 
@@ -74,18 +74,32 @@ const getResidentBySocietyIdHandler = async (societyId, token, { page, pageSize 
     }
   };
 
-const approveUserHandler = async (userId, unitId) => {
+// const approveUserHandler = async (userId, unitId) => {
+//   try {
+//     const response = await approveUserService(userId, unitId, token);
+//     if (response.status === 200) {
+//       toast.success("User approved successfully!");
+  
+//     }
+//   } catch (error) {
+//     console.error("Error approving user:", error);
+//     toast.error(error.response?.data?.message || error.message);
+//   }
+// };
+
+const approveUserHandler = async (userId) => {
   try {
-    const response = await approveUserService(userId, unitId, token);
+    const response = await approveUserService(userId, token);
     if (response.status === 200) {
       toast.success("User approved successfully!");
-  
     }
   } catch (error) {
-    console.error("Error approving user:", error);
+    console.error("Error details:", error.response?.data || error.message);
     toast.error(error.response?.data?.message || error.message);
   }
 };
+
+
 
   const rejectUserHandler = async (userId) => {
     try {

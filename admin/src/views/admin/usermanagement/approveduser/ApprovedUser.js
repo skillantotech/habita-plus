@@ -5,6 +5,10 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import UserHandler from "../../../../handlers/UserHandler";
 import { useSelector } from "react-redux";
+import ViewUserAllDetailsModal from "../deactivateuser/ViewUserAllDetailsModal"; // Ensure correct import path
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
+
 
 const ApprovedUser = () => {
   const [page, setPage] = useState(0);
@@ -12,8 +16,11 @@ const ApprovedUser = () => {
   const [transformedData, setTransformedData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [selectedUser, setSelectedUser] = useState(null); // Selected user data
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-  const { getAllApprovedUserDataHandler } = UserHandler();
+  const { getAllApprovedUserDataHandler, rejectUserHandler } = UserHandler();
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
 
@@ -26,7 +33,7 @@ const ApprovedUser = () => {
     } else {
       console.error("Invalid parameters: Ensure societyId, page, and pageSize are valid.");
     }
-  }, [societyId, page, pageSize]);
+  }, [societyId, page, pageSize, searchQuery]); // Added searchQuery dependency
 
   const fetchApprovedUserList = async () => {
     try {
@@ -37,10 +44,18 @@ const ApprovedUser = () => {
 
       const result = await getAllApprovedUserDataHandler(societyId, token, { page, pageSize });
 
-      if (result && Array.isArray(result.users)) {
-        setTransformedData(result.users);
-        setTotal(result.total || result.users.length); // Use total if available, else fallback to length
-        setTotalPages(Math.ceil((result.total || result.users.length) / pageSize));
+      // Log the entire result to inspect its structure
+      console.log("API Response:", result);
+
+      // If result is an array, set it directly
+      if (Array.isArray(result)) {
+        const filteredUsers = result.filter(user =>
+          user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setTransformedData(filteredUsers);
+        setTotal(filteredUsers.length); // Assuming the length of the array is the total
+        setTotalPages(Math.ceil(filteredUsers.length / pageSize));
       } else {
         console.error("Unexpected API response structure:", result);
       }
@@ -49,45 +64,62 @@ const ApprovedUser = () => {
     }
   };
 
- const columns = [
-  {
-    Header: "Sl. No",
-    accessor: "serialNumber",
-    Cell: ({ row }) => page * pageSize + row.index + 1,
-  },
-  { Header: "First Name", accessor: "firstName" },
-  { Header: "Last Name", accessor: "lastName" },
-  { Header: "Role", accessor: "roleId" },
-  { Header: "Mobile No.", accessor: "mobileNumber" },
-  { Header: "Status", accessor: "status" },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: ({ row }) => (
-      <div className="flex space-x-4">
-        <button
-          className="text-yellow-500 hover:text-yellow-700"
-          onClick={() => handleView(row.original.id)}
-        >
-          <FaEye className="text-lg" />
-        </button>
-        <button
-          className="text-red-500 hover:text-red-700"
-          onClick={() => handleDelete(row.original.id)}
-        >
-          <FaTimes className="text-lg" />
-        </button>
-      </div>
-    ),
-  },
-];
-  const handleView = (id) => {
-    console.log("View user details with ID:", id);
+  const columns = [
+    {
+      Header: "Sl. No",
+      accessor: "serialNumber",
+      Cell: ({ row }) => page * pageSize + row.index + 1,
+    },
+    { Header: "First Name", accessor: "firstName" },
+    { Header: "Last Name", accessor: "lastName" },
+    { Header: "Role", accessor: "roleId" },
+    { Header: "Mobile No.", accessor: "mobileNumber" },
+    { Header: "Status", accessor: "status" },
+    {
+      Header: "Action",
+      accessor: "action",
+      Cell: ({ row }) => (
+        <div className="flex space-x-4">
+          <button
+            className="text-yellow-500 hover:text-yellow-700"
+            onClick={() => handleView(row.original)} // Passing user object directly
+          >
+            <FaEye className="text-lg" />
+          </button>
+          <button
+            className="text-red-500 hover:text-red-700"
+            onClick={() =>handleDelete(row.original.userId)}  // Passing user ID to handleDelete
+          >
+            <FaTimes className="text-lg" />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  const handleView = (user) => {
+    setSelectedUser(user); // Set the selected user data
+    setIsModalOpen(true); // Open the modal
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete user with ID:", id);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
   };
+
+const handleDelete = async (userId) => {
+  console.log("Rejecting user with ID:", userId);
+  
+  try {
+    await rejectUserHandler(userId);
+    toast.success("User rejected successfully!"); 
+    fetchApprovedUserList(); 
+  } catch (error) {
+    console.error("Error rejecting user:", error);
+    toast.error("Error rejecting user: " + (error.response?.data?.message || error.message));
+  }
+};
+
 
   return (
     <div>
@@ -105,6 +137,8 @@ const ApprovedUser = () => {
                 type="text"
                 placeholder="Search"
                 className="px-4 py-4 border w-full border-gray-300 rounded-md focus:outline-none mb-4"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery
               />
               <FaSearch className="absolute right-7 top-5 text-lg text-gray-500" />
             </div>
@@ -122,6 +156,14 @@ const ApprovedUser = () => {
           />
         </div>
       </div>
+
+      {isModalOpen && selectedUser && (
+        <ViewUserAllDetailsModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          formData={selectedUser}
+        />
+      )}
     </div>
   );
 };

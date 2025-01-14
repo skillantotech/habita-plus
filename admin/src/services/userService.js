@@ -65,12 +65,27 @@ export const getAllUserDataService = (data, token) => {
   });
 };
 
-export const approveUserService = (userId, unitId, token) => {
+// export const approveUserService = (userId, unitId, token) => {
+//   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/approve`;
+
+//   return axios.post(
+//     url,
+//     { userId, unitId },  // Ensure userId and unitId are passed here
+//     {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+// };
+
+export const approveUserService = (userId, token) => {
   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/approve`;
 
-  return axios.post(
+   return axios.post(
     url,
-    { userId, unitId },  // Ensure userId and unitId are passed here
+    { userId }, 
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -79,6 +94,7 @@ export const approveUserService = (userId, unitId, token) => {
     }
   );
 };
+
 export const rejectUserService = (userId, token) => {
   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/users/resident/reject`;
 
