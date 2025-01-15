@@ -72,6 +72,7 @@ app.use("/api/refusergroup", refUserGroupRouter);
 
 // gate routes
 app.use("/api/gate", gateRout); 
+
 // gate allocation router
 app.use("/api/gateallocation",gateAllocationRouter);
 

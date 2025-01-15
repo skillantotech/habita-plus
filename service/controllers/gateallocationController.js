@@ -1,115 +1,147 @@
 const GateAllocation = require('../models/GateAllocation');
+const { sendErrorResponse, sendSuccessResponse } = require('../utils/response');
+const { Op } = require('sequelize');
 
-// Create a new gate allocation entry with file upload
+
 exports.createGateAllocation = async (req, res) => {
     try {
-        const { firstName, lastName, societyId, role, email, mobileNo } = req.body;
 
-        // Save file paths if files are uploaded
-        const profilePhoto = req.files?.profilePhoto ? req.files.profilePhoto[0].path : null;
-        const idProof = req.files?.idProof ? req.files.idProof[0].path : null;
+        console.log("Controller Allert!!");
+        let body = req.body;
 
-        // Create a new gate allocation record
-        const newEntry = await GateAllocation.create({
-            firstName,
-            lastName,
-            profilePhoto,
-            idProof,
-            societyId,
-            role,
-            email,
-            mobileNo
+        if (!Array.isArray(body)) {
+            body = [body];
+        }
+
+        // Validation Before Entry
+        for (const allocation of body) {
+            const { societyId, gate, allocatedTo } = allocation;
+            if (!societyId || !gate || !allocatedTo) {
+                return sendErrorResponse(
+                    res,
+                    "Gate Number and Securety are Required!!",
+                    400
+                );
+            }
+        }
+
+        // Check for existing allocation
+        const existingAllocations = await GateAllocation.findAll({
+            where: {
+                [Op.or]: body.map(allocation => ({
+                    societyId: allocation.societyId,
+                    gateId: allocation.gate,
+                    profileId: allocation.allocatedTo
+                }))
+            }
         });
 
-        res.status(201).json({ message: 'Gate allocation created successfully', data: newEntry });
+        if (existingAllocations.length > 0) {
+            return sendErrorResponse(
+                res,
+                "Duplicate entry found for the given combination of Gate and Guard.",
+                400,
+            );
+        }
+
+        // Create Multiple Allocation
+        const allocatedGates = await Promise.all(
+            body.map(allocation => {
+                return GateAllocation.create({
+                    societyId: allocation.societyId,
+                    gateId: allocation.gate,
+                    profileId: allocation.allocatedTo
+                })
+            })
+        );
+
+        return sendSuccessResponse(
+            res,
+            "Gate Allocation Successfully",
+            allocatedGates,
+            201
+        );
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error in gate allocation:", error);
+        return sendErrorResponse(res, "Internal server error", 500, error.message);
     }
 };
 
-// Fetch all gate allocations
 exports.getAllGateAllocations = async (req, res) => {
     try {
-        const allocations = await GateAllocation.findAll();
-        res.status(200).json(allocations);
+        const gateAllocations = await GateAllocation.findAll();
+
+        if (!gateAllocations || gateAllocations.length === 0) {
+            return res.status(404).json({ message: 'Gate Allocations not found' });
+        }
+
+        // Check if any allocation has missing profileId or gateId
+        const invalidAllocations = gateAllocations.filter(allocation => !allocation.profileId || !allocation.gateId);
+
+        if (invalidAllocations.length > 0) {
+            return res.status(400).json({
+                message: 'Invalid allocations found',
+                invalidAllocations
+            });
+        }
+
+        res.status(200).json(gateAllocations);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-
-
-// Fetch a specific gate allocation by ID
 exports.getGateAllocationById = async (req, res) => {
     try {
-        const allocation = await GateAllocation.findByPk(req.params.id);
-        if (!allocation) {
-            return res.status(404).json({ message: 'Gate allocation not found' });
+        const { id } = req.params;
+        const gateAllocation = await GateAllocation.findByPk(id);
+
+        if (!gateAllocation) {
+            return res.status(404).json({ message: 'Gate Allocation not found' });
         }
-        res.status(200).json(allocation);
+
+        res.status(200).json(gateAllocation);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Fetch gate allocations by foreign key (societyId)
-exports.getGateAllocationsBySocietyId = async (req, res) => {
-    try {
-        const { societyId } = req.params; // Extract the societyId from the request parameters
-
-        // Query all gate allocations where societyId matches
-        const allocations = await GateAllocation.findAll({
-            where: { societyId },
-        });
-
-        // Check if any allocations are found
-        if (allocations.length === 0) {
-            return res.status(404).json({ message: 'No gate allocations found for the specified society' });
-        }
-
-        res.status(200).json(allocations);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-// Update a gate allocation record
 exports.updateGateAllocation = async (req, res) => {
     try {
-        const allocation = await GateAllocation.findByPk(req.params.id);
-        if (!allocation) {
-            return res.status(404).json({ message: 'Gate allocation not found' });
+        const { id } = req.params;
+        const { societyId, gateId, profileId } = req.body;
+
+        const gateAllocation = await GateAllocation.findByPk(id);
+
+        if (!gateAllocation) {
+            return res.status(404).json({ message: 'Gate Allocation not found' });
         }
 
-        // Handle file uploads if available
-        const profilePhoto = req.files?.profilePhoto ? req.files.profilePhoto[0].path : allocation.profilePhoto;
-        const idProof = req.files?.idProof ? req.files.idProof[0].path : allocation.idProof;
-
-        // Update the gate allocation record
-        const updatedAllocation = await allocation.update({
-            ...req.body,
-            profilePhoto,
-            idProof
+        await gateAllocation.update({
+            societyId,
+            gateId,
+            profileId,
         });
 
-        res.status(200).json({ message: 'Gate allocation updated successfully', data: updatedAllocation });
+        res.status(200).json(gateAllocation);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Delete a gate allocation record
 exports.deleteGateAllocation = async (req, res) => {
     try {
-        const allocation = await GateAllocation.findByPk(req.params.id);
-        if (!allocation) {
-            return res.status(404).json({ message: 'Gate allocation not found' });
+        const { id } = req.params;
+
+        const gateAllocation = await GateAllocation.findByPk(id);
+
+        if (!gateAllocation) {
+            return res.status(404).json({ message: 'Gate Allocation not found' });
         }
 
-        await allocation.destroy();
-        res.status(200).json({ message: 'Gate allocation deleted successfully' });
+        await gateAllocation.destroy();
+        res.status(204).send();
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
-

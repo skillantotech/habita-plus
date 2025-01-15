@@ -6,7 +6,7 @@ import Button from "../../../../components/ui/Button";
 import { FaPlus } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 import toast from "react-hot-toast";
-import GateHandler from "../../../../handlers/GateHandler"
+import GateHandler from "../../../../handlers/GateHandler";
 
 const DefineGate = () => {
   const [gateName, setGateName] = useState("");
