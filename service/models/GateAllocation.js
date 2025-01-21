@@ -51,13 +51,3 @@ GateAllocation.belongsTo(JobProfile, { foreignKey: "profileId" });
 
 module.exports = GateAllocation;
 
-
-
-  
-  
-
-
-
-
-
-

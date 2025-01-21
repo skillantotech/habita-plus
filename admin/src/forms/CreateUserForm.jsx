@@ -38,7 +38,36 @@ const CreateUserForm = () => {
   useEffect(() => {
     getUserRoles();
   }, []);
-
+const validateForm = () => {
+    const requiredFields = [
+      "salutation",
+      "firstName",
+      "lastName",
+      "mobileNumber",
+      "alternateNumber",
+      "email",
+      "addressLine1",
+      "addressLine2",
+      "state",
+      "city",
+      "country",
+      "zipCode",
+      "roleId",
+      "remark",
+      "societyId",
+    ];
+    let isValid = true;
+    requiredFields.forEach((field) => {
+      if (!formData[field] || (formData[field] && formData[field].trim() === "")) {
+        isValid = false;
+        dispatch({
+          type: "societyModeratorForm/setFieldError",
+          payload: { name: field, error: "This field is required." },
+        });
+      }
+    });
+    return isValid;
+  };
   const fetchSocietiesData = async () => {
     try {
       const result = await getCustomerHandler();
@@ -157,16 +186,16 @@ const CreateUserForm = () => {
           <Input
             label={<><span> First Name</span><span className="text-red-500 font-bold">*</span></>}
             type="text"
-            placeholder="Enter Your First Name"
+            placeholder="Enter First Name"
             name="firstName"
             value={formData.firstName}
             onChange={handleInputChange}
             size="lg"
           />
           <Input
-            label="Last Name"
+            label={<><span>Last Name</span><span className="text-red-500 font-bold">*</span></>}
             type="text"
-            placeholder="Enter Your Last Name"
+            placeholder="Enter Last Name"
             name="lastName"
             value={formData.lastName}
             onChange={handleInputChange}
@@ -177,7 +206,7 @@ const CreateUserForm = () => {
         {/* Contact Details */}
         <div className="grid grid-cols-4 items-center gap-5">
           <Select
-            label="Country Code"
+            label={<><span> Country Code</span><span className="text-red-500 font-bold">*</span></>}
             options={selectOptions.countryCodes}
             value={formData.countryCode}
             onChange={handleInputChange}
@@ -185,9 +214,9 @@ const CreateUserForm = () => {
             className="py-[14px]"
           />
           <Input
-            label="Mobile no. (Primary)"
+            label={<><span> Mobile No.(Primary)</span><span className="text-red-500 font-bold">*</span></>}
             type="number"
-            placeholder="Enter Your Mobile Number"
+            placeholder="Enter Mobile Number"
             name="mobileNumber"
             value={formData.mobileNumber}
             onChange={handleInputChange}
@@ -195,7 +224,7 @@ const CreateUserForm = () => {
           />
 
           <Select
-            label="Alternate Country Code"
+            label={<><span> Country Code</span><span className="text-red-500 font-bold">*</span></>}
             options={selectOptions.countryCodes}
             value={formData.alternateCountryCode}
             onChange={handleInputChange}
@@ -203,18 +232,18 @@ const CreateUserForm = () => {
             className="py-[14px]"
           />
           <Input
-            label="Alternate Mobile no."
+            label={<><span> Alternate Mobile No.</span><span className="text-red-500 font-bold">*</span></>}
             type="number"
-            placeholder="Enter Your Alternate Mobile Number"
+            placeholder="Enter Alternate Mobile Number"
             name="alternateNumber"
             value={formData.alternateNumber}
             onChange={handleInputChange}
             size="lg"
           />
           <Input
-            label="Email"
+            label={<><span>Email</span><span className="text-red-500 font-bold">*</span></>}
             type="email"
-            placeholder="Enter Your Email"
+            placeholder="Enter Email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
@@ -238,18 +267,18 @@ const CreateUserForm = () => {
           </div>
           <div className="grid grid-cols-3 gap-5 items-center">
             <Input
-              label="Address line 1"
+              label={<><span>Address Line 1</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter Your Address"
+              placeholder="Enter Address"
               name="addressLine1"
               value={formData?.address?.addressLine1}
               onChange={handleInputChange}
               size="lg"
             />
             <Input
-              label="Address line 2"
+              label={<><span> Address Line 2</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter Your Address"
+              placeholder="Enter Address"
               name="addressLine2"
               value={formData.address?.addressLine2}
               onChange={handleInputChange}
@@ -258,36 +287,36 @@ const CreateUserForm = () => {
           </div>
           <div className="grid grid-cols-3 gap-5 items-center">
             <Input
-              label="State"
+              label={<><span>State</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter Your State"
+              placeholder="Enter State"
               name="state"
               value={formData.address.state}
               onChange={handleInputChange}
               size="lg"
             />
             <Input
-              label="City"
+              label={<><span>City</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter Your City"
+              placeholder="Enter City"
               name="city"
               value={formData.address.city}
               onChange={handleInputChange}
               size="lg"
             />
             <Input
-              label="country"
+              label={<><span>Country</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter Your Country "
+              placeholder="Enter Country "
               name="country"
-              value={formData.address.city}
+              value={formData.address.country}
               onChange={handleInputChange}
               size="lg"
             />
             <Input
-              label="Zip Code"
+              label={<><span>Zip Code</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter Your PIN"
+              placeholder="Enter PIN"
               name="zipCode"
               value={formData.address.zipCode}
               onChange={handleInputChange}
@@ -299,7 +328,7 @@ const CreateUserForm = () => {
         {/* Role and Remark */}
         <div className="grid grid-cols-2 gap-5">
           <Select
-            label="Role"
+            label={<><span>Role</span><span className="text-red-500 font-bold">*</span></>}
             options={selectOptions.userRoles}
             value={formData.roleId}
             onChange={handleInputChange}
@@ -309,7 +338,7 @@ const CreateUserForm = () => {
             className="py-[14px]"
           />
           <Input
-            label="Remarks"
+            label={<><span> Remarks </span><span className="text-red-500 font-bold">*</span></>}
             type="text"
             placeholder="Enter Any Remarks"
             name="remark"
@@ -318,7 +347,7 @@ const CreateUserForm = () => {
             size="lg"
           />
           <Select
-            label="Select Society"
+            label={<><span>Select Society</span><span className="text-red-500 font-bold">*</span></>}
             options={selectOptions.societyLists}
             value={formData.societyId}
             onChange={handleInputChange}

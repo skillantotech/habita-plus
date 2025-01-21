@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Unit } = require("../models");
 const { getAllUsersService, getUserByIdService } = require("../services/userService");
 const addressService = require("../services/addressService");
 const { Op } = require('sequelize');
@@ -37,9 +37,59 @@ const createSocietyModerator = async (req, res) => {
   }
 };
 
+// const createSocietyResident = async (req, res) => {
+//   try {
+//     const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
+//     const { societyId } = req.params;
+
+//     if (!societyId) {
+//       return res.status(400).json({ message: "Society ID is required in the URL" });
+//     }
+
+//     const existingUser = await User.findOne({ where: { email } });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "Email already in use" });
+//     }
+
+//     const addressData = await addressService.createAddress(address);
+//     const addressId = addressData.addressId;
+
+//     const password = "Himansu"; // Replace with a secure password strategy
+
+//     const residentDetails = {
+//       salutation,
+//       firstName,
+//       lastName,
+//       password,
+//       countryCode: address.countryCode || 91,
+//       mobileNumber,
+//       alternateNumber,
+//       email,
+//       roleId,
+//       livesHere: true,
+//       primaryContact: true,
+//       isManagementCommittee: false,
+//       managementDesignation: "Resident",
+//       status: "active",
+//       addressId,
+//       societyId,
+//     };
+
+//     const result = await User.create(residentDetails);
+
+//     res.status(201).json({
+//       message: "Society Resident created successfully",
+//       result,
+//     });
+//   } catch (error) {
+//     console.error("Error creating society resident:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
 const createSocietyResident = async (req, res) => {
   try {
-    const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
+    const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId, unitId } = req.body;
     const { societyId } = req.params;
 
     if (!societyId) {
@@ -55,6 +105,14 @@ const createSocietyResident = async (req, res) => {
     const addressId = addressData.addressId;
 
     const password = "Himansu"; // Replace with a secure password strategy
+
+    let unit = null;
+    if(unitId) {
+      unit = await Unit.findByPk(unitId);
+      if(!unit){
+        return res.status(400).json({ message: "Invalid unit ID" });
+      }
+    }
 
     const residentDetails = {
       salutation,
@@ -73,6 +131,7 @@ const createSocietyResident = async (req, res) => {
       status: "active",
       addressId,
       societyId,
+     unitId: unit ? unit.unitId : null,
     };
 
     const result = await User.create(residentDetails);
@@ -87,6 +146,57 @@ const createSocietyResident = async (req, res) => {
   }
 };
 
+// const getResidentBySocietyId = async (req, res) => {
+//   try {
+//     const { societyId } = req.params;
+
+//     if (!societyId) {
+//       return res.status(400).json({ message: "Society ID is required" });
+//     }
+
+//     const residents = await User.findAll({
+//       where: {
+//         societyId,
+//         isManagementCommittee: false,
+//       },
+//       attributes: [
+//         "salutation",
+//         "firstName",
+//         "lastName",
+//         "email",
+//         "mobileNumber",
+//         "roleId",
+//         "status",
+//         "addressId",
+//         "primaryContact",
+//         "livesHere",
+//         "unitId",
+//       ],
+//     include:[
+//       {
+//         model:Unit,
+//         attributes:["unitId","unitName","unitNumber","unitsize"],
+//       },
+//     ],
+//   });
+
+//     if (!residents || residents.length === 0){
+//       return res.status(404).json({ message: "No residents found for the given Society ID" });
+//     }
+
+//     if (!residents || residents.length === 0) {
+//       return res.status(404).json({ message: "No residents found for the given Society ID" });
+//     }
+
+//     res.status(200).json({
+//       message: "Residents fetched successfully",
+//       residents,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching residents:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 const getResidentBySocietyId = async (req, res) => {
   try {

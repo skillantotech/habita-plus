@@ -35,4 +35,4 @@ function ViewGateUserDetails({ isOpen, onClose, formData }) {
     )
 }
 
-export default ViewGateUserDetails
+export default ViewGateUserDetails;

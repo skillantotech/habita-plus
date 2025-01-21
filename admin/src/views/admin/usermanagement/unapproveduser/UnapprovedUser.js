@@ -29,6 +29,7 @@ const UnapprovedUser = () => {
 
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
+   const userId = useSelector((state) => state.auth.user?.userId);
 
   useEffect(() => {
     if (societyId) {

@@ -84,7 +84,7 @@ const ApprovalMatrixTable = () => {
   }, [page, pageSize]);
 
   const columns = [
-    { Header: "Management Committee", accessor: "firstName" },
+    { Header: "First Name", accessor: "firstName" },
     { Header: "Role", accessor: "managementDesignation" },
     { Header: "Actions", accessor: "actions" },
   ];

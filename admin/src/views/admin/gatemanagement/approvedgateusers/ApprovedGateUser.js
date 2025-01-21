@@ -8,15 +8,21 @@ import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import ViewGateUserDetails from "./ViewGateUserDetails";
 
+import GateAllocationHandler from "../../../../handlers/GateAllocationHandler";
+
+import GateListHandler from "../../../../handlers/GateListHandler";
+
 const ApprovedGateUser = () => {
   const paths = ["Gate Management", "Approved Gate Users"];
   const Heading = ["Approved Gate Users"];
 
   const { getGateUserList } = GateUserListnHandler();
-  const [data, setData] = useState([]);
+  const { getGateAllocationList } = GateAllocationHandler();
+  const { getGateListHandler } = GateListHandler();
 
   const [guardProfile, setGuardProfile] = useState([]);
-
+  const [gateAllocations, setGateAllocations] = useState([]);
+  const [gateList, setGateList] = useState([]);
 
   // on View Handler
   const [viewmodal, setViewModal] = useState(false);
@@ -45,7 +51,7 @@ const ApprovedGateUser = () => {
     }));
   };
 
-  // console.log(guardProfile[0].firstName);
+  // console.log(guardProfile);
 
   // Pagination states
   const [pageIndex, setPageIndex] = useState(0);
@@ -59,9 +65,54 @@ const ApprovedGateUser = () => {
       setGuardProfile(transformSecurityUserData(res));
       setTotalCount(res.length);
     })
+
+    getGateAllocationList().then((res) => {
+      console.log(res);
+      setGateAllocations(res);
+
+    })
+
+    getGateListHandler().then((res)=>{
+      console.log(res.data.data);
+      setGateList(res.data.data);
+
+    })
+
   }, [])
 
   // console.log(totalCount);
+  console.log("Guard Profile: ", guardProfile);
+  console.log("Gate Allocation Details: ",gateAllocations);
+  console.log("Gate List: ", gateList);
+
+
+  // Combining Data
+  const combineData = ({ guardProfile, gateAllocations, gateList }) => {
+    if (!Array.isArray(guardProfile) || !Array.isArray(gateAllocations) || !Array.isArray(gateList)) {
+      console.error("Invalid input: All inputs must be arrays.");
+      return [];
+    }
+  
+    return gateAllocations.map(allocation => {
+      const guard = guardProfile.find(user => user.profileId === allocation.profileId);
+      const gate = gateList.find(gate => gate.gateId === allocation.gateId);
+  
+      return {
+        profileId: allocation.profileId,
+        firstName: guard?.firstName || "N/A",
+        lastName: guard?.lastName || "N/A",
+        gateId: allocation.gateId,
+        email: guard?.email,
+        mobileNo: guard?.mobileNo,
+        gateName: gate?.gateName || "N/A",
+        gateNumber: gate?.gateNumber || "N/A",
+      };
+    });
+  };
+
+  const Combined = combineData({ guardProfile, gateAllocations, gateList });
+  console.log("Combined Data: ", Combined);
+
 
 
   const onViewHandler = (idValue) => {
@@ -82,7 +133,8 @@ const ApprovedGateUser = () => {
   const columns = [
     { Header: "FIRST NAME", accessor: "firstName" },
     { Header: "LAST NAME", accessor: "lastName" },
-    { Header: "GATE NO.", accessor: "gateNo" },
+    { Header: "GATE NO.", accessor: "gateNumber" },
+    { Header: "GATE Name", accessor: "gateName" },
     { Header: "MOBILE NO.", accessor: "mobileNo" },
     { Header: "EMAIL", accessor: "email" },
     {
@@ -109,7 +161,7 @@ const ApprovedGateUser = () => {
             Approved Users
           </div> */}
           <div className="flex flex-row font-sans text-lg font-medium text-gray-700">
-            TOTAL 12 GATES AND 19 USERS
+            TOTAL 12 GATES AND {totalCount} USERS
           </div>
           <div className="flex flex-row mt-4">
             <div className="relative w-full">
@@ -125,7 +177,7 @@ const ApprovedGateUser = () => {
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
               <ReusableTable
                 columns={columns}
-                data={guardProfile}
+                data={Combined}
                 pageIndex={pageIndex}
                 pageSize={pageSize}
                 totalCount={totalCount}

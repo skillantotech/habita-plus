@@ -734,7 +734,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
           <h3 className="font-semibold text-lime">Customer Info</h3>
           <div className="mt-3 grid grid-cols-3 gap-5 items-center">
             <Input
-              label="Customer Name"
+              label={<><span>Customer Name</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
               placeholder="Enter customer name"
               size="lg"
@@ -744,7 +744,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode !== "create"}
             />
             <Select
-              label="Select Customer Type"
+              label={<><span>Select Customer Type</span><span className="text-red-500 font-bold">*</span></>}
               options={customerTypeOptions}
               value={formData.customerType}
               onChange={handleInputChange}
@@ -755,7 +755,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode !== "create"}
             />
             <Select
-              label="Select Subscription Plan"
+              label={<><span>Select Subscription Plan</span><span className="text-red-500 font-bold">*</span></>}
               options={subscriptionPlans}
               value={formData.subscriptionId}
               onChange={handleInputChange}
@@ -766,7 +766,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode === "view"}
             />
             <Input
-              label="Establisment Year"
+              label={<><span>Establisment Year</span><span className="text-red-500 font-bold">*</span></>}
               type="number"
               placeholder="Enter year"
               size="lg"
@@ -777,7 +777,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
             />
             {formData.customerType === "society" && (
               <Select
-                label="Select Society Type"
+                label={<><span>Select Society Type</span><span className="text-red-500 font-bold">*</span></>}
                 options={societyTypeOptions}
                 value={formData.societyType}
                 onChange={handleInputChange}
@@ -807,7 +807,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
             <Input
               label="Builder Details"
               type="text"
-              placeholder="Enter Builder Scocil Link"
+              placeholder="Enter Builder Social Link"
               size="lg"
               name="builderSocialLink"
               value={formData.builderSocialLink}
@@ -823,7 +823,7 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
           </h3>
           <div className="mt-3 grid grid-cols-3 gap-5 items-center">
             <Input
-              label="Address Line 1"
+              label={<><span>Address Line 1</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
               placeholder="Enter address line 1"
               size="lg"
@@ -833,9 +833,9 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode === "view"}
             />
             <Input
-              label="Address line 2"
+              label={<><span>Address Line 2 </span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter your address"
+              placeholder="Enter address line 2"
               size="lg"
               name="street"
               value={formData.address.street}
@@ -845,9 +845,9 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
           </div>
           <div className="mt-3 grid grid-cols-3 gap-5 items-center">
             <Input
-              label="City"
+              label={<><span>City</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter your city"
+              placeholder="Enter city"
               size="lg"
               name="city"
               value={formData.address.city}
@@ -855,9 +855,9 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode === "view"}
             />
             <Input
-              label="State"
+              label={<><span>State</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter your state"
+              placeholder="Enter state"
               size="lg"
               name="state"
               value={formData.address.state}
@@ -865,9 +865,9 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode === "view"}
             />
             <Input
-              label="Pin"
+              label={<><span>Pin</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter your pin"
+              placeholder="Enter pin"
               size="lg"
               name="zipCode"
               value={formData.address.zipCode}
@@ -881,9 +881,9 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
           <h3 className="font-semibold text-lime">Society Contact Details</h3>
           <div className="mt-3 grid grid-cols-3 gap-5 items-center">
             <Input
-              label="Phone"
+              label={<><span>Mobile Number</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter your phone number"
+              placeholder="Enter mobile number"
               size="lg"
               name="phone"
               value={formData.phone}
@@ -891,9 +891,9 @@ const SocietyCreateForm = ({ onSubmit, onEditHandler }) => {
               readOnly={formMode === "view"}
             />
             <Input
-              label="Email"
+              label={<><span>Email</span><span className="text-red-500 font-bold">*</span></>}
               type="text"
-              placeholder="Enter your email"
+              placeholder="Enter email"
               size="lg"
               name="email"
               value={formData.email}

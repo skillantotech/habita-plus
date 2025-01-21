@@ -4,7 +4,31 @@ import { GiGate } from 'react-icons/gi';
 
 const SideBarMenu = {
   society_moderator: [
+   
     {
+      name: "Building Management",
+      isAvailable: true,
+       icon: FaBuilding,
+      children: [
+        {
+          name: "Define Structure",
+          url: "unit/structer",
+        },
+        {
+          name: "Define Unit",
+          url: "unit/create",
+        },
+        {
+          name: "Unit List",
+          url: "unit/view",
+        },
+        // {
+        //   name: "Report",
+        //   url: "unit/report",
+        // },
+      ],
+    },
+     {
       name: "User Management",
       isAvailable: true,
        icon: FaUserAlt,
@@ -38,29 +62,6 @@ const SideBarMenu = {
         //   name: "User Report",
         //   url: "user/access",
         //   path: ["user", "setting"],
-        // },
-      ],
-    },
-    {
-      name: "Building Management",
-      isAvailable: true,
-       icon: FaBuilding,
-      children: [
-        {
-          name: "Define Structure",
-          url: "unit/structer",
-        },
-        {
-          name: "Define Unit",
-          url: "unit/create",
-        },
-        {
-          name: "Unit List",
-          url: "unit/view",
-        },
-        // {
-        //   name: "Report",
-        //   url: "unit/report",
         // },
       ],
     },
@@ -162,10 +163,10 @@ const SideBarMenu = {
         //   url: "gate/view",
         // },
 
-        // {
-        //   name: "Approved Gate Users",
-        //   url: "gate/approvedusers",
-        // },
+        {
+          name: "Approved Gate Users",
+          url: "gate/approvedusers",
+        },
         // {
         //   name: "Deactivated Gate Users",
         //   url: "gate/deactivatedusers"

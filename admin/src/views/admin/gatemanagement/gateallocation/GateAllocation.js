@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import Button from "../../../../components/ui/Button";
 import GateListHandler from "../../../../handlers/GateListHandler";
 import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
+import GateAllocationHandler from "../../../../handlers/GateAllocationHandler";
 import toast from "react-hot-toast";
 
 function GateAllocation() {
@@ -20,6 +21,7 @@ function GateAllocation() {
 
     const { getGateListHandler } = GateListHandler();
     const { getGateUserList } = GateUserListnHandler();
+    const { makeGateAllocation } = GateAllocationHandler();
 
     const allocateGateHandler = () => {
         // Store current values to use in allocation
@@ -127,6 +129,24 @@ function GateAllocation() {
     // console.log("Gate user Data: ", securityUserData);
 
 
+    const handleSubmit = async() => {
+        console.log("Form Submit called!!");
+        if(allocatedGate.length === 0){
+            toast.error("Plz Add atleast one gate!");
+            return;
+        }
+
+
+        try {
+            await makeGateAllocation(allocatedGate);
+            setAllocatedGate([]);
+            // toast.success("Gate added Successfully!");
+        }catch(error){
+            console.log("Error in form submition: ", error);
+        }
+    };
+
+
     return (
         <>
             <UrlPath paths={paths} />
@@ -202,7 +222,7 @@ function GateAllocation() {
 
                 <div className="max-w-md mx-auto mt-6 flex justify-center">
                     <Button
-                        // onClick={handleSubmit} 
+                        onClick={handleSubmit} 
                         size="md">
                         Submit
                     </Button>
@@ -213,4 +233,4 @@ function GateAllocation() {
     )
 }
 
-export default GateAllocation
+export default GateAllocation;

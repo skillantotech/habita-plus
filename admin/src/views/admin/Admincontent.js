@@ -18,6 +18,7 @@ import DiscussionDetails from "./discussionforum/discussiondetails/DiscussionDet
 import DefineGate from "./gatemanagement/definegate/DefineGate";
 import GateAllocation from "./gatemanagement/gateallocation/GateAllocation";
 import GateList from "./gatemanagement/gatelist/GateList";
+
 import DocumentUploadFacility from "./documentmanagement/documentuploadfacility/DocumentUploadFacility";
 import AddNewVendor from "./vendormanagement/addnewvendor/AddNewVendor";
 import AddNewParkingSlot from "./parkingmanagement/addnewparkingslot/AddNewParkingSlot";
@@ -44,6 +45,8 @@ import ApprovalMatrixVisitor from "./visitormanagement/setup/approvalmatrix/Appr
 import DefineVisitorCatagories from "./visitormanagement/setup/definevisitorcatagories/DefineVisitorCatagories";
 import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
 import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
+//import ViewGateUserDetails from "./gatemanagement/approvedgateusers/ViewGateUserDetails";
+import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
 // import CreateResident from "./resident/create/CreateResident";
 // import CreateFloorInformation from "./floorinformation/create/CreateFloorInformation";
 // import CreateVendor from "./vendorinformation/create/CreateVendor";
@@ -122,6 +125,7 @@ const Admincontent = () => {
       <Route path="/gate/allocation" element={<GateAllocation />} />
         <Route path="/gate/guardCreation" element={<GuardUserCreation />} />
       <Route path="/gate/view" element={<GateList />} />
+      <Route path="/gate/approvedusers" element={<ApprovedGateUser/>} />
       <Route path="/document/upload" element={<DocumentUploadFacility />} />
       <Route path="/document/view" element={<div>Document List</div>} />
 

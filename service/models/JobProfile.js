@@ -292,24 +292,19 @@ const JobProfile = sequelize.define('JobProfile', {
     },
     profilePhoto: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false,   // For temp period
     },
     idProof: {
         type: DataTypes.STRING,
-        allowNull: false,
-       
+        allowNull: false,  // For temp Period
     },
-    // email: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    //     unique: true,
-    //     validate: {
-    //         isEmail: true,
-    //     },
-    // },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
+        // unique: true,
+        validate: {
+            isEmail: true,
+        },
     },
     mobileNo: {
         type: DataTypes.STRING,
