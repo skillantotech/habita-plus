@@ -2,6 +2,7 @@ const GateAllocation = require('../models/GateAllocation');
 const { sendErrorResponse, sendSuccessResponse } = require('../utils/response');
 const { Op } = require('sequelize');
 
+const Customer = require("../models");
 
 exports.createGateAllocation = async (req, res) => {
     try {
@@ -103,6 +104,38 @@ exports.getGateAllocationById = async (req, res) => {
         res.status(200).json(gateAllocation);
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+exports.getGateAllocationsBySocietyId = async (req, res) => {
+    try{
+        console.log(req);
+        const { societyId } = req.params;
+
+        if(!societyId){
+            return sendErrorResponse(res, "Society Id not found", 400);
+        }
+
+        console.log("By SocietyID:",societyId);
+        console.log(typeof(societyId));
+
+        const gateAllocations = await GateAllocation.findAll({
+            where: {societyId},
+            // include:[
+            //     {model:Customer},
+            // ],
+        });
+
+
+        if(gateAllocations.length === 0){
+            return sendErrorResponse(res, `No gate allocation found for socity Id ${societyId}`, 404);
+        }
+
+        return sendSuccessResponse(res, `Gate Allocation For socity ID ${societyId} Fetched Successfully`, gateAllocations, 200);
+    }catch (error){
+        // res.status(500).json({error: error.message});
+        console.error("Error Fetching gate allocations by socity id: ", error);
+        return sendErrorResponse(res, "Internalserver Error", 500, error.message);
     }
 };
 

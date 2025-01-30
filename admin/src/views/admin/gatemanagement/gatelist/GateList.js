@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
-import GateListHandler from "../../../../handlers/GateListHandler";
+import GateHandler from "../../../../handlers/GateHandler";
 
 const GateList = () => {
   const paths = ["Gate Management", "Gate List"];
@@ -11,7 +11,7 @@ const GateList = () => {
 
   const [data, setData] = useState([]);
 
-  const { getGateListHandler } = GateListHandler();
+  const { getGateListHandler } = GateHandler();
 
   const transformGateData = (response) => {
     if (!response?.data) return [];
@@ -40,9 +40,22 @@ const GateList = () => {
   useEffect(()=>{
     getGateListHandler({ page: pageIndex, limit: pageSize })
     .then((res)=>{
-      setData(transformGateData(res.data));
-      setTotalCount(res.data.total);
-      setTotalPages(res.data.totalPages);
+
+      if(Array.isArray(transformGateData(res.data))){
+
+        setData(transformGateData(res.data));
+        setTotalCount(res.data.total);
+        setTotalPages(res.data.totalPages);
+        
+      }else{
+        setData([]);
+        setTotalCount(0);
+        setTotalPages(0);
+      }
+
+      // setData(transformGateData(res.data));
+      // setTotalCount(res.data.total);
+      // setTotalPages(res.data.totalPages);
     })
   },[])
 

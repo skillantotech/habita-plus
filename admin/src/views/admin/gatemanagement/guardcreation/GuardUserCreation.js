@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa";
 import imageCompression from "browser-image-compression";
 import Button from "../../../../components/ui/Button";
 import toast from "react-hot-toast";
-import GuardUserCreationHandler from "../../../../handlers/GuardUserCreationHandler";
+import ProfileHandler from "../../../../handlers/ProfileHandler";
 import { MdOutlineCancel } from "react-icons/md";
 
 const GuardUserCreation = () => {
@@ -21,7 +21,7 @@ const GuardUserCreation = () => {
   const [countryCode, setCountryCode] = useState(""); // New state for country code
   const [mobileNumber, setMobileNumber] = useState("");
   const [idCode, setIdCode] = useState("");
-  const { GuardRelationshipHandler } = GuardUserCreationHandler();
+  const { GuardRelationshipHandler } = ProfileHandler();
 
 
   const initialFormData = {

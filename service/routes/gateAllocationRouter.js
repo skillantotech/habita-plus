@@ -7,9 +7,11 @@ const gateAllocationController = require('../controllers/gateallocationControlle
 // Routes for gate allocations
 gateAllocationRouter.get('/', gateAllocationController.getAllGateAllocations); 
 gateAllocationRouter.get('/:id', gateAllocationController.getGateAllocationById); 
-gateAllocationRouter.post('/', gateAllocationController.createGateAllocation); 
+gateAllocationRouter.post('/', gateAllocationController.createGateAllocation);
 gateAllocationRouter.put('/:id', gateAllocationController.updateGateAllocation); 
-gateAllocationRouter.delete('/:id', gateAllocationController.deleteGateAllocation); 
+gateAllocationRouter.delete('/:id', gateAllocationController.deleteGateAllocation);
+
+gateAllocationRouter.get('/list/socity/:id', gateAllocationController.getGateAllocationsBySocietyId);
 
 
 module.exports = gateAllocationRouter;

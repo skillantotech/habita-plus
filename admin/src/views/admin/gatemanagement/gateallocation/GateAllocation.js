@@ -4,9 +4,9 @@ import Input from "../../../../components/shared/Input";
 import UrlPath from "../../../../components/shared/UrlPath";
 import { FaPlus } from "react-icons/fa";
 import Button from "../../../../components/ui/Button";
-import GateListHandler from "../../../../handlers/GateListHandler";
-import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
-import GateAllocationHandler from "../../../../handlers/GateAllocationHandler";
+
+import GateHandler from "../../../../handlers/GateHandler";
+import ProfileHandler from "../../../../handlers/ProfileHandler";
 import toast from "react-hot-toast";
 
 function GateAllocation() {
@@ -19,9 +19,9 @@ function GateAllocation() {
     const [gateData, setGateData] = useState([]);  // Comming Gate data
     const [securityUserData, setSecurityUserData] = useState([]); // Comming Security Data
 
-    const { getGateListHandler } = GateListHandler();
-    const { getGateUserList } = GateUserListnHandler();
-    const { makeGateAllocation } = GateAllocationHandler();
+    const { getGateListHandler } = GateHandler();
+    const { getGateUserList } = ProfileHandler();
+    const { makeGateAllocation } = GateHandler();
 
     const allocateGateHandler = () => {
         // Store current values to use in allocation

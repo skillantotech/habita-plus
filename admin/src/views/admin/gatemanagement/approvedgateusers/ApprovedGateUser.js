@@ -4,18 +4,24 @@ import UrlPath from "../../../../components/shared/UrlPath";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
 import PageHeading from "../../../../components/shared/PageHeading";
-import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import ViewGateUserDetails from "./ViewGateUserDetails";
+
+// import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
+import ProfileHandler from "../../../../handlers/ProfileHandler";
+import GateHandler from "../../../../handlers/GateHandler";
 
 const ApprovedGateUser = () => {
   const paths = ["Gate Management", "Approved Gate Users"];
   const Heading = ["Approved Gate Users"];
 
-  const { getGateUserList } = GateUserListnHandler();
+  const { getGateUserList } = ProfileHandler();
+  const { getGateAllocationList } = GateHandler();
+  const { getGateListHandler } = GateHandler();
 
   const [guardProfile, setGuardProfile] = useState([]);
-
+  const [gateAllocations, setGateAllocations] = useState([]);
+  const [gateList, setGateList] = useState([]);
 
   // on View Handler
   const [viewmodal, setViewModal] = useState(false);
@@ -55,12 +61,64 @@ const ApprovedGateUser = () => {
 
   useEffect(() => {
     getGateUserList().then((res) => {
-      setGuardProfile(transformSecurityUserData(res));
-      setTotalCount(res.length);
+      
+      if(Array.isArray(res)){
+        setGuardProfile(transformSecurityUserData(res));
+        setTotalCount(res.length);
+      }else{
+        setGuardProfile([]);
+        setTotalCount(0);
+      }
+
     })
+
+    getGateAllocationList().then((res) => {
+      console.log(res);
+      setGateAllocations(res);
+
+    })
+
+    getGateListHandler().then((res)=>{
+      console.log(res.data.data);
+      setGateList(res.data.data);
+
+    })
+
   }, [])
 
   // console.log(totalCount);
+  console.log("Guard Profile: ", guardProfile);
+  console.log("Gate Allocation Details: ",gateAllocations);
+  console.log("Gate List: ", gateList);
+
+
+  // Combining Data
+  const combineData = ({ guardProfile, gateAllocations, gateList }) => {
+    if (!Array.isArray(guardProfile) || !Array.isArray(gateAllocations) || !Array.isArray(gateList)) {
+      console.error("Invalid input: All inputs must be arrays.");
+      return [];
+    }
+  
+    return gateAllocations.map(allocation => {
+      const guard = guardProfile.find(user => user.profileId === allocation.profileId);
+      const gate = gateList.find(gate => gate.gateId === allocation.gateId);
+  
+      return {
+        profileId: allocation.profileId,
+        firstName: guard?.firstName || "N/A",
+        lastName: guard?.lastName || "N/A",
+        gateId: allocation.gateId,
+        email: guard?.email,
+        mobileNo: guard?.mobileNo,
+        gateName: gate?.gateName || "N/A",
+        gateNumber: gate?.gateNumber || "N/A",
+      };
+    });
+  };
+
+  const Combined = combineData({ guardProfile, gateAllocations, gateList });
+  console.log("Combined Data: ", Combined);
+
 
 
   const onViewHandler = (idValue) => {
@@ -81,7 +139,8 @@ const ApprovedGateUser = () => {
   const columns = [
     { Header: "FIRST NAME", accessor: "firstName" },
     { Header: "LAST NAME", accessor: "lastName" },
-    { Header: "GATE NO.", accessor: "gateNo" },
+    { Header: "GATE NO.", accessor: "gateNumber" },
+    { Header: "GATE Name", accessor: "gateName" },
     { Header: "MOBILE NO.", accessor: "mobileNo" },
     { Header: "EMAIL", accessor: "email" },
     {
@@ -124,7 +183,7 @@ const ApprovedGateUser = () => {
             <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
               <ReusableTable
                 columns={columns}
-                data={guardProfile}
+                data={Combined}
                 pageIndex={pageIndex}
                 pageSize={pageSize}
                 totalCount={totalCount}
