@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import AddUser from "./usermanagement/adduser/AddUser";
 import UnapprovedUser from "./usermanagement/unapproveduser/UnapprovedUser";
 import ApprovedUser from "./usermanagement/approveduser/ApprovedUser";
+import DashboardUser from "./usermanagement/dashboard/DashboardUser";
+
 import GeneralSetting from "./usermanagement/generalsetting/GeneralSetting";
 import UnitList from "./unitdetails/unitlist/UnitList";
 import DeactivateUser from "./usermanagement/deactivateuser/DeactivateUser";
@@ -47,6 +49,7 @@ import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
 import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
 //import ViewGateUserDetails from "./gatemanagement/approvedgateusers/ViewGateUserDetails";
 import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
+
 // import CreateResident from "./resident/create/CreateResident";
 // import CreateFloorInformation from "./floorinformation/create/CreateFloorInformation";
 // import CreateVendor from "./vendorinformation/create/CreateVendor";
@@ -95,7 +98,7 @@ const Admincontent = () => {
       <Route path="/employee/create" element={<CreateEmployee />} />
       <Route path="/employee/view" element={<div> View employee</div>} /> */}
       <Route path="/" element={<div>Admin content</div>} />
-      <Route path="/user" element={<div>dashboard user page</div>} />
+      <Route path="/user" element={<DashboardUser />} />
       <Route path="/user/unapproved" element={<UnapprovedUser />} />
       <Route path="/user/adduser" element={<AddUser />} />
       <Route path="/user/approved" element={<ApprovedUser />} />

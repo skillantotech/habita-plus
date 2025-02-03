@@ -2,6 +2,7 @@ const { User, Unit } = require("../models");
 const { getAllUsersService, getUserByIdService } = require("../services/userService");
 const addressService = require("../services/addressService");
 const { Op } = require('sequelize');
+
 const createSocietyModerator = async (req, res) => {
   try {
     const { address, email, ...customerData } = req.body;
@@ -209,7 +210,7 @@ const getResidentBySocietyId = async (req, res) => {
       where: {
         societyId,
         isManagementCommittee: false,
-         isDeleted:0,
+        isDeleted:0,
         status: "active",
       },
       attributes: [

@@ -4,6 +4,18 @@ import { GiGate } from 'react-icons/gi';
 
 const SideBarMenu = {
   society_moderator: [
+     {
+      name: "Dashboard",
+      isAvailable: true,
+       icon: FaBuilding,
+      children: [
+        {
+          name: "Dashboard",
+          url: "user",
+        },
+       
+      ],
+    },
    
     {
       name: "Building Management",
@@ -265,30 +277,30 @@ const SideBarMenu = {
     //     },
     //   ],
     // },
-    // {
-    //   name: "Facility Management",
-    //   isAvailable: true,
-    //   icon:FaHome ,
-    //   children: [
-    //     {
-    //       name: "Add New Facility",
-    //       url: "facility/new",
-    //     },
+    {
+      name: "Facility Management",
+      isAvailable: true,
+      icon:FaHome ,
+      children: [
+        {
+          name: "Add New Facility",
+          url: "facility/new",
+        },
 
-    //     {
-    //       name: "Facility List",
-    //       url: "facility/list",
-    //     },
-    //     {
-    //       name: "Add New Booking Request",
-    //       url: "facility/request",
-    //     },
-    //     {
-    //       name: "Facility Booking Details",
-    //       url: "facility/booking",
-    //     },
-    //   ],
-    // },
+        {
+          name: "Facility List",
+          url: "facility/list",
+        },
+        {
+          name: "Add New Booking Request",
+          url: "facility/request",
+        },
+        {
+          name: "Facility Booking Details",
+          url: "facility/booking",
+        },
+      ],
+    },
     // {
     //   name: "Parking Management",
     //   isAvailable: true,
@@ -686,24 +698,24 @@ export default SideBarMenu;
 //         },
 //       ],
 //     },
-//     // {
-//     //   name: "Facility Management",
-//     //   isAvailable: true,
-//     //   children: [
-//     //     {
-//     //       name: "Define Facility",
-//     //       url: "visitor/catagories",
-//     //     },
-//     //     {
-//     //       name: "Gate Allocation",
-//     //       url: "visitor/create",
-//     //     },
-//     //     {
-//     //       name: "Gate List",
-//     //       url: "visitor/view",
-//     //     },
-//     //   ],
-//     // },
+    // {
+    //   name: "Facility Management",
+    //   isAvailable: true,
+    //   children: [
+    //     {
+    //       name: "Define Facility",
+    //       url: "visitor/catagories",
+    //     },
+    //     {
+    //       name: "Gate Allocation",
+    //       url: "visitor/create",
+    //     },
+    //     {
+    //       name: "Gate List",
+    //       url: "visitor/view",
+    //     },
+    //   ],
+    // },
 //     {
 //       name: "Vendor Management",
 //       isAvailable: true,

@@ -10,20 +10,37 @@ import FloorHandler from "../../../../handlers/FloorHandler";
 import UserHandler from "../../../../handlers/UserHandler";
 import BuildingHandler from "../../../../handlers/BuildingHandler";
 import UserRoleHandler from "../../../../handlers/UserRoleHandler";
+import UnitHandler from "../../../../handlers/UnitHandler";
+import ReusableTable from "../../../../components/shared/ReusableTable";
+import { FaEye} from "react-icons/fa";
 
 const AddUser = () => {
   const paths = ["User", "Add"];
   const Heading = ["Add Resident User"];
+   const [page, setPage] = useState(0);
+   const [pageSize, setPageSize] = useState(5);
+   const [transformedData, setTransformedData] = useState([]);
+   const [totalPages, setTotalPages] = useState(0);
+ const [total, setTotal] = useState(0);
+  const [unitAllocationSearch, setUnitAllocationSearch] = useState({
+   
+
+  });
+    const handleSearchChange = (e) => {
+    const { name, value } = e.target;
+    setUnitAllocationSearch({ ...unitAllocationSearch, [name]: value });
+  };
 
   const societyId =
     useSelector((state) => state.auth.user?.Customer?.customerId) || "";
-    const unitId =
+  const unitId =
     useSelector((state) => state.auth.user?.Unit?.unitId) || "";
   const countryCodesList =
     useSelector((state) => state.countryCode.countryCodes) || [];
 
   const { createSocietyResidentUserHandler } = UserHandler();
   const { getUserRolesHandler } = UserRoleHandler();
+
 
   const [roles, setRoles] = useState([]);
   const [selectedRoleId, setSelectedRoleId] = useState(null);
@@ -51,7 +68,7 @@ const AddUser = () => {
     remark: "",
     societyId: "",
     roleId: "",
-    unitId: "", // Ensure this is initialized
+    unitId: "", 
   });
 
   const selectOption = {
@@ -171,10 +188,11 @@ const AddUser = () => {
 
   const { getFloorHandler } = FloorHandler();
   const { getBuildingshandler } = BuildingHandler();
+  const { getAllUnitHandler } = UnitHandler();
 
   const [buildingOptions, setBuildingOptions] = useState([]);
   const [floorOptions, setFloorOptions] = useState([]);
-
+  const [unitOptions, setUnitOptions] = useState([]);
   const [unitName, setUnitName] = useState({
     buildingId: "",
     floorId: "",
@@ -218,8 +236,25 @@ const AddUser = () => {
   useEffect(() => {
     getBuildings();
     getFloors();
+    getUnitName();
   }, []);
 
+  const getUnitName = () => {
+    getAllUnitHandler()
+      .then((res) => {
+        const optionData = res.data.data.map((el) => ({
+           label: el.unitName,
+           value: el.unitId,
+        }));
+        setUnitOptions([
+          { label: "Select Unit Name", value: "" },
+          ...optionData,
+        ]);
+      })
+      .catch((error) => {
+        console.error("Error fetching Unit Name:", error);
+      });
+  };
   const [defineUnit, setDefineUnit] = useState({
     buildingId: "",
     floorId: "",
@@ -270,6 +305,20 @@ const AddUser = () => {
       floorId: bName.shortForm.toUpperCase(),
     }));
   }
+    function onUnitChange(e) {
+    const { name, value } = e.target;
+    setDefineUnit({
+      ...defineUnit,
+      [name]: value,
+    });
+
+    const id = parseInt(value);
+    const bName = unitOptions.find((el) => el.value === id);
+    setUnitName((prev) => ({
+      ...prev,
+      unitId: bName?.shortForm?.toUpperCase() || "",
+    }));
+  }
 
   function onUnitNumberChange(e) {
     const { name, value } = e.target;
@@ -282,6 +331,77 @@ const AddUser = () => {
       unitNumber: value,
     }));
   }
+
+const handleSearch= async () => {
+    try {
+      const result = await getAllUnitHandler(unitAllocationSearch);
+      setTransformedData(result.data.data || []);
+    } catch (err) {
+      console.error("Error during search:", err);
+    }
+  };
+
+ const columns = [
+    {
+      Header: "Sl. No",
+      accessor: "serialNumber",
+      Cell: ({ row }) => page * pageSize + row.index + 1,
+    },
+    { Header: "Building", 
+      accessor: "buildingId" },
+    { Header: "Floor",
+       accessor: "floorId" },
+   
+    { Header: "Unit Name", accessor: "unitName" },
+    
+    {
+      Header: "Action",
+      accessor: "action",
+      Cell: ({ row }) => (
+        <div className="flex space-x-6">
+          {/* View Icon */}
+          <div className="relative group">
+            <button
+              className="text-yellow-600 hover:text-yellow-700"
+              onClick={() => handleView(row.original.visit_entry_Id)}
+            >
+              <FaEye className="text-lg" />
+            </button>
+            <span className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-xs bg-blue-500 text-white px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
+              View
+            </span>
+          </div>
+
+          {/* QR Code Icon */}
+          {/* <div className="relative group">
+            <button
+              className="text-black-600 hover:text-black-700"
+              onClick={() => handleViewQRCode(row.original.visit_entry_Id)}
+            >
+              <FaQrcode className="text-lg" />
+            </button>
+            <span className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-xs bg-green-500 text-white px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
+              QR Code
+            </span>
+          </div> */}
+
+          {/* Delete Icon */}
+          {/* <div className="relative group">
+            <button
+              className="text-red-500 hover:text-red-700"
+              onClick={() => handleDelete(row.original.visit_entry_Id)}
+            >
+              <FaTrashAlt className="text-lg" />
+            </button>
+            <span className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
+              Delete
+            </span>
+          </div> */}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="px-5 ">
       <div className="text-sm font-semibold my-2 flex items-center gap-2 text-gray-200">
@@ -513,7 +633,7 @@ const AddUser = () => {
               name="remark"
               value={formData.remark}
               onChange={handleInputChange}
-              placeholder={"Give your remark"}
+              placeholder={"Give remark"}
               size={"lg"}
             />
           </div>
@@ -530,12 +650,16 @@ const AddUser = () => {
           Unit Allocation
         </div>
  <div className=" my-5 rounded-lg">
-      <div className="grid grid-cols-3 gap-5 items-center py-6">
+      <div className="grid grid-cols-4 gap-5 items-center py-6">
         <Select
           label="Tower /Building (Name / No.)"
           options={buildingOptions}
           value={defineUnit.buildingId}
-          onChange={onBuildingChange}
+          
+           onChange={(e) => {
+    onBuildingChange(e);
+    handleSearchChange(e);
+  }}
           name="buildingId"
           color="blue"
           size="md"
@@ -545,13 +669,27 @@ const AddUser = () => {
           label="Select Floor"
           options={floorOptions}
           value={defineUnit.floorId}
-          onChange={onFloorChange}
+          
+           onChange={(e) => {
+    onFloorChange(e);
+    handleSearchChange(e);
+  }}
           name="floorId"
           color="blue"
           size="md"
           className="py-[14px]"
         />
-        <Input
+      <Select
+          label="Select Unit Name"
+          options={unitOptions}
+          value={defineUnit.unitId}
+         onChange={(e) => {
+    onUnitChange(e);
+    handleSearchChange(e);
+  }}
+          name="unitId"
+        />
+        {/* <Input
           label={"Unit Number"}
           type="text"
           name="unitNumber"
@@ -559,14 +697,28 @@ const AddUser = () => {
           size="lg"
           value={defineUnit.unitNumber}
           onChange={onUnitNumberChange}
-        />
-        <div>
+        /> */}
+        {/* <div>
           <h3 className="">
             <strong>Unit Name</strong> :{" "}
             {`${unitName.buildingId}${unitName.floorId}${unitName.unitNumber}`}{" "}
           </h3>
-        </div>
+        </div> */}
+         <Button onClick={handleSearch}>Search</Button>
       </div>
+
+    <ReusableTable
+        columns={columns}
+        data={transformedData}
+        pageIndex={page}
+        pageSize={pageSize}
+        totalCount={total}
+        totalPages={totalPages}
+        setPageIndex={setPage}
+        setPageSize={setPageSize}
+      />
+
+
 
       <div className="flex justify-center mt-5">
         <Button

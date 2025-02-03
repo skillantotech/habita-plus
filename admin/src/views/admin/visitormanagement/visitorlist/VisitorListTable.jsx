@@ -13,7 +13,7 @@ const VisitorListTable = () => {
   const [pageSize, setPageSize] = useState(5);
   const [transformedData, setTransformedData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(0); 
   const [visitorsearch, setVisitorSearch] = useState({
     startdate: "",
     enddate: "",
@@ -226,6 +226,7 @@ const handleDownloadQRCode = () => {
         totalPages={totalPages}
         setPageIndex={setPage}
         setPageSize={setPageSize}
+        
       />
 
       {viewmodal && (
