@@ -7,7 +7,6 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import ViewGateUserDetails from "./ViewGateUserDetails";
 
-// import GateUserListnHandler from "../../../../handlers/GateUserListHandler";
 import ProfileHandler from "../../../../handlers/ProfileHandler";
 import GateHandler from "../../../../handlers/GateHandler";
 

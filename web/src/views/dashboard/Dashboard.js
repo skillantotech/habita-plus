@@ -13,13 +13,13 @@ const Dashboard = () => {
   }, []);
   return (
     <div className="space-y-10">
-      <PaymentDueReminder
+      {/* <PaymentDueReminder
         amountDue={4000}
         dueDate={new Date().toLocaleDateString()}
-      />
+      /> */}
       <AnnoucementPreview/>
       <CommunityDirectories />
-      <PostPreview/>
+      {/* <PostPreview/> */}
     </div>
   );
 };

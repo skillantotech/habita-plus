@@ -1,13 +1,22 @@
 "use client";
+import React, { useEffect, useState } from "react";
 
-import Documents from "@/views";
+const Notice = () => {
+  const [data, setData] = useState(null);
 
-const Page = () => {
+  useEffect(() => {
+    fetch("/api/documents")
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
-    <main>
-      <Documents />
-    </main>
+    <div>
+      <h1>Documents Page</h1>
+      {data ? <p>{data.message}</p> : <p>Loading...</p>}
+    </div>
   );
 };
 
-export default Page;
+export default Notice;

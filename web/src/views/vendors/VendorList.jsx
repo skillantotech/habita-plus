@@ -1,57 +1,6 @@
-// import React from "react";
-// // import { FaFilePdf } from "react-icons/fa6";
-// import { BsPersonWalking } from "react-icons/bs";
-
-// export const VendorList = () => {
-//   //   const arr = [1, 2, 3, 4];
-//   return (
-//     <div>
-//       <div className="space-y-2">
-//         <div className=" ">
-//           <h3 className="font-bold text-xl text-center">Vendor List</h3>
-//         </div>
-//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-//           <div className="  py-[40px] px-[20px] bg-blue-100 hover:bg-blue-200 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-95 duration-300">
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium ">
-//               Name :
-//             </p>
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Role :
-//             </p>
-//           </div>
-//           <div className="  py-[40px] px-[20px]  bg-blue-100 hover:bg-blue-200 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-95 duration-300">
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Name :
-//             </p>
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Role :
-//             </p>
-//           </div>
-//           <div className="  py-[40px] px-[20px] bg-blue-100 hover:bg-blue-200  rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-95 duration-300">
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Name :
-//             </p>
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Role :
-//             </p>
-//           </div>
-//           <div className="  py-[40px] px-[20px] bg-blue-100 hover:bg-blue-200 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-95 duration-300">
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Name :
-//             </p>
-//             <p className="text-[18px] font-sans font-base text-darkTeal font-medium">
-//               Role :
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-// export default VendorList;
 import React, { useState } from "react";
 import { useTable, usePagination, useSortBy } from "react-table";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaTrashAlt } from "react-icons/fa";
 
 const VendorList = () => {
   const originalData = React.useMemo(
@@ -60,21 +9,19 @@ const VendorList = () => {
         id: 1,
         name: "Sasmita",
         phone: "9876543214",
-        // email: "sasmitasubhashree@gmail.com",
-        vendorservicetype: "Auditor",
-        // address: "Cuttack",
+        realtionship: "frequent visitor",
+        purposeofvisit: "work",
+        address: "Cuttack",
         entrydate: "02-12-2024",
-        tilldate:"04-12-2024",
       },
       {
         id: 2,
         name: "Subhashree",
         phone: "8637237481",
-        //  email: "sasmita@gmail.com",
-        vendorservicetype: "Electrician",
-        // address: "Bhubaneswar",
-        entrydate: "03-12-2024",
-        tilldate:"05-12-2024",
+        realtionship: "one type visitor",
+        purposeofvisit: "work",
+        address: "Bhubaneswar",
+        entrydate: "02-12-2024",
       },
     ],
     []
@@ -89,11 +36,10 @@ const VendorList = () => {
       { Header: "ID", accessor: "id" },
       { Header: "Name", accessor: "name" },
       { Header: "Phone", accessor: "phone" },
-      // { Header: "Email", accessor: "email" },
-      { Header: "Vendor Service Type", accessor: "vendorservicetype" },
-      // { Header: "Address", accessor: "address" },
+      { Header: "Relationship", accessor: "realtionship" },
+      { Header: "Purpose Of Visit", accessor: "purposeofvisit" },
+      { Header: "Address", accessor: "address" },
       { Header: "Entry Date", accessor: "entrydate" },
-      { Header: "Till Date", accessor: "tilldate" },
       {
         Header: "Actions",
         Cell: ({ row }) => (
@@ -104,12 +50,6 @@ const VendorList = () => {
             >
               <FaEye />
             </button>
-            {/* <button
-              onClick={() => handleEdit(row.original)}
-              className="text-yellow-500 hover:text-yellow-700"
-            >
-              <FaEdit />
-            </button> */}
             <button
               onClick={() => handleDelete(row.original)}
               className="text-red-500 hover:text-red-700"
@@ -127,7 +67,6 @@ const VendorList = () => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
     page,
     nextPage,
@@ -158,25 +97,24 @@ const VendorList = () => {
   };
 
   const handleView = (row) => alert(`Viewing details for: ${row.name}`);
-  // const handleEdit = (row) => alert(`Editing details for: ${row.name}`);
   const handleDelete = (row) => alert(`Deleting details for: ${row.name}`);
 
   return (
     <div className="p-6">
-      <h3 className="text-2xl font-bold mb-4">Vendor List</h3>
+      <h3 className="mb-4 text-2xl font-bold">Customer List</h3>
 
       {/* Search Bar */}
-      <div className="mb-4 flex gap-2">
+      <div className="flex gap-2 mb-4">
         <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border border-gray-300 rounded w-64"
+          className="w-64 p-2 border border-gray-300 rounded"
         />
         <button
           onClick={handleSearch}
-          className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
         >
           Search
         </button>
@@ -184,37 +122,35 @@ const VendorList = () => {
 
       <div className="overflow-x-auto">
         <table
-          className="table-auto w-full border-collapse border border-gray-200"
+          className="w-full border border-collapse border-gray-200 table-auto"
           {...getTableProps()}
         >
           <thead className="bg-gray-100">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
+            {headerGroups.map((headerGroup, index) => (
+              <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                {headerGroup.headers.map((column, colIndex) => (
                   <th
-                    className="py-2 px-4 border border-gray-200 text-left"
+                    className="px-4 py-2 text-left border border-gray-200"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
+                    key={colIndex}
                   >
                     {column.render("Header")}
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
+                    {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
+            {page.map((row, rowIndex) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} className="hover:bg-gray-50">
-                  {row.cells.map((cell) => (
+                <tr {...row.getRowProps()} key={row.id || rowIndex} className="hover:bg-gray-50">
+                  {row.cells.map((cell, cellIndex) => (
                     <td
-                      className="py-2 px-4 border border-gray-200"
+                      className="px-4 py-2 border border-gray-200"
                       {...cell.getCellProps()}
+                      key={cellIndex}
                     >
                       {cell.render("Cell")}
                     </td>
@@ -226,11 +162,11 @@ const VendorList = () => {
         </table>
       </div>
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex items-center justify-between mt-4">
         <button
           onClick={previousPage}
           disabled={!canPreviousPage}
-          className="py-2 px-4 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
         >
           Previous
         </button>
@@ -240,7 +176,7 @@ const VendorList = () => {
         <button
           onClick={nextPage}
           disabled={!canNextPage}
-          className="py-2 px-4 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
         >
           Next
         </button>

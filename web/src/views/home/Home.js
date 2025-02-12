@@ -7,8 +7,7 @@ import HeroSection from "../HeroSection/HeroSection";
 import MainCardSection from "../CardSection/MainCardSection";
 import ServicesSection from "../CardSection/ServiceSection";
 import Footer from "../Footer/Footer";
-
-import Services from "../services/Service";
+import Contacts from "../contacts/contacts";
 
 const Home = () => {
   return (
@@ -20,7 +19,8 @@ const Home = () => {
       <ElevatingApartment/>
       <PricingSection/>
       <ContactSection/>
-      <Services/>
+
+      <Contacts/>
       <Footer/>
     </div>
   );

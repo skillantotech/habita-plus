@@ -1,13 +1,14 @@
 // ContactSection.jsx
 import React from 'react';
 
-
 function ContactSection() {
   return (
-    <div className="bg-blue-100 text-center py-10 rounded-3xl mt-10 max-w-7xl mx-auto shadow-lg mb-10">
+    <div className="py-10 mx-auto mt-10 mb-10 text-center bg-blue-100 shadow-lg rounded-3xl max-w-7xl">
       <h2 className="text-2xl font-semibold">Request a demo.</h2>
-      <p className="text-4xl font-bold my-5">Sounds interesting? Let's get in touch!</p>
-      <button className="bg-blue-500 text-white px-6 py-3  mt-4">
+      <p className="my-5 text-4xl font-bold">
+        Sounds interesting? Let&#39;s get in touch!
+      </p>
+      <button className="px-6 py-3 mt-4 text-white bg-blue-500">
         Contact us
       </button>
     </div>
@@ -15,4 +16,3 @@ function ContactSection() {
 }
 
 export default ContactSection;
-

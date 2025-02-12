@@ -5,6 +5,7 @@ import { gateAllocationService, gateAllocationListService, gateListServices, Cre
 const GateHandler = () => {
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user.Customer.customerId);
+  console.log(societyId); 
 
   const GateRelationshipHandler = async (gates) => {
     try {

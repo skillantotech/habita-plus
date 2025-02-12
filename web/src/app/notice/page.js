@@ -1,11 +1,22 @@
 "use client";
+import React, { useEffect, useState } from "react";
 
-import Notice from "@/views";
-const Page = () => {
+const Notice = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/notice")
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
-    <main>
-      <Notice />
-    </main>
+    <div>
+      <h1>Notice Page</h1>
+      {data ? <p>{data.message}</p> : <p>Loading...</p>}
+    </div>
   );
 };
-export default Page;
+
+export default Notice;

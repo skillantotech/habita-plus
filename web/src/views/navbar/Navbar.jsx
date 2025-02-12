@@ -25,28 +25,27 @@ const Navbar = () => {
         </div>
 
         <div className="flex flex-row justify-end items-center mr-[80px] gap-7">
-          <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
+         <Link href="/Home">
+         <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             Home
           </div>
-
-          <Link href="/services">
-            <div className=" text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
+         </Link>
+          <div className=" text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             Services
-            </div>
-          </Link>
-          
+          </div>
           <Link href="/pricing">
             <div className=" text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
               Pricing
             </div>
           </Link>
-          
           <div className="  text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             About Us
           </div>
-          <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
+        <Link href="/contact">
+        <div className="text-darkTeal text-lg font-sans subpixel-antialiased font-medium hover:text-turquoise nav-item">
             Contact
           </div>
+        </Link>
           <div>
             {isAuthenticated ? (
               <Link href="/user">

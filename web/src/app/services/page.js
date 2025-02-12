@@ -1,12 +1,22 @@
 "use client";
+import React, { useEffect, useState } from "react";
 
-import Service from "@/views";
-const Page = () => {
+const Notice = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/service")
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
-    <main>
-      <Service />
-    </main>
+    <div>
+      <h1>Services Page</h1>
+      {data ? <p>{data.message}</p> : <p>Loading...</p>}
+    </div>
   );
 };
 
-export default Page;
+export default Notice;
