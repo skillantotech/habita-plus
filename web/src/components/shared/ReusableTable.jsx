@@ -7,7 +7,6 @@ const ReusableTable = ({
   data,
   pageIndex,
   pageSize,
-  totalCount,
   totalPages,
   setPageIndex,
   setPageSize
@@ -21,8 +20,7 @@ const ReusableTable = ({
     canPreviousPage,
     canNextPage,
     gotoPage,
-    nextPage,
-    previousPage,
+ 
     setPageSize: internalSetPageSize,
     state: { pageIndex: internalPageIndex, pageSize: internalPageSize }
   } = useTable(

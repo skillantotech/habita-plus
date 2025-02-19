@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTable, usePagination, useSortBy } from "react-table";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 
-const VendorList = () => {
+const VisitorList = () => {
   const originalData = React.useMemo(
     () => [
       {
@@ -195,4 +195,4 @@ const VendorList = () => {
   );
 };
 
-export default VendorList;
+export default VisitorList;

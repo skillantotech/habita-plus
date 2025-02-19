@@ -12,9 +12,20 @@ const Unit = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    // unitName: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
     unitName: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true, 
+      indexes: [
+        {
+          unique: true,
+          fields: ['unitName']
+        }
+      ]
     },
     unitNumber: {
       type: DataTypes.INTEGER,

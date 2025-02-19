@@ -93,21 +93,21 @@ const SideBarMenu = {
         },
       ],
     },
-    // {
-    //   name: "Discussion Forum",
-    //   isAvailable: true,
-    //    icon: FaComments,
-    //   children: [
-    //     {
-    //       name: "Add New Discussion",
-    //       url: "discussion/create",
-    //     },
-    //     {
-    //       name: "Discussion Details",
-    //       url: "discussion/list",
-    //     },
-    //   ],
-    // },
+    {
+      name: "Discussion Forum",
+      isAvailable: true,
+       icon: FaComments,
+      children: [
+        {
+          name: "Add New Discussion",
+          url: "discussion/create",
+        },
+        {
+          name: "Discussion Details",
+          url: "discussion/list",
+        },
+      ],
+    },
     {
       name: "Visitors Management",
       isAvailable: true,
@@ -301,34 +301,34 @@ const SideBarMenu = {
         },
       ],
     },
-    // {
-    //   name: "Parking Management",
-    //   isAvailable: true,
-    //   icon:FaParking ,
-    //   children: [
-    //     {
-    //       name: "Add New Parking Slot",
-    //       url: "parking/newslot",
-    //     },
-    //     {
-    //       name: "Parking List",
-    //       url: "parking/list",
-    //     },
-    //     {
-    //       name: "Add New Booking Request",
-    //       url: "parking/bookingrequest",
-    //     },
-    //     {
-    //       name: "Parking Booking Details",
-    //       url: "parking/bookingdetails",
-    //     },
+    {
+      name: "Parking Management",
+      isAvailable: true,
+      icon:FaParking ,
+      children: [
+        {
+          name: "Add New Parking Slot",
+          url: "parking/newslot",
+        },
+        {
+          name: "Parking List",
+          url: "parking/list",
+        },
+        {
+          name: "Add New Booking Request",
+          url: "parking/bookingrequest",
+        },
+        {
+          name: "Parking Booking Details",
+          url: "parking/bookingdetails",
+        },
 
-    //     {
-    //       name: "Add Vechicle Details",
-    //       url: "parking/vechicledetails",
-    //     },
-    //   ],
-    // },
+        {
+          name: "Add Vechicle Details",
+          url: "parking/vechicledetails",
+        },
+      ],
+    },
     // {
     //   name: "Socity Admin Confugaration",
     //   isAvailable: true,

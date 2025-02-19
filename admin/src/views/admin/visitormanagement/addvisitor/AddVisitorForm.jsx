@@ -24,33 +24,7 @@ const AddVisitorForm = () => {
     relationship: ""
   });
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await fetchVisitorRelationship();
-  //       if (result?.data && Array.isArray(result.data)) {
-  //         setVisitorTypes(result.data); // Set the dropdown data
-  //       } else {
-  //         console.warn("Invalid data format or empty response.");
-  //         setVisitorTypes([]);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching visitor relationships:", error.message);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
-  // const handleSubmit = () => {
-  //   console.log("form data", formData);
-  //   createNewVisitorEntry(formData);
-  // };
+ 
 
   useEffect(() => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format

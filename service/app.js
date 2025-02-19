@@ -20,7 +20,8 @@ const buildingRouter = require("./routes/buildingRoutes");
 const floorRouter = require("./routes/floorRoutes");
 const unitTypeRouter = require("./routes/unitTypeRoutes");
 const jobProfileRouter = require("./routes/jobProfileRoutes");
-const gateRout = require("./routes/gateRouter");  // Corrected variable name
+const gateRout = require("./routes/gateRouter"); 
+
 const {
   User,
   Customer,
@@ -31,6 +32,7 @@ const {
   Visitor_new_visitentry,
   Ticket_Summery,
   Ticket_Details,
+  Facility
 } = require("./models");
 const refUserGroupRouter = require("./routes/refUserGroupRouter");
 const {
@@ -44,7 +46,8 @@ const unitRouter = require("./routes/unitRoutes");
 const softwareHelpDeskRouter = require("./routes/softwareHelpDeskRouter");
 const refTicketStatusRouter = require("./routes/refTicketStatusRouter");
 const gateAllocationRouter = require("./routes/gateAllocationRouter");
-
+const facilityRouter =require("./routes/facilityManagementRoutes");
+const parkingRouter =require("./routes/parkingRoutes");
 // testing apis
 app.get("/", (req, res) => {
   res.send("API is working fine !");
@@ -88,7 +91,11 @@ app.use("/api/softwarehelpdesk", softwareHelpDeskRouter);
 app.use("/api/softwarehelpdesk", refTicketStatusRouter);
 
 // Job Profile
-app.use("/api/jobprofile",jobProfileRouter)
+app.use("/api/jobprofile",jobProfileRouter);
+
+// Facility Managment
+app.use("/api/facilitymanagement",facilityRouter);
+app.use("/api",parkingRouter);
 
 // creating automatic users
 app.get("/init-database", initController);

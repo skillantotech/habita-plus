@@ -26,6 +26,9 @@ import AddNewVendor from "./vendormanagement/addnewvendor/AddNewVendor";
 import AddNewParkingSlot from "./parkingmanagement/addnewparkingslot/AddNewParkingSlot";
 import AddNewBookingReqest from "./parkingmanagement/addnewbookingrequest/AddNewBookingReqest";
 import AddNewFacility from "./facilitymanagement/addnewfacility/AddNewFacility";
+import FacilityList from "./facilitymanagement/facility/FacilityList";
+   
+
 import AddNewBookingRequest from "./facilitymanagement/addnewbookingrequest/AddNewBookingRequest";
 import VendorList from "./vendormanagement/vendorlist/VendorList";
 import FacilityBookingDetails from "./facilitymanagement/bookingdetails/FacilityBookingDetails";
@@ -49,6 +52,7 @@ import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
 import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
 //import ViewGateUserDetails from "./gatemanagement/approvedgateusers/ViewGateUserDetails";
 import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
+
 
 // import CreateResident from "./resident/create/CreateResident";
 // import CreateFloorInformation from "./floorinformation/create/CreateFloorInformation";
@@ -156,7 +160,7 @@ const Admincontent = () => {
 
       {/* facility management */}
       <Route path="/facility/new" element={<AddNewFacility />} />
-      <Route path="/facility/list" element={<div>Parking List</div>} />
+      <Route path="/facility/list" element={<FacilityList />} />
       <Route path="/facility/booking" element={<FacilityBookingDetails />} />
       <Route path="/facility/request" element={<AddNewBookingRequest />} />
       {/* Socity Admin Confugaration */}

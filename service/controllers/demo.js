@@ -1,5 +1,3 @@
-//#### Unit Controller ####
-
 const { Unit, UnitType, Floor } = require("../models");
 
 const createUnit = async (req, res) => {
