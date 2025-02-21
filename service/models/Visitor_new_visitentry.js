@@ -63,7 +63,7 @@ const Visitor_new_visitentry = sequelize.define(
     },
     relationship:{
       type: DataTypes.STRING,
-     allowNull: false,
+      allowNull: true,
     },
     senderId: {
       type: DataTypes.INTEGER,

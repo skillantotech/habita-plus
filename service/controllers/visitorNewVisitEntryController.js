@@ -27,7 +27,6 @@ exports.createVisitorNewVisitEntryController = async (req, res) => {
       !visit_type_Id ||
       !visit_mobileno ||
       !visit_porpous ||
-      !relationship||
       !visit_valid_till_date||
       !societyId ||
       !senderId
@@ -68,7 +67,7 @@ exports.createVisitorNewVisitEntryController = async (req, res) => {
       visit_name: result.visit_name,
       visit_mobileno: result.visit_mobileno,
       visit_porpous: result.visit_porpous,
-      relationship:result.relationship,
+      relationship: result.relationship || null,
       senderId: result.senderId,
       timestamp: new Date().toISOString(),
     };

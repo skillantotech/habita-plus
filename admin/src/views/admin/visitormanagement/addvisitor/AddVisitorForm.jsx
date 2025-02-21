@@ -13,7 +13,7 @@ const AddVisitorForm = () => {
     visit_type_Id: "",
     visit_mobileno: "",
     visit_porpous: "",
-    relationship: "",
+    // relationship: "",
     visit_location: "", 
     visit_valid_till_date:"",
   });
@@ -54,7 +54,7 @@ const AddVisitorForm = () => {
     const { name, value } = e.target;
     
     // Validation for specific fields
-    if (name === "visit_name" || name === "visit_porpous" || name === "relationship") {
+    if (name === "visit_name" || name === "visit_porpous" ) {
       // Only allow alphabets and spaces for these fields
       if (/^[a-zA-Z\s]*$/.test(value)) {
         setFromData({ ...formData, [name]: value });
@@ -72,33 +72,33 @@ const AddVisitorForm = () => {
   // Validation function
   const validateForm = () => {
     let isValid = true;
-    let tempErrors = { visit_name: "", visit_mobileno: "", visit_porpous: "", relationship: "" };
+  //  let tempErrors = { visit_name: "", visit_mobileno: "", visit_porpous: "", relationship: "" };
 
     // Name validation: should only contain alphabets
     if (!/^[a-zA-Z\s]+$/.test(formData.visit_name)) {
-      tempErrors.visit_name = "Name should contain only alphabets";
+      //tempErrors.visit_name = "Name should contain only alphabets";
       isValid = false;
     }
 
     // Mobile number validation: should be 10 digits
     if (!/^\d{10}$/.test(formData.visit_mobileno)) {
-      tempErrors.visit_mobileno = "Mobile number should be 10 digits";
+    //  tempErrors.visit_mobileno = "Mobile number should be 10 digits";
       isValid = false;
     }
 
     // Purpose of visit validation: should only contain alphabets
     if (!/^[a-zA-Z\s]+$/.test(formData.visit_porpous)) {
-      tempErrors.visit_porpous = "Purpose of visit should contain only alphabets";
+    //  tempErrors.visit_porpous = "Purpose of visit should contain only alphabets";
       isValid = false;
     }
 
     // Relationship validation: should only contain alphabets
-    if (!/^[a-zA-Z\s]*$/.test(formData.relationship)) {
-      tempErrors.relationship = "Relationship should contain only alphabets";
-      isValid = false;
-    }
+    // if (!/^[a-zA-Z\s]*$/.test(formData.relationship)) {
+    // //  tempErrors.relationship = "Relationship should contain only alphabets";
+    //   isValid = false;
+    // }
 
-    setErrors(tempErrors);
+   // setErrors(tempErrors);
     return isValid;
   };
 
@@ -226,7 +226,7 @@ const handleSubmit = async (e) => {
         
 
           <Input
-            label={<div>Relationship <span className="text-red-500">*</span></div>}
+            label={<div>Relationship</div>}
             type="text"
             placeholder="Enter Relationship with Visitor"
             size="lg"

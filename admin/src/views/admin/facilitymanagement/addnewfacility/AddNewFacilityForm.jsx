@@ -22,9 +22,13 @@ const AddNewFacilityForm = () => {
 
  });
 
+
 const handleChange = (e) => {
   const { name, value } = e.target;
   setFormData({ ...formData, [name]: value });
+};
+const handleRadioChange = (field, value) => {
+  setFormData({ ...formData, [field]: value });
 };
 
 const handleSubmitFacility = async (e) => {
@@ -42,7 +46,7 @@ const handleSubmitFacility = async (e) => {
       bookingFrom: "",
     });
 
-    toast.error("Facility entry submitted successfully.");
+    toast.success("Facility entry submitted successfully.");
   } catch (error) {
     toast.error("Error submitting Facility entry:", error.message);
   }
@@ -91,7 +95,7 @@ const handleSubmitFacility = async (e) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-row items-center gap-4 py-4">
+          {/* <div className="flex flex-row items-center gap-4 py-4">
             <div>Facility Charge:</div>
             <div className="flex flex-row items-center gap-3">
               <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
@@ -103,19 +107,74 @@ const handleSubmitFacility = async (e) => {
                   onChange={handleChange}
                 />
                 <label className="text-lg">Free</label>
-              </div>
-              <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              </div> */}
+              {/* <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
                 <input
                   type="radio"
                   name="facilityCharge"
                   value="Paid"
-                  checked={formData.facilityCharge  === "Paid"}
-                  onChange={handleChange}
+                  checked={formData?.facilityCharge === "Paid"}
+                  // checked={formData.facilityCharge  === "Paid"}
+                  // onChange={handleChange}
+                  onChange={() => handleRadioChange("facilityCharge", "Paid")}
                 />
                 <label>Paid</label>
               </div>
             </div>
+          
+              
+                    {formData?.facilityCharge === "paid" && (
+                      <div>
+                        <Input
+                          label="Charge Amount"
+                          value={formData?.chargeAmount || ""}
+                          type="text"
+                          name="chargeAmount"
+                          placeholder="Enter Charge Amount"
+                          size="lg"
+                          onChange={handleInput}
+                        />
+                      </div>
+                    )}
+          
+        
+          </div> */}
+          
+              {/* Facility Charge */}
+              <div className="flex flex-row items-center gap-4 py-4">
+            <div>Facility Charge:</div>
+            <div className="flex flex-row items-center gap-3">
+              {["Free", "Paid"].map((charge) => (
+                <div key={charge} className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+                  <input
+                    type="radio"
+                    name="facilityCharge"
+                    value={charge}
+                    checked={formData.facilityCharge === charge}
+                    onChange={() => handleRadioChange("facilityCharge", charge)}
+                  />
+                  <label className="text-lg">{charge}</label>
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* Charge Amount (Visible Only When Paid is Selected) */}
+          {formData.facilityCharge === "Paid" && (
+            <div className="grid grid-cols-1 gap-3 items-center py-4">
+              <Input
+                label="Charge Amount"
+                type="text"
+                name="chargeAmount"
+                placeholder="INR : Enter Amount"
+                size="lg"
+                value={formData.chargeAmount}
+                onChange={handleChange}
+              />
+            </div>
+          )}
+
+
           <div className="flex flex-row items-center gap-4 py-4">
             <div>Facility Usage:</div>
             <div className="flex flex-row items-center gap-3">
@@ -141,7 +200,7 @@ const handleSubmitFacility = async (e) => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-3 items-center py-4">
+          {/* <div className="grid grid-cols-1 gap-3 items-center py-4">
             <Input
               label={<div>Charge Amount: </div>}
               type="text"
@@ -151,34 +210,36 @@ const handleSubmitFacility = async (e) => {
               value={formData.chargeAmount}
               onChange={handleChange}
             />
-          </div>
-          <div className="grid grid-cols-1 gap-3 items-center py-4">
-            <Input
-              label={<div>Booking From <span className="text-red-500">*</span></div>}
-              type="date"
-              size="lg"
-              name="bookingFrom"
-              value={formData.bookingFrom}
-              onChange={handleChange}
-            />
-            <Input
-              label={<div>Booking To<span className="text-red-500">*</span></div>}
-              type="date"
-              size="lg"
-              name="bookingTo"
-              value={formData.bookingTo}
-              onChange={handleChange}
-            />
-          </div>
+          </div> */}
+        <div className="flex flex-row gap-3 items-center py-4">
+                  <div className="text-base ">Select Date And Time :</div>
+                  <Input
+                    label={<div>Booking From <span className="text-red-500">*</span></div>}
+                    type="date"
+                    size="lg"
+                    name="bookingFrom"
+                    value={formData.bookingFrom}
+                    onChange={handleChange}
+                  />
+                  <Input
+                  label={<div>Booking To<span className="text-red-500">*</span></div>}
+                  type="date"
+                  size="lg"
+                  name="bookingTo"
+                  value={formData.bookingTo}
+                  onChange={handleChange}
+                  />
+                </div>
+              
           <div className="flex justify-center mt-5">
            <Button className="max-w-sm" type="button" size="lg" onClick={handleSubmitFacility}>
-  Submit
-</Button>
+            Submit
+          </Button>
 
           </div>
         </form>
       </div>
-    </div>
+      </div>
   );
 };
 
