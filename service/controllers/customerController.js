@@ -2,6 +2,7 @@ const { Customer, Address } = require("../models");
 const { validationResult, query } = require("express-validator");
 const customerService = require("../services/customerService");
 
+// 
 const createCustomer = async (req, res) => {
   try {
     const customer = await customerService.createCustomer(req.body);
@@ -143,6 +144,7 @@ const deleteCustomer = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 module.exports = {
   createCustomer,

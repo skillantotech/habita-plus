@@ -1,114 +1,199 @@
+const multer = require("multer");
+const path = require("path");
+const { Op } = require("sequelize");
+const { JobProfile } = require("../models");
+const fs = require("fs");
+const { URL } = require("url");
 
-const JobProfile = require('../models/JobProfile');
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Files are stored in the "uploads/" directory
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname); // Adds a timestamp to the file name
+  },
+});
 
-exports.createJobProfile = async (req, res) => {
-    try {
-        const { firstName, lastName, societyId, roleId, email, mobileNo, status } = req.body;
-
-        // if (!req.files?.profilePhoto){
-        //     console.log("Profile Photo is missing");
-        // }
-        // if(!req.files?.idProof){
-        //     console.log("Id is missing");
-        // }
-
-        if (!req.files?.profilePhoto || !req.files?.idProof) {
-            return res.status(400).json({ error: "Profile photo and ID proof are required." });
-        }
-
-        const profilePhoto = req.files.profilePhoto[0].path;
-        const idProof = req.files.idProof[0].path;
-
-        const newJobProfile = await JobProfile.create({
-            firstName,
-            lastName,
-            profilePhoto,
-            idProof,
-            societyId,
-            roleId,
-            email,
-            mobileNo,
-            status
-        });
-
-        res.status(201).json({ message: 'Job profile created successfully.!!', data: newJobProfile });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif|pdf/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (extname && mimetype) {
+      return cb(null, true);
+    } else {
+      return cb(new Error("Only image or PDF files are allowed"));
     }
-};
+  },
+}).fields([
+  { name: "profilePhoto", maxCount: 1 },
+  { name: "idProof", maxCount: 1 },
+]);
 
-// exports.getAllJobProfiles = async (req, res) => {
-//     try {
-//         const jobProfiles = await JobProfile.findAll();
-//         res.status(200).json(jobProfiles);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
-
-exports.getJobProfileById = async (req, res) => {
-    try {
-        const jobProfile = await JobProfile.findByPk(req.params.id);
-        if (!jobProfile) {
-            return res.status(404).json({ message: 'Job profile not found' });
-        }
-        res.status(200).json(jobProfile);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-exports.getJobProfilesBySocietyId = async (req, res) => {
-    try {
+// Create JobProfile
+const createJobProfile = (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ message: "File upload error", error: err.message });
+      }
+  
+      try {
+        // Check required parameters
+        const { firstName, lastName, email, mobileNumber, roleId , roleAllocation} = req.body;
         const { societyId } = req.params;
-        const jobProfiles = await JobProfile.findAll({ where: { societyId } });
-        if (!jobProfiles.length) {
-            return res.status(404).json({ message: 'No job profiles found for the specified society' });
+  
+        if (!societyId) {
+          return res.status(400).json({ message: "societyId is required" });
         }
-        res.status(200).json(jobProfiles);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-exports.updateJobProfile = async (req, res) => {
-    try {
-        const jobProfile = await JobProfile.findByPk(req.params.id);
-        if (!jobProfile) {
-            return res.status(404).json({ message: 'Job profile not found' });
+  
+        if (!firstName || !lastName || !email || !mobileNumber || !roleAllocation) {
+          return res.status(400).json({ message: "Missing required fields" });
         }
-
-        const { firstName, lastName, roleId, email, mobileNo, status } = req.body;
-        const profilePhoto = req.files?.profilePhoto ? req.files.profilePhoto[0].path : jobProfile.profilePhoto;
-        const idProof = req.files?.idProof ? req.files.idProof[0].path : jobProfile.idProof;
-
-        const updatedJobProfile = await jobProfile.update({
-            firstName,
-            lastName,
-            profilePhoto,
-            idProof,
-            roleId,
-            email,
-            mobileNo,
-            status
+  
+        // Validate if the email is already in use
+        const existingJobProfileGuard = await JobProfile.findOne({ where: { email } });
+        if (existingJobProfileGuard) {
+          return res.status(400).json({ message: "A JobProfile guard with this email already exists" });
+        }
+  
+        // Handle file uploads
+        let profilePhoto = req.files?.profilePhoto ? req.files.profilePhoto[0].path : null;
+        let idProof = req.files?.idProof ? req.files.idProof[0].path : null;
+  
+        if (!profilePhoto || !idProof) {
+          return res.status(400).json({ message: "Profile photo and ID proof are required" });
+        }
+  
+        // Set default password
+        const password = "Security"
+  
+        // Create JobProfile
+        const newJobProfileGuard = await JobProfile.create({
+          profilePhoto,
+          firstName,
+          lastName,
+          email,
+          password,
+          mobileNumber,
+          societyId,
+          idProof,
+          roleId,
+          roleAllocation,
         });
+  
+        res.status(201).json({
+          message: "JobProfile guard created successfully",
+          data: newJobProfileGuard,
+        });
+      } catch (error) {
+        console.error("Error creating JobProfile guard:", error.message);
+        res.status(500).json({ message: "Failed to create JobProfile guard", error: error.message });
+      }
+    });
+  };
+  
 
-        res.status(200).json({ message: 'Job profile updated successfully', data: updatedJobProfile });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+// Get JobProfile by ID
+const getJobProfileById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const jobProfile = await JobProfile.findByPk(id);
+
+    if (!jobProfile) {
+      return res.status(404).json({ message: "JobProfile guard not found" });
     }
+
+    res.status(200).json({ message: "JobProfile guard fetched successfully", data: jobProfile });
+  } catch (error) {
+    console.error("Error fetching JobProfile guard:", error.message);
+    res.status(500).json({ message: "Failed to fetch JobProfile guard" });
+  }
 };
 
-exports.deleteJobProfile = async (req, res) => {
-    try {
-        const jobProfile = await JobProfile.findByPk(req.params.id);
-        if (!jobProfile) {
-            return res.status(404).json({ message: 'Job profile not found' });
-        }
+// Get JobProfiles by Society ID
+const getJobProfilesBySocietyId = async (req, res) => {
+  try {
+    const { societyId } = req.params;
+    const jobProfiles = await JobProfile.findAll({ where: { societyId } });
 
-        await jobProfile.destroy();
-        res.status(200).json({ message: 'Job profile deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (jobProfiles.length === 0) {
+      return res.status(404).json({ message: "No JobProfile guards found for this society" });
     }
+
+    res.status(200).json({ message: "JobProfiles fetched successfully", data: jobProfiles });
+  } catch (error) {
+    console.error("Error fetching JobProfiles by societyId:", error.message);
+    res.status(500).json({ message: "Failed to fetch JobProfiles" });
+  }
+};
+
+// Update JobProfile
+const updateJobProfileGuard = (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: "File upload error", error: err.message });
+    }
+
+    try {
+      const { id } = req.params;
+      const jobProfile = await JobProfile.findByPk(id);
+      if (!jobProfile) {
+        return res.status(404).json({ message: "JobProfile guard not found" });
+      }
+
+      const { firstName, lastName, email, mobileNumber } = req.body;
+      let profilePhoto = jobProfile.profilePhoto;
+      let idProof = jobProfile.idProof;
+
+      if (req.files?.profilePhoto) {
+        fs.unlinkSync(jobProfile.profilePhoto); // Delete old file
+        profilePhoto = req.files.profilePhoto[0].path;
+      }
+      if (req.files?.idProof) {
+        fs.unlinkSync(jobProfile.idProof);
+        idProof = req.files.idProof[0].path;
+      }
+
+      await jobProfile.update({ firstName, lastName, email, mobileNumber, profilePhoto, idProof });
+
+      res.status(200).json({
+        message: "JobProfile guard updated successfully",
+        data: jobProfile,
+      });
+    } catch (error) {
+      console.error("Error updating JobProfile guard:", error.message);
+      res.status(500).json({ message: "Failed to update JobProfile guard" });
+    }
+  });
+};
+
+// Delete JobProfile
+const deleteJobProfileGuard = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const jobProfile = await JobProfile.findByPk(id);
+
+    if (!jobProfile) {
+      return res.status(404).json({ message: "JobProfile guard not found" });
+    }
+
+    fs.unlinkSync(jobProfile.profilePhoto); // Remove stored files
+    fs.unlinkSync(jobProfile.idProof);
+
+    await jobProfile.destroy();
+    res.status(200).json({ message: "JobProfile guard deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting JobProfile guard:", error.message);
+    res.status(500).json({ message: "Failed to delete JobProfile guard" });
+  }
+};
+
+module.exports = {
+  createJobProfile,
+  getJobProfileById,
+  getJobProfilesBySocietyId,
+  updateJobProfileGuard,
+  deleteJobProfileGuard,
 };

@@ -30,6 +30,7 @@
 // );
 
 // module.exports = Building;
+
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const Customer = require("./Customer"); // Correctly imported Customer model

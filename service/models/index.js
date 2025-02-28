@@ -1,10 +1,15 @@
 const User = require("./User");
 const Address = require("./Address");
 const Customer = require("./Customer");
+const GateAllocation = require("./GateAllocation")
 const SubscriptionPlan = require("./SubscriptionPlan");
+const Parking = require("./Parking");
+const JobProfile = require("./JobProfile");
 const Role = require("./RoleModel");
 const Building = require("./Building");
+const Gate = require("./Gate");
 const Floor = require("./Floor");
+const Facility = require("./FacilityManagement");
 const UnitType = require("./UnitType");
 const Unit = require("./Unit");
 const UserGroup = require("./UserGroup");
@@ -18,9 +23,7 @@ const Ticket_Summery = require("./Ticket_Summery");
 const ref_ticket_status = require("./ref_ticket_status");
 const ref_ticket_catagorisation = require("./ref_ticket_catagorisation");
 const Socity_HelpDesk_Access_Management = require("./Socity_HelpDesk_Access_Management");
-const GateAllocation = require("./GateAllocation");
-const JobProfile = require("./JobProfile");
-const Gate = require("./Gate");
+
 Address.hasMany(Customer, { foreignKey: "addressId" });
 Customer.belongsTo(Address, { foreignKey: "addressId" });
 
@@ -64,9 +67,14 @@ module.exports = {
   Address,
   SubscriptionPlan,
   Customer,
+  GateAllocation,
+  Parking,
   Role,
   Building,
+  JobProfile,
+  Gate,
   Floor,
+  Facility,
   UnitType,
   Unit,
   UserGroup,
@@ -80,7 +88,4 @@ module.exports = {
   ref_ticket_status,
   ref_ticket_catagorisation,
   Socity_HelpDesk_Access_Management,
-  Gate,
-  GateAllocation,
-  JobProfile,
 };

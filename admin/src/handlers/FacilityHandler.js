@@ -6,6 +6,16 @@ const FacilityHandler = () => {
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user.Customer.customerId);
 
+  ;
+
+  const getFacilityHandler = async () => {
+    try {
+      return await getFacilityService(societyId, {}, token);
+    } catch (err) {
+      console.error("Error fetching facility:", err);
+    }
+  };
+
   const createFacilityHandler = async (data) => {
     try {
       const res = await createFacilityService(societyId, data, token);
@@ -21,15 +31,7 @@ const FacilityHandler = () => {
       }
       console.error(err);
     }
-  };
-
-  const getFacilityHandler = async () => {
-    try {
-      return await getFacilityService(societyId, {}, token);
-    } catch (err) {
-      console.error("Error fetching facility:", err);
-    }
-  };
+  }
 
     // Function to delete Facility by ID
   const deleteFacilityByIdHandler = async (id) => {

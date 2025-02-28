@@ -1,14 +1,11 @@
-const express = require('express');
-const gateRout = express.Router();
-const { createGate, getGates,getGatesBysocietyId} = require('../controllers/gateController');
 
+const express = require("express");
+const gateRouter = express.Router();
+const { createGate, getGates, getGatesBySocietyId } = require("../controllers/gateController");
 
-gateRout.post('/create', createGate);
+gateRouter.post("/create", createGate);
+gateRouter.get("/gates", getGates);
+gateRouter.get("/gate/:societyId", getGatesBySocietyId);
 
+module.exports = gateRouter;
 
-gateRout.get('/gates', getGates);
-
-
-gateRout.get('/society/:societyId', getGatesBysocietyId);
-
-module.exports = gateRout;

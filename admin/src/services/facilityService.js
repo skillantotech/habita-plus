@@ -11,22 +11,9 @@ export const getFacilityService = (societyId, data, token) => {
   });
 };
 
-export const createFacilityService = (societyId,data, token) => {
+export const createFacilityService = (societyId, data, token) => {
   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/facilitymanagement/facility/${societyId}`;
   return axios.post(url, data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  })
-};
-
-// Modify the axios service call in React
-
-export const getFacilityByIdService = (facilityId, token) => {
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/facilitymanagement/${facilityId}`;
-
-  return axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -45,15 +32,25 @@ export const deleteFacilityService = async (facilityId, token) => {
     });
     return response;
   } catch (err) {
-    console.error("Error in deleting visitor:", err);
+    console.error("Error in deleting facility:", err);
     throw err;
   }
 };
 
-
 export const updateFacilityService = (data, token) => {
   const url = `${process.env.REACT_APP_PUBLIC_API_URL}/facilitymanagement/${data.societyId}/${data.facilityId}`;
   return axios.put(url, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const getFacilityByIdService = (facilityId, token) => {
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/facilitymanagement/${facilityId}`;
+
+  return axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

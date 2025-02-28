@@ -53,13 +53,13 @@ const handleSubmitFacility = async (e) => {
 };
   return (
     <div className="px-5">
-      <div className="text-sm font-semibold my-2 flex items-center gap-2 text-gray-200">
+      <div className="flex items-center gap-2 my-2 text-sm font-semibold text-gray-200">
         <UrlPath paths={paths} />
       </div>
       <PageHeading heading={Heading} />
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
+      <div className="p-10 my-5 bg-gray-100 border rounded-lg">
         <form >
-          <div className="grid grid-cols-1 gap-3 items-center py-4">
+          <div className="grid items-center grid-cols-1 gap-3 py-4">
             <Input
               label={<div>Facility Name: </div>}
               type="text"
@@ -73,7 +73,7 @@ const handleSubmitFacility = async (e) => {
           <div className="flex flex-row pt-[10px] items-center gap-4">
             <div>Facility Applicable:</div>
             <div className="flex flex-row items-center gap-3">
-              <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              <div className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                 <input
                   type="radio"
                   name="facilityType"
@@ -83,7 +83,7 @@ const handleSubmitFacility = async (e) => {
                 />
                 <label className="text-lg">Public Usage</label>
               </div>
-              <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              <div className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                 <input
                   type="radio"
                   name="facilityType"
@@ -98,7 +98,7 @@ const handleSubmitFacility = async (e) => {
           {/* <div className="flex flex-row items-center gap-4 py-4">
             <div>Facility Charge:</div>
             <div className="flex flex-row items-center gap-3">
-              <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              <div className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                 <input
                   type="radio"
                   name="facilityCharge"
@@ -108,7 +108,7 @@ const handleSubmitFacility = async (e) => {
                 />
                 <label className="text-lg">Free</label>
               </div> */}
-              {/* <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              {/* <div className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                 <input
                   type="radio"
                   name="facilityCharge"
@@ -145,7 +145,7 @@ const handleSubmitFacility = async (e) => {
             <div>Facility Charge:</div>
             <div className="flex flex-row items-center gap-3">
               {["Free", "Paid"].map((charge) => (
-                <div key={charge} className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+                <div key={charge} className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                   <input
                     type="radio"
                     name="facilityCharge"
@@ -161,7 +161,7 @@ const handleSubmitFacility = async (e) => {
 
           {/* Charge Amount (Visible Only When Paid is Selected) */}
           {formData.facilityCharge === "Paid" && (
-            <div className="grid grid-cols-1 gap-3 items-center py-4">
+            <div className="grid items-center grid-cols-1 gap-3 py-4">
               <Input
                 label="Charge Amount"
                 type="text"
@@ -178,7 +178,7 @@ const handleSubmitFacility = async (e) => {
           <div className="flex flex-row items-center gap-4 py-4">
             <div>Facility Usage:</div>
             <div className="flex flex-row items-center gap-3">
-              <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              <div className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                 <input
                   type="radio"
                   name="facilityUsage"
@@ -188,19 +188,19 @@ const handleSubmitFacility = async (e) => {
                 />
                 <label className="text-lg">Hourly</label>
               </div>
-              <div className="flex flex-row items-center gap-3 px-4 py-1 rounded-lg border bg-white">
+              <div className="flex flex-row items-center gap-3 px-4 py-1 bg-white border rounded-lg">
                 <input
                   type="radio"
                   name="facilityUsage"
-                  value="Days"
-                  checked={formData.facilityUsage === "Days"}
+                  value="Daily"
+                  checked={formData.facilityUsage === "Daily"}
                   onChange={handleChange}
                 />
                 <label>Days</label>
               </div>
             </div>
           </div>
-          {/* <div className="grid grid-cols-1 gap-3 items-center py-4">
+          {/* <div className="grid items-center grid-cols-1 gap-3 py-4">
             <Input
               label={<div>Charge Amount: </div>}
               type="text"
@@ -211,7 +211,7 @@ const handleSubmitFacility = async (e) => {
               onChange={handleChange}
             />
           </div> */}
-        <div className="flex flex-row gap-3 items-center py-4">
+        <div className="flex flex-row items-center gap-3 py-4">
                   <div className="text-base ">Select Date And Time :</div>
                   <Input
                     label={<div>Booking From <span className="text-red-500">*</span></div>}

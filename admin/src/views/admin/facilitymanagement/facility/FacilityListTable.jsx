@@ -102,11 +102,11 @@ const FacilityListTable = () => {
       const response = await deleteFacilityByIdHandler(id);
       if (response) {
         setTransformedData((prev) => prev.filter((el) => el.facilityId !== id));
-        toast.success("Facility deleted successfully!");
+        //toast.success("Facility deleted successfully!");
       }
     } catch (err) {
       console.error("Error deleting facility:", err);
-      toast.error("Failed to delete facility.");
+      //toast.error("Failed to delete facility.");
     }
   };
 

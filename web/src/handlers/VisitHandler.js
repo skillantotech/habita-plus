@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 const VisitHandler = () => {
   const token = useSelector((state) => state.auth.token);
- // const societyId = useSelector((state) => state.auth.user.Customer.customerId);
+ const societyId = useSelector((state) => state.auth.user.Customer);
  // console.log(societyId);
   const senderId = useSelector((state) => state.auth.user.userId);
 

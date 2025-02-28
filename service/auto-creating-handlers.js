@@ -214,7 +214,7 @@
 //     salutation: "Mr",
 //     firstName: "Super",
 //     lastName: "Admin",
-//     password: "super.admin", // You should hash the password in a real scenario
+//     password: "super.admin", 
 //     countryCode: 91,
 //     mobileNumber: 9887865722,
 //     alternateNumber: 9876543210,
@@ -250,24 +250,24 @@
 // exports.createAdmin = async (req, res) => {
 //   console.log("admin called!");
 
-//   const superAdminDetails = {
-//     salutation: "Mr",
-//     firstName: "Admin",
-//     lastName: "name",
-//     password: "admin", // You should hash the password in a real scenario
-//     countryCode: 91,
-//     mobileNumber: 9887865722,
-//     alternateNumber: 9876543210,
-//     email: "admin@gmail.com",
-//     roleId: 5,
-//     livesHere: true,
-//     primaryContact: true,
-//     isManagementCommittee: true,
-//     managementDesignation: "Super Admin",
-//     status: "active",
-//     addressId: 1,
-//     societyId:1,
-//   };
+//   const superAdminDetails = {  
+//   salutation: "Mr",
+//    firstName: "Himansu",
+//    lastName: "Paltasingh",
+//    password: "himansu",
+//    countryCode: 91,
+//    mobileNumber: 6370868678,
+//    alternateNumber: 7008710715,
+//    email: "himansu@gmail.com",
+//    roleId: 5,
+//    livesHere: true,
+//    primaryContact: true,
+//    isManagementCommittee: true,
+//    managementDesignation: "Resident",
+//    status: "active",
+//    addressId: 1,
+//    societyId:1
+//  }
 
 //   try {
 //     // Create the Super Admin user in the database
@@ -286,7 +286,7 @@
 //       details: err.message,
 //     });
 //   }
-// };
+//
 
 const rolesJSON = require("../service/json/roles.json");
 const plansJSON = require("../service/json/subscriptionPlans.json");
@@ -504,12 +504,13 @@ exports.createSuperAdmin = async (req, res) => {
     salutation: "Mr",
     firstName: "Super",
     lastName: "Admin",
-    password: "super.admin", // You should hash the password in a real scenario
+    password: "super.admin", 
     countryCode: 91,
     mobileNumber: 9887865722,
     alternateNumber: 9876543210,
     email: "super.admin@gmail.com",
     roleId: 1,
+    societyId:1,
     livesHere: true,
     primaryContact: true,
     isManagementCommittee: true,
@@ -540,24 +541,24 @@ exports.createSuperAdmin = async (req, res) => {
 exports.createAdmin = async (req, res) => {
   console.log("admin called!");
 
-  const superAdminDetails = {  
-  salutation: "Mr",
-   firstName: "Himansu",
-   lastName: "Paltasingh",
-   password: "himansu",
-   countryCode: 91,
-   mobileNumber: 6370868678,
-   alternateNumber: 7008710715,
-   email: "himansu@gmail.com",
-   roleId: 5,
-   livesHere: true,
-   primaryContact: true,
-   isManagementCommittee: true,
-   managementDesignation: "Resident",
-   status: "active",
-   addressId: 1,
-   societyId:1
- }
+  const superAdminDetails = {
+    salutation: "Mr",
+    firstName: "Himansu",
+    lastName: "name",
+    password: "himansu", // You should hash the password in a real scenario
+    countryCode: 91,
+    mobileNumber: 9887865722,
+    alternateNumber: 9876543210,
+    email: "himansu@gmail.com",
+    roleId: 6,
+    livesHere: true,
+    primaryContact: true,
+    isManagementCommittee: true,
+    managementDesignation: "Super Admin",
+    status: "active",
+    addressId: 1,
+    societyId:4,
+  };
 
   try {
     // Create the Super Admin user in the database

@@ -113,7 +113,7 @@ exports.getGates = async (req, res) => {
 
 
 
-exports.getGatesBysocietyId = async (req, res) => {
+exports.getGatesBySocietyId = async (req, res) => {
   try {
     const { societyId } = req.params;
 

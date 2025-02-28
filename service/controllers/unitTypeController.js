@@ -44,7 +44,7 @@ exports.getUnitType = async (req, res) => {
   }
 };
 exports. getUnit = async (req, res) => {
-  const { unitId, customerId } = req.query; // customerId represents societyId
+  const { unitId, customerId } = req.query; // `customerId` represents `societyId`
   if (!customerId || !unitId) {
     return res.status(400).json({
       message: "Both Customer ID (Society ID) and Unit ID are required.",
@@ -63,7 +63,7 @@ exports. getUnit = async (req, res) => {
     });
     if (!unit) {
       return res.status(404).json({
-        message: `No unit found with unitId ${unitId} and customerId (societyId) ${customerId}`,
+        message: `No unit found with unitId ${unitId} and customerId (societyId) ${customerId}.`,
       });
     }
     return res.status(200).json({ message: "Unit found.", data: unit });

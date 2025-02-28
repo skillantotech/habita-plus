@@ -1,13 +1,12 @@
 
 
-const FacilityManagement = require("../models/FacilityManagement");  // Correct the import if needed
+const { Facility } = require("../models");
 const { sendErrorResponse, sendSuccessResponse } = require("../utils/response");
 
-exports.createFacilityManagement = async (req, res) => {
+
+exports.createFacility = async (req, res) => {
     try {
-        const societyId = req.params.societyId;  // Getting societyId from URL parameter
-        console.log("Request body: ", req.body);
-        
+        const { societyId } = req.params;
         const {
             facilityName,
             facilityType,
@@ -18,183 +17,204 @@ exports.createFacilityManagement = async (req, res) => {
             bookingTo,
         } = req.body;
 
-        // Validate input fields
-        if (!facilityName || !facilityType || !facilityUsage || !facilityCharge || !chargeAmount) {
-            return sendErrorResponse(res, "All fields are required", 400);
+        if (!facilityName || !facilityType || !facilityUsage || !facilityCharge) {
+            return sendErrorResponse(res, "All fields except chargeAmount are required", 400);
         }
 
-        // Check if the facility already exists under the same societyId
-        const existingFacility = await FacilityManagement.findOne({
-            where: {
-                facilityName,
-                facilityType,
-                facilityUsage,
-                facilityCharge,
-                chargeAmount,
-                societyId,
-                ...(bookingFrom && { bookingFrom }),  // Add bookingFrom if it's provided
-                ...(bookingTo && { bookingTo })  // Add bookingTo if it's provided
-            },
-        });
+        if (facilityCharge === "Paid" && (chargeAmount == null || isNaN(parseFloat(chargeAmount)))) {
+            return sendErrorResponse(res, "chargeAmount is required for Paid facilities and must be a valid number", 400);
+        }
+
+        const facilityData = {
+            facilityName,
+            facilityType,
+            facilityUsage,
+            facilityCharge,
+            chargeAmount: facilityCharge === "Free" ? 0 : parseFloat(chargeAmount),
+            bookingFrom,
+            bookingTo,
+            societyId
+        };
+
+        const existingFacility = await Facility.findOne({ where: { facilityName, facilityType, facilityUsage, facilityCharge, societyId } });
 
         if (existingFacility) {
-            return sendErrorResponse(res, "Facility Management already exists", 400);
+            return sendErrorResponse(res, "Facility already exists", 400);
         }
 
-        // Create the new facility and associate it with the societyId
-        const facility = await FacilityManagement.create({
-            ...req.body,  // Take other fields from the body
-            societyId  // Add societyId from URL parameter
-        });
-
-        // Return the success response with the created facility
-        return sendSuccessResponse(res, "Facility Management created successfully", facility);
+        const facility = await Facility.create(facilityData);
+        return sendSuccessResponse(res, "Facility created successfully", facility);
     } catch (error) {
-        console.error("Error creating facility management:", error);
+        console.error("Error creating facility:", error);
         return sendErrorResponse(res, "Internal server error", 500, error.message);
     }
 };
 
+// exports.createFacilityManagement = async (req, res) => {
+//     try {
+//         const societyId = req.params.societyId;  // Getting societyId from URL parameter
+//         console.log("Request body: ", req.body);
+        
+//         const {
+//             facilityName,
+//             facilityType,
+//             facilityUsage,
+//             facilityCharge,
+//             chargeAmount,
+//             bookingFrom,
+//             bookingTo,
+//         } = req.body;
+
+//         // Validate input fields
+//         // if (!facilityName || !facilityType || !facilityUsage || !facilityCharge || !chargeAmount) {
+//         //     return sendErrorResponse(res, "All fields are required", 400);
+//         // }
+//         //Newly added
+//         if (!facilityName || !facilityType || !facilityUsage || !facilityCharge) {
+//             return sendErrorResponse(res, "All fields except chargeAmount are required", 400);
+//         }
+        
+
+//         // Check if the facility already exists under the same societyId
+//         const existingFacility = await Facility.findOne({
+//             where: {
+//                 facilityName,
+//                 facilityType,
+//                 facilityUsage,
+//                 facilityCharge,
+//                 chargeAmount,
+//                 societyId,
+//                 ...(bookingFrom && { bookingFrom }),  // Add bookingFrom if it's provided
+//                 ...(bookingTo && { bookingTo })  // Add bookingTo if it's provided
+//             },
+//         });
+
+//         if (existingFacility) {
+//             return sendErrorResponse(res, "Facility Management already exists", 400);
+//         }
+
+//         // Create the new facility and associate it with the societyId
+//         const facility = await Facility.create({
+//             ...req.body,  // Take other fields from the body
+//             societyId  // Add societyId from URL parameter
+//         });
+
+//         // Return the success response with the created facility
+//         return sendSuccessResponse(res, "Facility Management created successfully", facility);
+//     } catch (error) {
+//         console.error("Error creating facility management:", error);
+//         return sendErrorResponse(res, "Internal server error", 500, error.message);
+//     }
+// };
+
 exports.getFacilityRecord = async (req, res) => {
     try {
-        const societyId = req.params.societyId;  // Getting societyId from URL parameter
+        const { societyId } = req.params;
 
-        // Check if societyId is provided
         if (!societyId) {
             return sendErrorResponse(res, "Please provide a societyId", 400);
         }
 
-        // Fetch all facilities under the given societyId
-        const facilities = await FacilityManagement.findAll({
-            where: { societyId },
-        });
+        const facilities = await Facility.findAll({ where: { societyId } });
 
-        // If no facilities are found for the given societyId, return an error
-        if (facilities.length === 0) {
+        if (!facilities.length) {
             return sendErrorResponse(res, "No facilities found for the provided societyId", 404);
         }
 
-        // Send success response with the found facilities
         return sendSuccessResponse(res, "Facility records fetched successfully", facilities);
-
     } catch (error) {
         console.error("Error fetching facility records:", error);
         return sendErrorResponse(res, "Internal server error", 500, error.message);
     }
-}
+};
 
 exports.updateFacilityRecord = async (req, res) => {
-    console.log("Update facility record");
     try {
-        const societyId = req.params.societyId;  // Getting societyId from URL parameter
-        const facilityId = req.params.facilityId;  // Getting facilityId from URL parameter
+        const { societyId, facilityId } = req.params;
+        const { facilityName, facilityType, facilityUsage, facilityCharge, chargeAmount, bookingFrom, bookingTo } = req.body;
 
-        // Validate if the societyId and facilityId are provided
         if (!societyId || !facilityId) {
             return sendErrorResponse(res, "Please provide both societyId and facilityId", 400);
         }
 
-        // Find the facility by societyId and facilityId
-        const facility = await FacilityManagement.findOne({
-            where: { societyId, facilityId }
-        });
+        const facility = await Facility.findOne({ where: { facilityId, societyId } });
 
-        // If the facility is not found, return an error
         if (!facility) {
             return sendErrorResponse(res, "Facility not found for the provided societyId and facilityId", 404);
         }
 
-        // Get the updated data from the request body (only update provided fields)
-        const {
-            facilityName,
-            facilityType,
-            facilityUsage,
-            facilityCharge,
-            chargeAmount,
-            bookingFrom,
-            bookingTo,
-        } = req.body;
-
-        // Validate the facilityType, facilityUsage, and facilityCharge if they are provided
-        const validFacilityTypes = ['PublicUsage', 'PrivateUsage'];       
-        const validFacilityUsages = ['Hourly', 'Days'];
-        const  validFacilityCharges= ['Free', 'Paid'];
+        const validFacilityTypes = ["PublicUsage", "PrivateUsage"];
+        const validFacilityUsage = ["Hourly", "Daily"];
+        const validFacilityCharge = ["Free", "Paid"];
 
         if (facilityType && !validFacilityTypes.includes(facilityType)) {
             return sendErrorResponse(res, `Invalid facilityType. Allowed values are ${validFacilityTypes.join(", ")}`, 400);
         }
 
-        if (facilityUsage && !validFacilityUsages.includes(facilityUsage)) {
-            return sendErrorResponse(res, `Invalid facilityUsage. Allowed values are ${validFacilityUsages.join(", ")}`, 400);
+        if (facilityUsage && !validFacilityUsage.includes(facilityUsage)) {
+            return sendErrorResponse(res, `Invalid facilityUsage. Allowed values are ${validFacilityUsage.join(", ")}`, 400);
         }
 
-        if (facilityCharge && !validFacilityCharges.includes(facilityCharge)) {
-            return sendErrorResponse(res, `Invalid facilityCharge. Allowed values are ${validFacilityCharges.join(", ")}`, 400);
+        if (facilityCharge && !validFacilityCharge.includes(facilityCharge)) {
+            return sendErrorResponse(res, `Invalid facilityCharge. Allowed values are ${validFacilityCharge.join(", ")}`, 400);
         }
 
-        // Update the fields provided in the request body
-        const updatedFacility = await facility.update({
-            facilityName: facilityName || facility.facilityName,  // Only update if provided
-            facilityType: facilityType || facility.facilityType,
-            facilityUsage: facilityUsage || facility.facilityUsage,
-            facilityCharge: facilityCharge || facility.facilityCharge,
-            chargeAmount: chargeAmount || facility.chargeAmount,
-            bookingFrom: bookingFrom || facility.bookingFrom,
-            bookingTo: bookingTo || facility.bookingTo
-        });
+        await Facility.update(
+            {
+                facilityName,
+                facilityType,
+                facilityUsage,
+                facilityCharge,
+                chargeAmount: facilityCharge === "Free" ? 0 : chargeAmount,
+                bookingFrom,
+                bookingTo,
+            },
+            { where: { facilityId, societyId } }
+        );
 
-        // Return success response with the updated facility
-        return sendSuccessResponse(res, "Facility record updated successfully", updatedFacility);
+        const updatedFacility = await Facility.findOne({ where: { facilityId, societyId } });
 
+        return sendSuccessResponse(res, "Facility updated successfully", updatedFacility);
     } catch (error) {
-        console.error("Error updating facility record:", error);
+        console.error("Error updating facility:", error);
         return sendErrorResponse(res, "Internal server error", 500, error.message);
     }
 };
 
 exports.deleteFacilityRecord = async (req, res) => {
-    try{
-        const {facilityId} =req.params;
-        if(!facilityId){
-            return sendErrorResponse(res, "Please provide facilityId", 400);
-        }
-        
-        const parsedFacilityId = parseInt(facilityId);
-    
-        if(isNaN(parsedFacilityId)){
+    try {
+        const { facilityId } = req.params;
+
+        if (!facilityId || isNaN(parseInt(facilityId))) {
             return sendErrorResponse(res, "Invalid facilityId", 400);
         }
-        const facility = await FacilityManagement.findOne({
-            where: {facilityId: parsedFacilityId}
-        })
-        if (!facility){
+
+        const facility = await Facility.findOne({ where: { facilityId } });
+
+        if (!facility) {
             return sendErrorResponse(res, "Facility not found", 404);
         }
-        await FacilityManagement.destroy({
-            where:{facilityId: parsedFacilityId},
-        });
-        return sendSuccessResponse(res, "Facility record delete successfully", facility);
 
+        await Facility.destroy({ where: { facilityId } });
+
+        return sendSuccessResponse(res, "Facility deleted successfully", facility);
     } catch (error) {
-        console.error("Error deleting facility record:", error);
+        console.error("Error deleting facility:", error);
         return sendErrorResponse(res, "Internal server error", 500, error.message);
     }
-}
-
-
-exports.getFacilityDataById = async (req, res) => {
-  try {
-    const { facilityId } = req.params;
-    const facility = await FacilityManagement.findOne({ where: { facilityId } });
-
-    if (!facility) {
-      return res.status(404).json({ message: "Facility not found" });
-    }
-
-    return res.status(200).json(facility);
-  } catch (err) {
-    console.error("Error fetching Facility by ID:", err);
-    return res.status(500).json({ message: "Server error" });
-  }
 };
-
+exports.getFacilityDataById = async (req, res) => {
+    try {
+      const { facilityId } = req.params;
+      const facility = await Facility.findOne({ where: { facilityId } });
+  
+      if (!facility) {
+        return res.status(404).json({ message: "Facility not found" });
+      }
+  
+      return res.status(200).json(facility);
+    } catch (err) {
+      console.error("Error fetching Facility by ID:", err);
+      return res.status(500).json({ message: "Server error" });
+    }
+  };

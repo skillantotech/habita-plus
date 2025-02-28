@@ -1,3 +1,209 @@
+// const GateAllocation = require("../models/GateAllocation.js");
+// const Customer = require("../models/Customer");
+// const fs = require("fs");
+// const path = require("path");
+
+// // Create a new Gate Allocation
+// const createGateAllocation = async (req, res) => {
+//   try {
+//     const {
+//       societyId,
+//       firstName,
+//       lastName,
+//       countryCode,
+//       mobileNumber,
+//       email,
+//       gateNumber,
+//       role,
+//       // profilePhoto,
+//       // idProof,
+//     } = req.body;
+
+//     // Validate required fields
+//     if (!mobileNumber) {
+//       return res.status(400).json({ message: "mobileNumber is required." });
+//     }
+//     if (!req.files?.idProof?.[0]?.filename) {
+//       return res.status(400).json({ message: "idProof is required." });
+//     }
+
+//     // Validate Customer
+//     const customer = await Customer.findByPk(societyId);
+//     if (!customer) {
+//       return res.status(404).json({ message: "Customer not found." });
+//     }
+
+//     // Handle file uploads
+//     const profilePhoto = req.files?.profilePhoto?.[0]?.filename || null;
+//     const idProof = req.files?.idProof?.[0]?.filename;
+
+//     // Create Gate Allocation
+//     const gateAllocation = await GateAllocation.create({
+//       societyId,
+//       profilePhoto,
+//       idProof,
+//       firstName,
+//       lastName,
+//       countryCode,
+//       mobileNumber,
+//       email,
+//       gateNumber,
+//       role,
+//     });
+
+//     res.status(201).json({ message: "Gate Allocation created successfully.", data: gateAllocation });
+//   } catch (error) {
+//     console.error(error);
+//     if (error.name === "SequelizeValidationError") {
+//       return res.status(400).json({ message: "Validation error.", errors: error.errors });
+//     }
+//     if (error.name === "SequelizeUniqueConstraintError") {
+//       return res.status(400).json({ message: "Duplicate entry.", error });
+//     }
+//     res.status(500).json({ message: "Error creating Gate Allocation.", error });
+//   }
+// };
+
+// // Get all Gate Allocations
+// const getAllGateAllocations = async (req, res) => {
+//   try {
+//     const gateAllocations = await GateAllocation.findAll({
+//       include: {
+//         model: Customer,
+//         attributes: ["customerId", "name"], // Adjust fields based on your Customer model
+//       },
+//     });
+
+//     res.status(200).json(gateAllocations);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error retrieving Gate Allocations.", error });
+//   }
+// };
+
+// // Get Gate Allocation by ID
+// const getGateAllocationById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const gateAllocation = await GateAllocation.findByPk(id, {
+//       include: {
+//         model: Customer,
+//         attributes: ["customerId", "name"], // Adjust fields based on your Customer model
+//       },
+//     });
+
+//     if (!gateAllocation) {
+//       return res.status(404).json({ message: "Gate Allocation not found." });
+//     }
+
+//     res.status(200).json(gateAllocation);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error retrieving Gate Allocation.", error });
+//   }
+// };
+
+// // Update Gate Allocation
+// const updateGateAllocation = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const {
+//       societyId,
+//       firstName,
+//       lastName,
+//       countryCode,
+//       mobileNumber,
+//       email,
+//       gateNumber,
+//       role,
+//     } = req.body;
+
+//     const gateAllocation = await GateAllocation.findByPk(id);
+//     if (!gateAllocation) {
+//       return res.status(404).json({ message: "Gate Allocation not found." });
+//     }
+
+//     const profilePhoto = req.files?.profilePhoto?.[0]?.filename || gateAllocation.profilePhoto;
+//     const idProof = req.files?.idProof?.[0]?.filename || gateAllocation.idProof;
+
+//     // Safely delete old files if new ones are uploaded
+//     if (req.files?.profilePhoto?.[0] && gateAllocation.profilePhoto) {
+//       const oldProfilePhotoPath = path.join(__dirname, "../uploads/", gateAllocation.profilePhoto);
+//       if (fs.existsSync(oldProfilePhotoPath)) {
+//         fs.unlinkSync(oldProfilePhotoPath);
+//       }
+//     }
+//     if (req.files?.idProof?.[0] && gateAllocation.idProof) {
+//       const oldIdProofPath = path.join(__dirname, "../uploads/", gateAllocation.idProof);
+//       if (fs.existsSync(oldIdProofPath)) {
+//         fs.unlinkSync(oldIdProofPath);
+//       }
+//     }
+
+//     await gateAllocation.update({
+//       societyId,
+//       profilePhoto,
+//       idProof,
+//       firstName,
+//       lastName,
+//       countryCode,
+//       mobileNumber,
+//       email,
+//       gateNumber,
+//       role,
+//     });
+
+//     res.status(200).json({ message: "Gate Allocation updated successfully.", data: gateAllocation });
+//   } catch (error) {
+//     console.error(error);
+//     if (error.name === "SequelizeValidationError") {
+//       return res.status(400).json({ message: "Validation error.", errors: error.errors });
+//     }
+//     res.status(500).json({ message: "Error updating Gate Allocation.", error });
+//   }
+// };
+
+// // Delete Gate Allocation
+// const deleteGateAllocation = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const gateAllocation = await GateAllocation.findByPk(id);
+//     if (!gateAllocation) {
+//       return res.status(404).json({ message: "Gate Allocation not found." });
+//     }
+
+//     // Safely delete associated files
+//     if (gateAllocation.profilePhoto) {
+//       const photoPath = path.join(__dirname, "../uploads/", gateAllocation.profilePhoto);
+//       if (fs.existsSync(photoPath)) {
+//         fs.unlinkSync(photoPath);
+//       }
+//     }
+//     if (gateAllocation.idProof) {
+//       const idProofPath = path.join(__dirname, "../uploads/", gateAllocation.idProof);
+//       if (fs.existsSync(idProofPath)) {
+//         fs.unlinkSync(idProofPath);
+//       }
+//     }
+
+//     await gateAllocation.destroy();
+//     res.status(200).json({ message: "Gate Allocation deleted successfully." });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error deleting Gate Allocation.", error });
+//   }
+// };
+
+// module.exports = {
+//   createGateAllocation,
+//   getAllGateAllocations,
+//   getGateAllocationById,
+//   updateGateAllocation,
+//   deleteGateAllocation,
+// };
+
 const GateAllocation = require('../models/GateAllocation');
 const { sendErrorResponse, sendSuccessResponse } = require('../utils/response');
 const { Op } = require('sequelize');

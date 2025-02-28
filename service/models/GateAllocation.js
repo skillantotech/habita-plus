@@ -1,3 +1,76 @@
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../config/database");
+// const Customer = require("./Customer"); 
+
+// const GateAllocation = sequelize.define(
+//   "GateAllocation",
+//   {
+//     allocationId: {
+//       type: DataTypes.INTEGER,
+//       autoIncrement: true,
+//       primaryKey: true,
+//     },
+//     profilePhoto: {
+//       type: DataTypes.STRING,
+//       allowNull: true,
+//       validate: {
+//         notEmpty: true,
+//       },
+//     },
+//     firstName: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     lastName: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     email: {
+//       type: DataTypes.STRING,
+//       allowNull: true,
+//       validate: {
+//         isEmail: true,
+//       },
+//     },
+//     mobileNumber: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     idProof: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//       validate: {
+//         notEmpty: true,
+//       },
+//     },
+//     role: {
+//       type: DataTypes.ENUM("SecurityGuard", "Supervisor", "FacilityManager"),
+//       allowNull: false,
+//     },
+//     // societyId: {
+//       // type: DataTypes.INTEGER,
+//       // allowNull: false,
+//       // validate: {
+//         // notEmpty: true,
+//       // },
+//     // },
+//     societyId: {
+//       type: DataTypes.INTEGER,
+//       references: {
+//         model: Customer, // Correctly referencing the Customer model
+//         key: "customerId", // Referencing the primary key of Customer
+//       },
+//       allowNull: false,
+//     },
+//   },
+//   {
+//     tableName: "gate_allocations",
+//     timestamps: true,
+//   }
+// );
+
+// module.exports = GateAllocation;
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); // Database connection file
 const Customer = require('./Customer');

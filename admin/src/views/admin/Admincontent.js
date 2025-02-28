@@ -52,6 +52,7 @@ import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
 import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
 //import ViewGateUserDetails from "./gatemanagement/approvedgateusers/ViewGateUserDetails";
 import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
+import ParkingList from "./parkingmanagement/parkingDetails/ParkingList";
 
 
 // import CreateResident from "./resident/create/CreateResident";
@@ -150,7 +151,7 @@ const Admincontent = () => {
       <Route path="/vendor/view" element={<VendorList />} />
       {/* parking management */}
       <Route path="/parking/newslot" element={<AddNewParkingSlot />} />
-      <Route path="/parking/list" element={<div>Parking List</div>} />
+      <Route path="/parking/list" element={<ParkingList/>}/>
       <Route
         path="/parking/bookingdetails"
         element={<ParkingBookingDetails />}
