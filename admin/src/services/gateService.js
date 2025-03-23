@@ -28,7 +28,7 @@ export const gateAllocationService = async (data, token) => {
 
 
 export const gateAllocationListService = async(data, token, societyId) => {
-    const url = `${process.env.REACT_APP_PUBLIC_API_URL}/gate/gate/${societyId}`;
+    const url = `${process.env.REACT_APP_PUBLIC_API_URL}/gateAllocation/list/${societyId}`;
 
     return axios
     .get(url, {
@@ -38,8 +38,8 @@ export const gateAllocationListService = async(data, token, societyId) => {
         params: data,
     })
     .then((res) => {
-        console.log("Allocated Gate: ", res.data.data);
-        return res.data;
+        // console.log("Allocated Gate: ", res.data.data);
+        return res.data.data;
     })
     .catch((err)=>{
         console.error("API Error:", err.response || err.message);
