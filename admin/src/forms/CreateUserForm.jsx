@@ -9,6 +9,7 @@ import UserRoleHandler from "../handlers/UserRoleHandler";
 import CustomerHandler from "../handlers/superadmin/CustomerHandler";
 
 const CreateUserForm = () => {
+  const [societyData, setSocietyData] = useState([{ label: 'Select Society', value: '' }])
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.societyModeratorForm.formData);
   const selectOptions = useSelector(
@@ -43,11 +44,12 @@ const CreateUserForm = () => {
     try {
       const result = await getCustomerHandler();
       console.log(result);
+
       const newValue = result.data.data.map((el) => ({
         label: el.customerName,
         value: el.customerId,
       }));
-
+      setSocietyData(newValue);
       dispatch({
         type: "societyModeratorForm/setSocietyLists",
         payload: newValue,
@@ -63,6 +65,7 @@ const CreateUserForm = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    console.log("Name and Value", name, value);
     dispatch({
       type: "societyModeratorForm/setOnChangeFormField",
       payload: { name, value },
@@ -94,14 +97,15 @@ const CreateUserForm = () => {
       //      type: "societyModeratorForm/resetFormData",
       //      payload: null,
       //    });
-      
-    
+
+
     });
   };
 
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
+  // console.log("My Data", societyData);
 
   return (
     <div className="p-10 my-5 border rounded-lg bg-gray-100">
@@ -145,7 +149,7 @@ const CreateUserForm = () => {
         {/* Profile Fields */}
         <div className="grid grid-cols-3 gap-5 items-center py-6">
           <Select
-            label={<><span>Salutation</span><span className="text-red-500 font-bold">*</span></>} 
+            label={<><span>Salutation</span><span className="text-red-500 font-bold">*</span></>}
             options={selectOptions.salutation}
             value={formData.salutation}
             onChange={handleInputChange}
@@ -317,16 +321,25 @@ const CreateUserForm = () => {
             onChange={handleInputChange}
             size="lg"
           />
-          <Select
-            label="Select Society"
-            options={selectOptions.societyLists}
-            value={formData.societyId}
-            onChange={handleInputChange}
-            name="societyId"
-            color="blue"
-            size="md"
-            className="py-[14px]"
-          />
+          
+
+          <div className="flex flex-col mb-4 w-72">
+            <label htmlFor="societyId" className="mb-2 font-semibold text-gray-700">Select Society</label>
+            <select
+              onChange={handleInputChange}
+              name="societyId"
+              // color="blue"
+              // size="md"
+              className="w-72 px-[20px] py-[12px]"
+            >
+              <option value="">Select Society</option>
+              {societyData.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Submit Button */}
