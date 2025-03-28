@@ -1,5 +1,4 @@
-import toast from "react-hot-toast";
-// import { createDefineUnitService, getUnitsServices } from "../services/defineunitService";
+
 import { approveGateServices } from "../services/approvedGateService";
 import { useSelector } from "react-redux";
 
@@ -21,8 +20,6 @@ const ApprovedGateUserHandler = () => {
 
   return {
     getApprovedGateUserHandler,
-    // getUnitTypeHandler
-    // getGateUserHandler,
   };
 };
 

@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { FaCreativeCommons } from "react-icons/fa";
 import { GuardUserCreationService, gateUserListService } from "../services/profileService"
 
 const ProfileHandler = () => {
@@ -10,10 +9,6 @@ const ProfileHandler = () => {
   const GuardRelationshipHandler = async (profileData) => {
     try {
       console.log("Handler Called!!!");
-      // console.log("Input User Data:", profileData);
-      // console.log("First Name: ", profileData.firstName);
-
-      // Document Type is missing
       const payload = {
         firstName: profileData.firstName,
         lastName: profileData.lastName,

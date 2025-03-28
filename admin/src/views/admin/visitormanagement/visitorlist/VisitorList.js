@@ -1,7 +1,5 @@
 import React from "react";
 import VisitorListTable from "./VisitorListTable";
-// import UrlPath from "../../../../../components/shared/UrlPath";
-// import PageHeading from "../../../../../components/shared/PageHeading";
 import UrlPath from "../../../../../src/components/shared/UrlPath";
 import PageHeading from "../../../../../src/components/shared/PageHeading";
 

@@ -1,4 +1,4 @@
-import { FaUserAlt, FaIdCard,FaBuilding, FaBullhorn, FaComments, FaFileAlt, FaFileInvoice, FaParking, FaCog, FaHeadset, FaLaptopCode, FaUserFriends, FaHome, FaUserTie } from 'react-icons/fa';
+import { FaUserAlt, FaIdCard,FaBuilding, FaBullhorn, FaComments,  FaParking, FaCog,  FaLaptopCode,FaHome, FaUserTie } from 'react-icons/fa';
 
 import { GiGate } from 'react-icons/gi';
 
@@ -327,6 +327,11 @@ const SideBarMenu = {
           name: "Add Vechicle Details",
           url: "parking/vechicledetails",
         },
+        
+        // {
+        //   name: "Vechicle List",
+        //   url: "vechicle/list",
+        // },
       ],
     },
     // {

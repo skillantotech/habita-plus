@@ -3,13 +3,6 @@ import toast from "react-hot-toast";
 import { createEmailConfigurationService } from "../services/emailConfigurationService";
 
 const EmailHandler = () => {
-  //   const token = useSelector((state) => state.auth.token);
-
-  // const validateEmailData=(data)=>{
-  //     const requiredFields=[
-  //         "from","to","message"
-  //     ]
-  // }
 
   const createEmailHandler = (data) => {
     createEmailConfigurationService(data).then((res) => {

@@ -12,7 +12,7 @@ import DefineUnit from "./unitdetails/defineunit/DefineUnit";
 import DefineStructer from "./unitdetails/definestructer/DefineStructer";
 import AddnewNotice from "./noticeannouncement/addnewnotice/AddnewNotice";
 import NoticeList from "./noticeannouncement/noticelist/NoticeList";
-import DefineVisitorcatagories from "./visitormanagement/definevisitorcatagories/DefineVisitorcatagories";
+// import DefineVisitorcatagories from "./visitormanagement/definevisitorcatagories/DefineVisitorcatagories";
 import AddVisitor from "./visitormanagement/addvisitor/AddVisitor";
 import VisitorList from "./visitormanagement/visitorlist/VisitorList";
 import AddnewDiscussion from "./discussionforum/addnewdiscussion/AddnewDiscussion";

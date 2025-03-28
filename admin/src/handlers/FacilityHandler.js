@@ -59,17 +59,7 @@ const FacilityHandler = () => {
       toast.error("Error fetching Facility details.");
     }
   };
-  // const updateFacilityHandler = async (data) => {
-  //   return await updateFacilityService(
-  //     { ...data, societyId, facilityId },
-  //     token
-  //   ).then((res) => {
-  //     if (res.status === 201) {
-  //       toast.success("Facility Updated successfully.");
-  //     }
-  //   });
-  // };
-
+  
   const updateFacilityHandler = async (data) => {
     if (!data.facilityId) {
       console.error("Error: Missing facilityId in update data", data);

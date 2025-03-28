@@ -24,7 +24,7 @@ const SubSection = ({ data, onClick, isActive }) => {
         <img
           src={data.icon}
           alt={data.name}
-         className="w-6 h-6 object-contain"
+         className="object-contain w-6 h-6"
         />
       )}
       <span>{data.name}</span>
@@ -50,9 +50,9 @@ const Dashboardleftcontent = ({ role = "" }) => {
   };
 
   return (
-    // <section className="bg-sidebar h-full px-5 py-2">
+    // <section className="h-full px-5 py-2 bg-sidebar">
     //   <div className="h-full overflow-y-auto no-scrollbar">
-    //     <div className="space-y-2 w-full">
+    //     <div className="w-full space-y-2">
     //       {MENU.map((item, index) => (
     //         <Accordion
     //           key={index}
@@ -74,9 +74,9 @@ const Dashboardleftcontent = ({ role = "" }) => {
     //   </div>
     // </section>
 
-    <section className="bg-sidebar h-full px-5 py-2">
+    <section className="h-full px-5 py-2 bg-sidebar">
       <div className="h-full overflow-y-auto no-scrollbar">
-        <div className="space-y-2 w-full">
+        <div className="w-full space-y-2">
           {MENU.map((item, index) => (
             <Accordion
               key={index}
@@ -86,7 +86,7 @@ const Dashboardleftcontent = ({ role = "" }) => {
                   onClick={() => toggleSection(index)} // Toggle section on click
                 >
                   <div className="flex items-center space-x-2">
-                    <item.icon className="text-lime-500 text-2xl" /> 
+                    <item.icon className="text-2xl text-lime-500" /> 
                     <span>{item.name}</span>
                   </div>
                   
