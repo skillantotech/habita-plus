@@ -39,10 +39,11 @@ const ApprovedGateUser = () => {
       firstName: element.firstName || '', // Default to empty string if undefined
       lastName: element.lastName || '',
       email: element.email || '',
-      mobileNo: element.mobileNo || '', // Include mobile number if needed
+      mobileNo: element.mobileNumber || '', // Include mobile number if needed
       profilePhoto: element.profilePhoto || null, // Handle profile photo
       idProof: element.idProof || null, // Handle ID proof
       roleId: element.roleId || null, // Include roleId
+      roleCategory: element.roleCategory || null,
       status: element.status || 'inactive', // Default status if needed
       createdAt: element.createdAt || null, // Include createdAt
       updatedAt: element.updatedAt || null // Include updatedAt

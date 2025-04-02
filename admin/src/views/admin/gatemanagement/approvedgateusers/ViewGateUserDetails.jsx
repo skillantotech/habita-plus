@@ -7,6 +7,20 @@ function ViewGateUserDetails({ isOpen, onClose, formData }) {
     useEffect(() => {
         setNoticeViewForm(formData); // Set the form data when component mounts or formData changes
     }, [formData]);
+    function formatString(inputString) {
+        if (!inputString) {
+          return ""; // Handle empty or null input
+        }
+        const words = inputString.split('_');
+        const capitalizedWords = words.map(word => {
+          if (!word) {
+            return ""; // Handle empty words after splitting
+          }
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+        return capitalizedWords.join(' ');
+      }
+      
 
     return (
         <>
@@ -22,7 +36,7 @@ function ViewGateUserDetails({ isOpen, onClose, formData }) {
                     <div className="flex-col ml-40 space-y-4 text-gray-800">
                         <p className="text-xl">Name: &nbsp; {noticeViewForm?.firstName} {noticeViewForm?.lastName}</p>
                         <p className="text-xl">Status: &nbsp; {noticeViewForm?.status}</p>
-                        <p className="text-xl">Job Role: {noticeViewForm?.roleId}</p>
+                        <p className="text-xl">Job Role: {formatString(noticeViewForm?.roleCategory)}</p>
                         <p className="text-xl">Email: {noticeViewForm?.email}</p>
                         <p className="text-xl">Mobile Number: {noticeViewForm?.mobileNo}</p>
                     </div>
