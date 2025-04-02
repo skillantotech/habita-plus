@@ -3,6 +3,8 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -17,6 +19,7 @@ app.use(bodyParser.json());
 const errorHandler = require("./middleware/errorHandler");
 
 // router paths
+const passwordReset = require("./routes/resetPasswordRoutes");
 
 const userRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
@@ -136,5 +139,9 @@ app.use("/api/facilityManagement",facilityManagement);
 
 // Parking
 app.use("/api",parkingRoutes);
+
+// passwordReset
+
+app.use("/api",passwordReset);
 
 module.exports = app;

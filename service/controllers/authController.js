@@ -6,197 +6,239 @@ const bcrypt = require("bcrypt");
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required."
+      });
+    }
 
     const user = await User.findOne({
       where: { email },
-      include: [
-        {
-          model: Role,
-          as: "role",
-        },
-      ],
+      include: [{ model: Role, as: "role" }],
     });
 
     if (!user) {
-      return res.status(404).json({
-        message: "Email doesnot exists !!",
+      return res.status(401).json({
+        message: "Invalid email or password."
       });
     }
+     // Debug Logs
+     console.log("User Found:", user.email, "Role:", user.role?.roleCategory);
+     console.log("Stored Password:", user.password);
+     console.log("Entered Password:", password);
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(404).json({
-        message: "Entered password is incorrect !",
+     // Compare password using bcrypt
+
+     const isPasswordMatch = await bcrypt.compare(password,user.password);
+     if(!isPasswordMatch){
+      console.log("Password Matched");
+      return res.status(401).json({
+        message:"invalid email or password"
       });
-    }
+     }
+     console.log("Password Mitched")
 
-    if (
-      user.role.roleCategory === "super_admin" ||
+    const payload = user.role.roleCategory === "super_admin" ||
       user.role.roleCategory === "society_moderator" ||
       user.role.roleCategory === "management_committee"
-    ) {
-      const token = generateToken({ email, password }, "1h");
-      const redirectUrl = `http://localhost:3001/signin/${token}`;
-      return res.json({
-        redirectUrl,
-        token,
-        user
-      });
-    }
+      ? { email, password }
+      : { userId: user.userId, email: user.email };
 
-    const token = generateToken({ userId: user.userId, email: user.email });
+    const token = generateToken(payload, user.role.roleCategory ? "1h" : undefined);
+// 
+    // if (payload.password) {
+      // return res.json({ redirectUrl: `http://localhost:3001/signin/${token}`, token, user });
+    // }
+// 
+if (payload.password) {
+  const redirectUrl = `http://localhost:3001/signin/${token}`;
+  console.log("Redirecting to:", redirectUrl);
+  return res.json({ redirectUrl, token, user });
+}
+
     cookieHandler(res, token);
-
     return res.status(200).json({
       message: "Successfully logged in!",
-      user: {
-        userId: user.userId,
-        email: user.email,
-        role: user.role,
-      },
-      token,
+      user,
+       token
     });
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.error("Login Error:", error);
     return res.status(500).json({
-      message: err.message || "Internal server Error",
+      message: error.message ||
+        "Internal Server Error"
     });
   }
 };
 
-
-// token signin 
 const tokenSignIn = async (req, res) => {
- 
   try {
     const { token } = req.body;
-    console.log(token);
-
-    if (!token) {
-      return res.status(401).json({
-        message: "Token Not found",
-      });
-    }
-
-    console.log("before token verify !")
+    if (!token) return res.status(401).json({
+      message: "Token not found."
+    });
 
     const { email, password } = verifyToken(token);
-
-    console.log(email, password);
-
     const user = await User.findOne({
       where: { email },
-      include: [
-        {
-          model: Role,
-          as: "role",
-        },
-        {
-          model: Customer,
-          // as: "customerAlias",
-          attributes: ["customerId", "customerName"],
-        },
-      ],
+      include: [{ model: Role, as: "role" },
+      { model: Customer }]
     });
-    if (!user) {
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({
-        message: "Invalid email or password",
+        message: "Invalid email or password."
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-    return res.status(401).json({
-        message: "Invalid email or password",
+    const newToken = generateToken({
+      userId: user.userId,
+      email
     });
-    }
-
-    console.log(user.userId);
-
-    const newToken = generateToken({ userId: user.userId, email });
     cookieHandler(res, newToken);
-
-    // delete user.password;
 
     return res.status(200).json({
       message: "Successfully logged in!",
-      token: newToken,
-      user,
+      token: newToken, user
     });
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.error("Token Sign-in Error:", error);
     return res.status(500).json({
-      message: err.message || "Internal server Error",
+      message: error.message ||
+        "Internal Server Error"
     });
   }
 };
+
+// const jobProfileLogin = async (req, res) => {
+  // try {
+    // const { email, password } = req.body;
+    // if (!email || !password) {
+      // return res.status(400).json({
+        // message: "Email and password are required."
+      // });
+    // }
+// 
+    // const profile = await JobProfile.findOne({ where: { email }, include: [{ model: Role, as: "role" }] });
+    // if (!profile || !(await bcrypt.compare(password, profile.password))) {
+      // return res.status(401).json({
+        // message: "Invalid email or password."
+      // });
+    // }
+// 
+    // const payload = profile.role.roleCategory === "society_security_guard" ||
+      // profile.role.roleCategory === "society_facility_manager"
+      // ? { email, password }
+      // : { profileId: profile.profileId, email: profile.email };
+// 
+    // const token = generateToken(payload, profile.role.roleCategory ? "1h" : undefined);
+// 
+    // if (payload.password) {
+      // return res.json({ redirectUrl: `http://localhost:3001/signin/${token}`, token, profile });
+    // }
+// 
+    // cookieHandler(res, token);
+    // return res.status(200).json({
+      // message: "Successfully logged in!",
+      // profile,
+      // token
+    // });
+  // } catch (error) {
+    // console.error("Job Profile Login Error:", error);
+    // return res.status(500).json({
+      // message: error.message ||
+        // "Internal Server Error"
+    // });
+  // }
+// };
+
 const jobProfileLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required."
+      });
+    }
 
     const profile = await JobProfile.findOne({ 
-      where: { email },
-       include: [
-        {
-           model: Role, 
-           as: "role" 
-          }] });
+      where: { email }, 
+      include: [{ model: Role, as: "role" }] 
+    });
+
+    // Check if profile exists
     if (!profile) {
-      return res.status(404).json({ 
-        message: "User does not exist" })};
-
-    // Debugging: Log stored hash and entered password
-
-    const doesMatch = await bcrypt.compare(password, profile.password);
-    if (!doesMatch) {
-      console.log("Password Mismatch: Comparison failed");
-      return res.status(401).json({ message: "Incorrect password" });
+      return res.status(401).json({ message: "Invalid email or password." });
     }
-    if(
+
+    // Check if the profile status is inactive
+    if (profile.status === "inactive") {
+      return res.status(403).json({ message: "Your account is inactive. Please contact the administrator." });
+    }
+
+    // Check password
+    const isPasswordValid = await bcrypt.compare(password, profile.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid email or password." });
+    }
+
+    const payload = 
       profile.role.roleCategory === "society_security_guard" ||
       profile.role.roleCategory === "society_facility_manager"
-    ){
-    const token = generateToken({ email,password }, "1h");
-    const redirectUrl = `http://localhost:3001/signin/${token}`;
-    return res.json({ redirectUrl, token, profile });
+        ? { email, password }
+        : { profileId: profile.profileId, email: profile.email };
+
+    const token = generateToken(payload, profile.role.roleCategory ? "1h" : undefined);
+
+    if (payload.password) {
+      return res.json({ redirectUrl: `http://localhost:3001/signin/${token}`, token, profile });
     }
-    const token = generateToken({ profileId: profile.profileId, email: profile.email});
+
     cookieHandler(res, token);
-    return res.status(200).json({ 
+    return res.status(200).json({
       message: "Successfully logged in!",
-      profile: {
-        profileId: profile.profileId,
-        email: profile.email,
-        role: profile.role,
-      },
-      token,
+      profile,
+      token
     });
-  } catch (err) {
-    console.error("Job Profile Login Error:", err);
-    return res.status(500).json({ message: "Internal Server Error" });
+  } catch (error) {
+    console.error("Job Profile Login Error:", error);
+    return res.status(500).json({
+      message: error.message || "Internal Server Error"
+    });
   }
 };
-
 
 const loginToken = async (req, res) => {
   try {
     const { token } = req.body;
-    if (!token) return res.status(401).json({ message: "Token not found" });
+    if (!token) return res.status(401).json({
+      message: "Token not found."
+    });
 
     const decoded = verifyToken(token);
-    if (!decoded) return res.status(401).json({ message: "Invalid or expired token" });
+    const profile = await JobProfile.findOne({
+      where: { email: decoded.email },
+      include: [{ model: Role, as: "role" }]
+    });
 
-    const profile = await JobProfile.findOne({ where: { email: decoded.email }, include: [{ model: Role, as: "role" }] });
-    if (!profile) return res.status(404).json({ message: "Invalid email or password" });
-    if (!profile.role) return res.status(500).json({ message: "Role is not associated with this JobProfile!" });
+    if (!profile) return res.status(404).json({
+      message: "Profile not found."
+    });
 
     const refreshToken = generateToken({ profileId: profile.profileId, email: profile.email });
     cookieHandler(res, refreshToken);
 
-    return res.status(200).json({ message: "Successfully logged in!", token: refreshToken, profile });
-  } catch (err) {
-    console.error("Login Token Error:", err);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(200).json({
+      message: "Successfully logged in!",
+      token: refreshToken,
+      profile
+    });
+  } catch (error) {
+    console.error("Login Token Error:", error);
+    return res.status(500).json({
+      message: error.message ||
+        "Internal Server Error"
+    });
   }
 };
 

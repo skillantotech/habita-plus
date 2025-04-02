@@ -6,13 +6,13 @@ const { Role } = require("../models");
 const fs = require("fs");
 const { URL } = require("url");
 
-// Configure multer for file uploads
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Files are stored in the "uploads/" directory
+    cb(null, "uploads/"); 
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Adds a timestamp to the file name
+    cb(null, Date.now() + "-" + file.originalname); 
   },
 });
 
@@ -159,7 +159,7 @@ const updateJobProfileGuard = (req, res) => {
         return res.status(404).json({ message: "JobProfile guard not found" });
       }
 
-      const { firstName, lastName, email, mobileNumber,documentType } = req.body;
+      const { firstName, lastName, email, mobileNumber,documentType, status } = req.body;
       let profilePhoto = jobProfile.profilePhoto;
       let idProof = jobProfile.idProof;
 
@@ -172,7 +172,7 @@ const updateJobProfileGuard = (req, res) => {
         idProof = req.files.idProof[0].path;
       }
 
-      await jobProfile.update({ firstName, lastName, email, mobileNumber, profilePhoto, idProof,documentType });
+      await jobProfile.update({ firstName, lastName, email, mobileNumber, profilePhoto, idProof,documentType, status });
 
       res.status(200).json({
         message: "JobProfile guard updated successfully",

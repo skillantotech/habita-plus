@@ -1,10 +1,21 @@
-const express = require('express');
-
-const { parkingBooked,getParkingSlot} = require ("../controllers/parkingController.js")
+const express = require("express");
+const {
+  parkingBooked,
+  getParkingSlot,
+  UpdateParking,
+  createVehicleBySocietyAndUser,
+  getVehicleBySocietyId,
+  getVehicleByUserId,
+} = require("../controllers/parkingController.js");
 
 const parkingRoutes = express.Router();
 
-parkingRoutes.post("/parking/:societyId",parkingBooked);
-parkingRoutes.get("/parking/:societyId",getParkingSlot);
+parkingRoutes.post("/parking/:societyId", parkingBooked);
+parkingRoutes.get("/parking/:societyId", getParkingSlot);
+parkingRoutes.put("/parking/:societyId/:parkingId", UpdateParking);
+
+parkingRoutes.post("/vehicle", createVehicleBySocietyAndUser);
+parkingRoutes.get("/society/:societyId/vehicles", getVehicleBySocietyId);
+parkingRoutes.get("/user/:userId/vehicles", getVehicleByUserId);
 
 module.exports = parkingRoutes;

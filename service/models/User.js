@@ -190,6 +190,17 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+
+
+    resetToken:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    resetTokenExpiration:{
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    
     countryCode: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -269,7 +280,7 @@ const User = sequelize.define(
       allowNull: true,
     },
     status: {
-      type: DataTypes.ENUM("active", "inactive"),
+      type: DataTypes.ENUM("active", "inactive","pending"),
       allowNull: false,
       defaultValue: "active",
     },

@@ -33,7 +33,7 @@ const Parking = sequelize.define('Parking', {
         type: DataTypes.ENUM('PublicUsage', 'PrivateUsage'),
         allowNull: false,
     },
-    parkingCharge: {
+    parkingCharges: {
         type: DataTypes.ENUM('Free', 'Paid'),
         allowNull: false,
     },
@@ -46,11 +46,11 @@ const Parking = sequelize.define('Parking', {
         defaultValue: 0.00,
         allowNull: false,
     },
-    vehicleType: { // ✅ Fixed Typo
+    vehicleType: {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    vehicleNumber: { // ✅ Fixed Typo
+    vehicleNumber: {
         type: DataTypes.STRING,
         allowNull: true,
     },
