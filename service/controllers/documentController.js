@@ -1,7 +1,7 @@
 const { Document } = require("../models");
 const upload = require("../middleware/upload");
 
-// ✅ Create Document by Society ID
+//  Create Document by Society ID
 const createDocumentBySocietyId = async (req, res) => {
     upload.fields([{ name: 'document' }, { name: 'picture' }])(req, res, async (err) => {
         if (err) return res.status(400).json({ message: "File upload error", error: err.message });
@@ -29,7 +29,7 @@ const createDocumentBySocietyId = async (req, res) => {
     });
 };
 
-// ✅ Create Document by User ID
+//  Create Document by User ID
 const createDocumentByUserId = async (req, res) => {
     upload.fields([{ name: 'document' }, { name: 'picture' }])(req, res, async (err) => {
         if (err) return res.status(400).json({ message: "File upload error", error: err.message });
@@ -57,7 +57,7 @@ const createDocumentByUserId = async (req, res) => {
     });
 };
 
-// ✅ Get Documents by Society ID
+//  Get Documents by Society ID
 const getDocumentBySocietyId = async (req, res) => {
     try {
         const { societyId } = req.params;
@@ -71,7 +71,7 @@ const getDocumentBySocietyId = async (req, res) => {
     }
 };
 
-// ✅ Get Documents by User ID
+// Get Documents by User ID
 const getDocumentByUserId = async (req, res) => {
     try {
         const { userId } = req.params;
