@@ -6,6 +6,7 @@ const SubscriptionPlan = require("./SubscriptionPlan");
 const Parking = require("./Parking");
 const Vehicle = require("./VehicleDetails")
 const JobProfile = require("./JobProfile");
+const Document = require("./Document");
 const Role = require("./RoleModel");
 const Building = require("./Building");
 const Gate = require("./Gate");
@@ -68,6 +69,7 @@ module.exports = {
   Address,
   SubscriptionPlan,
   Customer,
+  Document,
   GateAllocation,
   Parking,
   Vehicle,

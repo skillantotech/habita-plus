@@ -23,6 +23,7 @@ const passwordReset = require("./routes/resetPasswordRoutes");
 
 const userRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
+const documentRouter = require("./routes/documentRoutes");
 const jobProfileRouter = require("./routes/jobProfileRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const parkingRoutes = require("./routes/parkingRoutes")
@@ -52,6 +53,7 @@ const {
   Visitor_new_visitentry,
   Ticket_Summery,
   Ticket_Details,
+  Document,
 } = require("./models");
 const refUserGroupRouter = require("./routes/refUserGroupRouter");
 const {
@@ -143,5 +145,8 @@ app.use("/api",parkingRoutes);
 // passwordReset
 
 app.use("/api",passwordReset);
+
+// documentReset
+app.use("/api/document",documentRouter);
 
 module.exports = app;
