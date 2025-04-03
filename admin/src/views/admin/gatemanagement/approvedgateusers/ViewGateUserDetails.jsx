@@ -28,7 +28,6 @@ function ViewGateUserDetails({ isOpen, onClose, formData }) {
     function removeGateUser(profileId){
         // console.log("Profile ID triggerred", profileId);
         removeGuardUser(profileId);
-        // removeGateAllocation();
     }
       
 

@@ -58,7 +58,13 @@ const ProfileHandler = () => {
     const payload = { status: 'inactive'}
     return await RemoveGuardProfile(payload, profileId, token)
     .then((res) =>{
-      console.log(res.message);
+      // console.log(res.data.message);
+      if(res.data.message === 'JobProfile guard updated successfully'){
+        toast.success(<div>
+          Guard User Removed Successfully! <br />
+          {'\u00A0'.repeat(12)} Reload the Page!
+        </div>);
+      }
       return res.message;
     })
     .catch((err) =>{

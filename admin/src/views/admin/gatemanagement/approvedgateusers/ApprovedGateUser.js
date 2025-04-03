@@ -62,15 +62,15 @@ const ApprovedGateUser = () => {
 
   useEffect(() => {
     getGateUserList().then((res) => {
-      if(Array.isArray(res.data)){
+      if (Array.isArray(res.data)) {
         setGuardProfile(transformSecurityUserData(res.data));
         setTotalCount(res.data.length);
-      }else{
+      } else {
         setGuardProfile([]);
         setTotalCount(0);
       }
 
-    }).catch((error)=>{
+    }).catch((error) => {
       console.log(error);
       setGuardProfile([]);
     })
@@ -78,18 +78,18 @@ const ApprovedGateUser = () => {
     getGateAllocationList().then((res) => {
       setGateAllocations(res);
 
-    }).catch((error)=>{
+    }).catch((error) => {
       console.error("Error fetching gate list:", error);
     })
 
-    getGateListHandler().then((res)=>{
+    getGateListHandler().then((res) => {
       console.log(res.data.data);
       setGateList(res.data.data);
       setTotalGate(res.data.data.length)
     })
-    .catch((error)=>{
-      console.error("Error fetching gate list:", error);
-    })
+      .catch((error) => {
+        console.error("Error fetching gate list:", error);
+      })
 
   }, [])
 
@@ -105,22 +105,24 @@ const ApprovedGateUser = () => {
       console.error("Invalid input: All inputs must be arrays.");
       return [];
     }
-  
-    return gateAllocations.map(allocation => {
-      const guard = guardProfile.find(user => user.profileId === allocation.profileId && user.status === 'active');
-      const gate = gateList.find(gate => gate.gateId === allocation.gateId);
-  
-      return {
-        profileId: allocation.profileId,
-        firstName: guard?.firstName || "N/A",
-        lastName: guard?.lastName || "N/A",
-        gateId: allocation.gateId,
-        email: guard?.email,
-        mobileNo: guard?.mobileNo,
-        gateName: gate?.gateName || "N/A",
-        gateNumber: gate?.gateNumber || "N/A",
-      };
-    });
+
+    return gateAllocations
+      .filter(allocation => guardProfile.some(user => user.profileId === allocation.profileId && user.status === 'active'))
+      .map(allocation => {
+        const guard = guardProfile.find(user => user.profileId === allocation.profileId && user.status === 'active');
+        const gate = gateList.find(gate => gate.gateId === allocation.gateId);
+
+        return {
+          profileId: allocation.profileId,
+          firstName: guard.firstName,
+          lastName: guard.lastName,
+          email: guard.email,
+          mobileNo: guard.mobileNo,
+          gateId: allocation.gateId,
+          gateName: gate?.gateName || "N/A",
+          gateNumber: gate?.gateNumber || "N/A",
+        };
+      });
   };
 
   const Combined = combineData({ guardProfile, gateAllocations, gateList });

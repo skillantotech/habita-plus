@@ -105,22 +105,24 @@ const ApprovedGateUser = () => {
       console.error("Invalid input: All inputs must be arrays.");
       return [];
     }
-  
-    return gateAllocations.map(allocation => {
-      const guard = guardProfile.find(user => user.profileId === allocation.profileId && user.status === 'inactive');
-      const gate = gateList.find(gate => gate.gateId === allocation.gateId);
-  
-      return {
-        profileId: allocation.profileId,
-        firstName: guard?.firstName || "N/A",
-        lastName: guard?.lastName || "N/A",
-        gateId: allocation.gateId,
-        email: guard?.email,
-        mobileNo: guard?.mobileNo,
-        gateName: gate?.gateName || "N/A",
-        gateNumber: gate?.gateNumber || "N/A",
-      };
-    });
+
+    return gateAllocations
+      .filter(allocation => guardProfile.some(user => user.profileId === allocation.profileId && user.status === 'inactive'))
+      .map(allocation => {
+        const guard = guardProfile.find(user => user.profileId === allocation.profileId && user.status === 'inactive');
+        const gate = gateList.find(gate => gate.gateId === allocation.gateId);
+
+        return {
+          profileId: allocation.profileId,
+          firstName: guard.firstName,
+          lastName: guard.lastName,
+          email: guard.email,
+          mobileNo: guard.mobileNo,
+          gateId: allocation.gateId,
+          gateName: gate?.gateName || "N/A",
+          gateNumber: gate?.gateNumber || "N/A",
+        };
+      });
   };
 
   const Combined = combineData({ guardProfile, gateAllocations, gateList });
