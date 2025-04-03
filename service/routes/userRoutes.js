@@ -12,11 +12,13 @@ userRouter.get("/:id", userController.getUserById);
 userRouter.post("/create-resident/:societyId",userController.createSocietyResident);
 userRouter.get("/resident/:societyId" ,userController.getResidentBySocietyId);
 
-userRouter.post("/resident/approve", userController.approveUser);
-userRouter.get('/resident/approvedUser/:societyId', userController.getAllApprovedUsers);
+userRouter.put("/resident/:societyId",userController.updateResidentBySocietyId)
 
-
-userRouter.post("/resident/reject", userController.rejectUser);
-userRouter.get('/resident/deactive/:societyId', userController.getAllDeactiveUsers);
+// userRouter.post("/resident/approve", userController.approveUser);
+// userRouter.get('/resident/approvedUser/:societyId', userController.getAllApprovedUsers);
+// 
+// 
+// userRouter.post("/resident/reject", userController.rejectUser);
+// userRouter.get('/resident/deactive/:societyId', userController.getAllDeactiveUsers);
 
 module.exports = userRouter;

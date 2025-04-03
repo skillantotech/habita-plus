@@ -246,7 +246,7 @@ const User = sequelize.define(
         model: Unit,
         key: "unitId",
       },
-      allowNull: true,
+      allowNull: false,
     },
     roleId: {
       type: DataTypes.INTEGER,

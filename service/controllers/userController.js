@@ -15,7 +15,7 @@ const createSocietyModerator = async (req, res) => {
     const addressData = await addressService.createAddress(address);
     const addressId = addressData.addressId;
 
-    const password = "admin"; // Default password
+    const password = "admin";
 
     const result = await User.create({
       ...customerData,
@@ -97,58 +97,6 @@ const createSocietyResident = async (req, res) => {
   }
 };
 
-// const getResidentBySocietyId = async (req, res) => {
-  // try {
-    // const { societyId } = req.params;
-// 
-    // if (!societyId) {
-      // return res.status(400).json({ message: "Society ID is required" });
-    // }
-// 
-    // const residents = await User.findAll({
-      // where: {
-        // societyId,
-        // isManagementCommittee: false,
-      // },
-      // attributes: [
-        // "salutation",
-        // "firstName",
-        // "lastName",
-        // "email",
-        // "mobileNumber",
-        // "roleId",
-        // "status",
-        // "addressId",
-        // "primaryContact",
-        // "livesHere",
-        // "unitId",
-        // "userId",
-      // ],
-    // include:[
-      // {
-        // model:Unit,
-        // attributes:["unitId","unitName","unitNumber","unitsize"],
-      // },
-    // ],
-  // });
-// 
-    // if (!residents || residents.length === 0){
-      // return res.status(404).json({ message: "No residents found for the given Society ID" });
-    // }
-// 
-    // if (!residents || residents.length === 0) {
-      // return res.status(404).json({ message: "No residents found for the given Society ID" });
-    // }
-// 
-    // res.status(200).json({
-      // message: "Residents fetched successfully",
-      // residents,
-    // });
-  // } catch (error) {
-    // console.error("Error fetching residents:", error);
-    // res.status(500).json({ error: error.message });
-  // }
-// };
 
 const getResidentBySocietyId = async (req, res) => {
   try {
@@ -193,6 +141,51 @@ const getResidentBySocietyId = async (req, res) => {
   }
 };
 
+const updateResidentBySocietyId = async (req, res) => {
+  try {
+    const { societyId } = req.params;
+    const { userId, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId, unitId, status } = req.body;
+
+    if (!societyId) {
+      return res.status(400).json({ message: "Society ID is required in the URL" });
+    }
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required in the request body" });
+    }
+
+    const resident = await User.findOne({ where: { userId, societyId, isManagementCommittee: false } });
+
+    if (!resident) {
+      return res.status(404).json({ message: "Resident not found in the given society" });
+    }
+
+    let unit = null;
+    if (unitId) {
+      unit = await Unit.findByPk(unitId);
+      if (!unit) {
+        return res.status(400).json({ message: "Invalid unit ID" });
+      }
+    }
+
+    await resident.update({
+      salutation,
+      firstName,
+      lastName,
+      mobileNumber,
+      alternateNumber,
+      roleId,
+      status,
+      unitId: unit ? unit.unitId : resident.unitId,
+    });
+
+    res.status(200).json({ message: "Resident updated successfully", resident });
+  } catch (error) {
+    console.error("Error updating resident:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 const createUser = async (req, res) => {
   try {
     const { address, ...customerData } = req.body;
@@ -235,111 +228,7 @@ const getUserById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-const approveUser = async (req, res) => {
-  const { userId } = req.body;
-  try {
-    const user = await User.findByPk(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
 
-    
-    user.status = "active"; 
-    user.isDeleted=1;
-    await user.save();
-
-    res.status(200).json({ message: "User approved successfully", user });
-  } catch (err) {
-    console.error("Error approving user:", err.message);
-    res.status(500).json({ error: "Failed to approve user", details: err.message });
-  }
-};
-
-// Reject User
-const rejectUser = async (req, res) => {
-  const { userId } = req.body;
-  try {
-    const user = await User.findByPk(userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    user.status = "inactive";
-    //user.unitId = null;
-     user.isDeleted=0;
-    await user.save();
-
-    res.status(200).json({ message: "User rejected successfully", user });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to reject user", details: err.message });
-  }
-};
-
-const getAllApprovedUsers = async (req, res) => {
-  try {
-     const { societyId } = req.params;
- 
-     if (!societyId) {
-       return res.status(400).json({ message: "societyId is required" });
-     }
- 
-     
-     const activeUsers = await User.findAll({
-       where: {
-         societyId,  
-         status:"approveUser",
-         status: "active",  
-         isDeleted:1,
-         //unitId: { [Op.ne]: null },  
-         managementDesignation: "Resident", 
-       },
-     });
- 
-     if (activeUsers.length === 0) {
-       return res.status(404).json({ message: "No approved users found" });
-     }
- 
-     return res.status(200).json(activeUsers);
-   } catch (error) {
-     console.error("Error fetching approved users:", error);
-     return res.status(500).json({ error: error.message || "Internal Server Error" });
-   }
- };
-
- const getAllDeactiveUsers = async (req, res) => {
-  const { societyId } = req.params; 
-
-  try {
-    if (!societyId) {
-      return res.status(400).json({ error: "Society ID is required" });
-    }
-    const deactiveUsers = await User.findAll({
-      where: {
-        status: "inactive", 
-        societyId: societyId,   
-      },
-    });
-
-    // Check if any users were found
-    if (deactiveUsers.length === 0) {
-      return res.status(404).json({ message: "No deactivated users found for this society" });
-    }
-
-    // Respond with the retrieved users
-    res.status(200).json({
-      message: "Deactivated users retrieved successfully",
-      users: deactiveUsers.map(user => ({
-        userId: user.userId,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        roleId: user.roleId,
-        mobileNumber: user.mobileNumber,
-        status: user.status,
-      })),
-    });
-  } catch (err) {
-    console.error("Error retrieving deactivated users:", err);
-    res.status(500).json({ error: "Failed to retrieve deactivated users", details: err.message });
-  }
-};
 
 module.exports = {
   createUser,
@@ -348,8 +237,5 @@ module.exports = {
   createSocietyModerator,
   createSocietyResident,
   getResidentBySocietyId,
-  approveUser,
-  rejectUser,
-  getAllApprovedUsers,
-  getAllDeactiveUsers,
+  updateResidentBySocietyId,
 };
