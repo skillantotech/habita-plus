@@ -107,7 +107,7 @@ const ApprovedGateUser = () => {
     }
   
     return gateAllocations.map(allocation => {
-      const guard = guardProfile.find(user => user.profileId === allocation.profileId);
+      const guard = guardProfile.find(user => user.profileId === allocation.profileId && user.status === 'active');
       const gate = gateList.find(gate => gate.gateId === allocation.gateId);
   
       return {

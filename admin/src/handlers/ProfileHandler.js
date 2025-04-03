@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FaCreativeCommons } from "react-icons/fa";
-import { GuardUserCreationService, gateUserListService } from "../services/profileService"
+import { GuardUserCreationService, RemoveGuardProfile, gateUserListService } from "../services/profileService"
 
 const ProfileHandler = () => {
   const token = useSelector((state) => state.auth.token);
@@ -54,9 +54,22 @@ const ProfileHandler = () => {
       });
   };
 
+  const removeGuardUser = async (profileId) =>{
+    const payload = { status: 'inactive'}
+    return await RemoveGuardProfile(payload, profileId, token)
+    .then((res) =>{
+      console.log(res.message);
+      return res.message;
+    })
+    .catch((err) =>{
+      console.log(err);
+    })
+  }
+
   return {
     GuardRelationshipHandler,
     getGateUserList,
+    removeGuardUser,
   };
 };
 
