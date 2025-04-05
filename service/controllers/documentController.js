@@ -1,5 +1,7 @@
 const { Document } = require("../models");
 const upload = require("../middleware/upload");
+const fs = require("fs"); 
+const { sendErrorResponse, sendSuccessResponse } = require("../utils/response");
 
 //  Create Document by Society ID
 const createDocumentBySocietyId = async (req, res) => {
@@ -9,6 +11,7 @@ const createDocumentBySocietyId = async (req, res) => {
         try {
             const { documentName } = req.body;
             const { societyId } = req.params;
+            const { userGroupId } = req.body;
 
             if (!societyId) return res.status(400).json({ message: "societyId is required" });
 
@@ -18,6 +21,7 @@ const createDocumentBySocietyId = async (req, res) => {
             const newDocument = await Document.create({
                 societyId,
                 documentName,
+                userGroupId,
                 document: documentPath,
                 picture: picturePath
             });
@@ -37,6 +41,7 @@ const createDocumentByUserId = async (req, res) => {
         try {
             const { documentName } = req.body;
             const { userId } = req.params;
+            const { societyId } = req.body;
 
             if (!userId) return res.status(400).json({ message: "userId is required" });
 
@@ -46,6 +51,7 @@ const createDocumentByUserId = async (req, res) => {
             const newDocument = await Document.create({
                 userId,
                 documentName,
+                societyId,
                 document: documentPath,
                 picture: picturePath
             });
@@ -85,4 +91,96 @@ const getDocumentByUserId = async (req, res) => {
     }
 };
 
-module.exports = { createDocumentBySocietyId, createDocumentByUserId, getDocumentBySocietyId, getDocumentByUserId };
+// Update Document by Society ID
+const updateDocumentBySocietyId = async (req, res) => {
+    upload.fields([{ name: 'document' }, { name: 'picture' }])(req, res, async (err) => {
+        if (err) return res.status(400).json({ message: "File upload error", error: err.message });
+
+        try {
+            const { documentId } = req.params;
+            const existingDoc = await Document.findByPk(documentId);
+
+            if (!existingDoc) return res.status(404).json({ message: "Document not found" });
+
+            const { documentName, userGroupId } = req.body;
+            let document = existingDoc.document;
+            let picture = existingDoc.picture;
+
+            if (req.files?.document) {
+                if (document) fs.unlinkSync(document);
+                document = req.files.document[0].path;
+            }
+            if (req.files?.picture) {
+                if (picture) fs.unlinkSync(picture);
+                picture = req.files.picture[0].path;
+            }
+
+            await existingDoc.update({ documentName, userGroupId, document, picture });
+
+            return res.status(200).json({ message: "Document updated successfully", data: existingDoc });
+        } catch (err) {
+            return res.status(500).json({ message: "Failed to update document", error: err.message });
+        }
+    });
+};
+
+// Update Document by User ID
+const updateDocumentByUserId = async (req, res) => {
+    upload.fields([{ name: 'document' }, { name: 'picture' }])(req, res, async (err) => {
+        if (err) return res.status(400).json({ message: "File upload error", error: err.message });
+
+        try {
+            const { documentId } = req.params;
+            const existingDoc = await Document.findByPk(documentId);
+
+            if (!existingDoc) return res.status(404).json({ message: "Document not found" });
+
+            const { documentName, userGroupId, societyId } = req.body;
+            let document = existingDoc.document;
+            let picture = existingDoc.picture;
+
+            if (req.files?.document) {
+                if (document) fs.unlinkSync(document);
+                document = req.files.document[0].path;
+            }
+            if (req.files?.picture) {
+                if (picture) fs.unlinkSync(picture);
+                picture = req.files.picture[0].path;
+            }
+
+            await existingDoc.update({ documentName, userGroupId, societyId, document, picture });
+
+            return res.status(200).json({ message: "Document updated successfully", data: existingDoc });
+        } catch (err) {
+            return res.status(500).json({ message: "Failed to update document", error: err.message });
+        }
+    });
+};
+
+const deleteDocument = async (req, res) => {
+    try{
+        const { documentId } = req.params;
+        const document = await Document.findByPk(documentId);
+
+        if (!document){
+            return res.status(404).json({ message: "Document not found" });
+        }
+        // remove files if they exist
+        if (fs.existsSync(document.document)) fs.unlinkSync(document.document);
+        if (fs.existsSync(document.picture)) fs.unlinkSync(document.picture);
+
+        await document.destroy();
+        return res.status(200).json({ message: "Document deleted successfully" });
+    } catch (err) {
+        return res.status(500).json({ message: "Failed to delete document", error: err.message });
+    }
+}
+
+module.exports = {
+    createDocumentBySocietyId, createDocumentByUserId,
+    getDocumentBySocietyId, getDocumentByUserId,
+    updateDocumentBySocietyId, updateDocumentByUserId,
+    deleteDocument
+};
+
+
