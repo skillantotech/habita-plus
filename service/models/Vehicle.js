@@ -1,10 +1,10 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const User = require('./User');
+const User = require("./User");
 const Customer = require("./Customer");
 
 const Vehicle = sequelize.define(
-  'Vehicle',
+  "Vehicles",
   {
     vehicleId: {
       type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ const Vehicle = sequelize.define(
       type: DataTypes.INTEGER,
       references: {
         model: User,
-        key: 'userId',
+        key: "userId",
       },
       allowNull: true,
     },
@@ -39,12 +39,12 @@ const Vehicle = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [12, 16],
-        isNumeric: true,
+        len: [12, 16], 
+        is: /^[a-zA-Z0-9]+$/, 
       },
     },
     vehicleType: {
-      type: DataTypes.ENUM('Car', 'Bike', 'Truck', 'Van', 'Bus'),
+      type: DataTypes.ENUM("Car", "Bike", "Truck", "Van", "Bus"),
       allowNull: false,
     },
     ownerName: {
@@ -55,20 +55,19 @@ const Vehicle = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        is: /^[0-9]{10}$/, 
+        is: /^[0-9]{10}$/,
       },
     },
     status: {
-      type: DataTypes.ENUM('Active', 'Inactive'),
-      defaultValue: 'Active',
+      type: DataTypes.ENUM("Active", "Inactive"),
+      defaultValue: "Active",
     },
   },
   {
-    tableName: 'Vehicles',
+    tableName: "Vehicles",
     timestamps: true,
   }
 );
-
 
 Vehicle.belongsTo(Customer, { foreignKey: "societyId" });
 Vehicle.belongsTo(User, { foreignKey: "userId" });
