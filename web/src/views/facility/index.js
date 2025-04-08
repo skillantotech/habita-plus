@@ -1,3 +1,2 @@
-import Facility from "./Facility";
 
-export default Facility;
+export {default} from "./Facility";

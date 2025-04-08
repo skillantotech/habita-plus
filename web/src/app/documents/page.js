@@ -1,6 +1,6 @@
 "use client";
 
-import Documents from "@/views";
+import Documents from "@/views/documents";
 
 const Page = () => {
   return (

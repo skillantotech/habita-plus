@@ -124,7 +124,7 @@ const Post = () => {
 const Community = () => {
   return (
     <section>
-      {/* <PostPreview/> */}
+      <PostPreview/>
       <CommunityDirectories />
     </section>
   );

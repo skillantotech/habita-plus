@@ -1,6 +1,6 @@
 "use client";
 
-import { Payment } from "@/views";
+import  Payment  from "@/views/parking";
 
 const Page = () => {
   return (

@@ -1,3 +1,2 @@
-import Tenant from "./Tenant";
 
-export default Tenant;
+export {default} from "./Tenant";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Post } from "@/views";
+import  Post  from "@/views/post";
 
 const Page = () => {
   return (

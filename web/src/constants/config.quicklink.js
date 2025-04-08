@@ -60,13 +60,13 @@
 //           icon: img,
 //           linkOf: "myUnit",
 //         },
-//         {
-//           name: "Documents",
-//           url: "/documents",
-//           icon: img,
-//           linkOf: "myUnit",
-//         },
-//       ],
+        // {
+        //   name: "Documents",
+        //   url: "/documents",
+        //   icon: img,
+        //   linkOf: "myUnit",
+        // },
+      // ],
 //       community: [
 //         {
 //           name: "Vendor List",
@@ -433,12 +433,12 @@ export const QuickLinks = {
         //   icon: helpIcon, 
         //   linkOf: "myUnit",
         // },
-        // {
-        //   name: "Documents",
-        //   url: "/documents",
-        //   icon: documentIcon, 
-        //   linkOf: "myUnit",
-        // },
+        {
+          name: "Documents",
+          url: "/documents",
+          icon: documentIcon, 
+          linkOf: "myUnit",
+        },
       ],
       community: [
         // {

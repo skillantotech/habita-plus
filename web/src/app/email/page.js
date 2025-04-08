@@ -1,6 +1,6 @@
 "use client";
 
-import Email from "@/views";
+import Email from "@/views/email";  
 
 const Page = () => {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import Facility from "@/views/facility";
+import Facility  from "@/views/facility";
 
 const Page = () => {
   return (

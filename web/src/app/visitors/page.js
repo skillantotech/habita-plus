@@ -1,6 +1,6 @@
 "use client";
 
-import { Visitor } from "@/views";
+import Visitor  from "@/views/visitor";
 
 const Page = () => {
   return (

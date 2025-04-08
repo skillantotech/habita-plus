@@ -2,8 +2,8 @@ import DashboardLayout from "@/components/layouts/DashboardLayout";
 import React from "react";
 import DashboardHeader from "../dashboard/DashboardHeader";
 import DashboardLeftContents from "../dashboard/DashboardLeftContents";
-import AddVisitor from "./AddVisitor";
-import VisitorList from "./VisitorList";
+// import AddVisitor from "./AddVisitor";
+// import VisitorList from "./VisitorList";
 
 const Visitor = () => {
   return (
@@ -12,8 +12,9 @@ const Visitor = () => {
       leftContent={<DashboardLeftContents />}
       rightContent={
         <React.Fragment>
-          <AddVisitor />
-          <VisitorList />
+        visitor
+          {/* <AddVisitor /> */}
+          {/* <VisitorList /> */}
         </React.Fragment>
       }
     />
