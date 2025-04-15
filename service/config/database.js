@@ -26,6 +26,7 @@ const { Sequelize } = require("sequelize");
 // const DB_NAME = "u236629367_testdb_1";
 
 const DB_HOST = "127.0.0.1";
+// const DB_HOST = "147.79.70.208";
 const DB_USER = "root";
 const DB_PASSWORD = "root";
 const DB_NAME = "habitatplush";

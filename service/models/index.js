@@ -1,6 +1,7 @@
 const User = require("./User");
 const Address = require("./Address");
 const Customer = require("./Customer");
+const DiscussionForum = require("./Discussion_Forum");
 const GateAllocation = require("./GateAllocation")
 const SubscriptionPlan = require("./SubscriptionPlan");
 const Parking = require("./Parking");
@@ -70,6 +71,7 @@ module.exports = {
   SubscriptionPlan,
   Customer,
   Document,
+  DiscussionForum,
   GateAllocation,
   Parking,
   Vehicle,

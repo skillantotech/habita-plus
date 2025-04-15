@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
@@ -13,9 +13,9 @@ app.use(cors());
 
 
 
-//
+
 app.use(bodyParser.json());
-//
+
 const errorHandler = require("./middleware/errorHandler");
 
 // router paths
@@ -24,19 +24,20 @@ const passwordReset = require("./routes/resetPasswordRoutes");
 const userRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
 const documentRouter = require("./routes/documentRoutes");
+const discussionRouter = require("./routes/discussion_forum_Routes");
 const jobProfileRouter = require("./routes/jobProfileRoutes");
 const customerRoutes = require("./routes/customerRoutes");
-const parkingRoutes = require("./routes/parkingRoutes")
-const gateAllocationRoutes = require("./routes/gateAllocationRoutes.js")
+const parkingRoutes = require("./routes/parkingRoutes");
+const gateAllocationRoutes = require("./routes/gateAllocationRoutes.js");
 const subscriptionPlanRoutes = require("./routes/subscriptionPlanRoutes");
 const roleRouter = require("./routes/roleRoutes");
 const adminRouter = require("./routes/adminRoutes");
 const buildingRouter = require("./routes/buildingRoutes");
-const filterRoutes = require("./routes/filterRoutes")
+const filterRoutes = require("./routes/filterRoutes");
 const floorRouter = require("./routes/floorRoutes");
 const facilityManagement = require("./routes/facilityManagementRoutes");
 const unitTypeRouter = require("./routes/unitTypeRoutes");
-const gateRouter = require("./routes/gateRouter");  // Corrected variable name
+const gateRouter = require("./routes/gateRouter"); // Corrected variable name
 const {
   User,
   Customer,
@@ -46,7 +47,7 @@ const {
   Building,
   Parking,
   JobProfile,
-  Gate, 
+  Gate,
   UnitType,
   UserGroup,
   Unit,
@@ -54,6 +55,7 @@ const {
   Ticket_Summery,
   Ticket_Details,
   Document,
+  DiscussionForum,
 } = require("./models");
 const refUserGroupRouter = require("./routes/refUserGroupRouter");
 const {
@@ -85,10 +87,10 @@ app.use("/api/role", roleRouter);
 app.use("/api/admin", adminRouter);
 
 // gate routes
-app.use("/api/gate", gateRouter);  // Corrected variable name here as 
+app.use("/api/gate", gateRouter); // Corrected variable name here as
 
 //gateAllocation routes
-// app.use("/api/gateAllocation",gateAllocationRouter); // Corrected variable name here as 
+// app.use("/api/gateAllocation",gateAllocationRouter); // Corrected variable name here as
 
 // Static folder for uploaded files (optional, for serving files)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -102,7 +104,7 @@ app.use("/api/floor", floorRouter);
 app.use("/api/unitType", unitTypeRouter);
 app.use("/api/unit", unitRouter);
 
-app.use("/api/jobProfile",jobProfileRouter)
+app.use("/api/jobProfile", jobProfileRouter);
 
 // app.use create user ref group superadmin api
 app.use("/api/refusergroup", refUserGroupRouter);
@@ -126,27 +128,158 @@ app.get("/create-admin", createAdmin);
 
 app.use(errorHandler);
 
-// Ticket_Details.sync({ alter: true }) 
-//   .then(() => console.log("User table has been synced successfully.")) 
+// Ticket_Details.sync({ alter: true })
+//   .then(() => console.log("User table has been synced successfully."))
 //   .catch((err) => console.error("Error syncing the User table:", err));
 
-// Unit.sync({ alter: true }) 
+// Unit.sync({ alter: true })
 //   .then(() => console.log("UserModel table has been synced successfully."))
 //   .catch((err) => console.error("Error syncing the User table:", err));
 
-app.use("/api/filter",filterRoutes);
+app.use("/api/filter", filterRoutes);
 
 // facilityManagement
-app.use("/api/facilityManagement",facilityManagement);
+app.use("/api/facilityManagement", facilityManagement);
 
 // Parking
-app.use("/api",parkingRoutes);
+app.use("/api", parkingRoutes);
 
 // passwordReset
 
-app.use("/api",passwordReset);
+app.use("/api", passwordReset);
 
 // documentReset
-app.use("/api/document",documentRouter);
+app.use("/api/document", documentRouter);
 
+// discussionForum
+app.use("/api/discussionForum",discussionRouter);
 module.exports = app;
+
+// const express = require("express");
+// const cors = require("cors");
+// const bodyParser = require("body-parser");
+// const cookieParser = require("cookie-parser");
+// const path = require("path");
+// const dotenv = require("dotenv");
+// dotenv.config();
+//
+// const app = express();
+//
+
+// const allowedOrigins = ['http://147.79.70.208', 'http://localhost:3000'];
+// app.use(cors({
+// origin: function (origin, callback) {
+// if (!origin || allowedOrigins.includes(origin)) {
+// callback(null, true);
+// } else {
+// callback(new Error("Not allowed by CORS"));
+// }
+// },
+// methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+// credentials: true,
+// }));
+//
+
+// app.use(express.json());
+// app.use(cookieParser());
+// app.use(bodyParser.json());
+//
+
+// const errorHandler = require("./middleware/errorHandler");
+//
+
+// const passwordReset = require("./routes/resetPasswordRoutes");
+// const userRouter = require("./routes/userRoutes");
+// const authRouter = require("./routes/authRoutes");
+// const documentRouter = require("./routes/documentRoutes");
+// const jobProfileRouter = require("./routes/jobProfileRoutes");
+// const customerRoutes = require("./routes/customerRoutes");
+// const parkingRoutes = require("./routes/parkingRoutes");
+// const gateAllocationRoutes = require("./routes/gateAllocationRoutes");
+// const subscriptionPlanRoutes = require("./routes/subscriptionPlanRoutes");
+// const roleRouter = require("./routes/roleRoutes");
+// const adminRouter = require("./routes/adminRoutes");
+// const buildingRouter = require("./routes/buildingRoutes");
+// const filterRoutes = require("./routes/filterRoutes");
+// const floorRouter = require("./routes/floorRoutes");
+// const facilityManagement = require("./routes/facilityManagementRoutes");
+// const unitTypeRouter = require("./routes/unitTypeRoutes");
+// const gateRouter = require("./routes/gateRouter");
+// const refUserGroupRouter = require("./routes/refUserGroupRouter");
+// const noticeAnnouncementRouter = require("./routes/noticeAnnouncementRouter");
+// const visitorManagementRouter = require("./routes/visitorManagementRouter");
+// const unitRouter = require("./routes/unitRoutes");
+// const softwareHelpDeskRouter = require("./routes/softwareHelpDeskRouter");
+// const refTicketStatusRouter = require("./routes/refTicketStatusRouter");
+//
+
+// const {
+// User,
+// Customer,
+// GateAllocation,
+// Floor,
+// Facility,
+// Building,
+// Parking,
+// JobProfile,
+// Gate,
+// UnitType,
+// UserGroup,
+// Unit,
+// Visitor_new_visitentry,
+// Ticket_Summery,
+// Ticket_Details,
+// Document,
+// } = require("./models");
+//
+
+// const {
+// initController,
+// createSuperAdmin,
+// createAdmin,
+// } = require("./auto-creating-handlers");
+//
+
+// app.get("/", (req, res) => {
+// res.send("API is working fine!");
+// });
+//
+// app.get("/getenv", (req, res) => {
+// res.send(`Your current environment is ${process.env.NODE_ENV}`);
+// });
+//
+
+// app.use("/api/users", userRouter);
+// app.use("/api/auth", authRouter);
+// app.use("/api", customerRoutes);
+// app.use("/api", subscriptionPlanRoutes);
+// app.use("/api/role", roleRouter);
+// app.use("/api/admin", adminRouter);
+// app.use("/api/gate", gateRouter);
+// app.use("/api/gateAllocation", gateAllocationRoutes);
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/api/building", buildingRouter);
+// app.use("/api/floor", floorRouter);
+// app.use("/api/unitType", unitTypeRouter);
+// app.use("/api/unit", unitRouter);
+// app.use("/api/jobProfile", jobProfileRouter);
+// app.use("/api/refusergroup", refUserGroupRouter);
+// app.use("/api/noticeAnnouncement", noticeAnnouncementRouter);
+// app.use("/api/visitormanagement", visitorManagementRouter);
+// app.use("/api/softwarehelpdesk", softwareHelpDeskRouter);
+// app.use("/api/softwarehelpdesk", refTicketStatusRouter);
+// app.use("/api/filter", filterRoutes);
+// app.use("/api/facilityManagement", facilityManagement);
+// app.use("/api", parkingRoutes);
+// app.use("/api", passwordReset);
+// app.use("/api/document", documentRouter);
+//
+
+// app.get("/init-database", initController);
+// app.get("/create-super-admin", createSuperAdmin);
+// app.get("/create-admin", createAdmin);
+//
+
+// app.use(errorHandler);
+//
+// module.exports = app;
