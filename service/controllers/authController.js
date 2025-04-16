@@ -117,10 +117,10 @@ const tokenSignIn = async (req, res) => {
 
     const { email, password } = verifyToken(token);
 
-    // Fetch user and ensure password is retrieved
+  
     const user = await User.findOne({
       where: { email },
-      attributes: ["userId", "email", "password"], // Ensure password is included
+      attributes: ["userId", "email", "password"],
       include: [{ model: Role, as: "role" }, { model: Customer }],
     });
 
@@ -140,7 +140,6 @@ const tokenSignIn = async (req, res) => {
 
     console.log("Password Matched");
 
-    // Generate new token
     const newToken = generateToken({
       userId: user.userId,
       email: user.email,
@@ -177,17 +176,14 @@ const jobProfileLogin = async (req, res) => {
       include: [{ model: Role, as: "role" }] 
     });
 
-    // Check if profile exists
     if (!profile) {
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
-    // Check if the profile status is inactive
     if (profile.status === "inactive") {
       return res.status(403).json({ message: "Your account is inactive. Please contact the administrator." });
     }
 
-    // Check password
     const isPasswordValid = await bcrypt.compare(password, profile.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid email or password." });

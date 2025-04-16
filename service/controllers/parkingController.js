@@ -146,46 +146,40 @@ exports.updateParking = async (req, res) => {
 
 exports.createVehicleBySocietyId = async (req, res) => {
   try {
-      const { societyId } = req.params;
-      const { vehicleNumber, fastagNumber, vehicleType, ownerName, ownerContact, unitName } = req.body;
+    const { societyId } = req.params;
+    const { vehicleNumber, fastagNumber, vehicleType, ownerName, ownerContact } = req.body;
 
-      if (!vehicleNumber || !vehicleType || !ownerName || !ownerContact || !unitName) {
-          return res.status(400).json({ message: "All fields are required except fastagNumber" });
-      }
-      const unitExistsorNot = await Unit.findOne({ where: { unitName, societyId } });
-      if (!unitExistsorNot) {
-          return res.status(400).json({ message: "Invalid unitName or does not belong to this society" });
-      }
-      const existingVehicle = await Vehicle.findOne({ where: { vehicleNumber, societyId } });
-      if (existingVehicle) {
-          return res.status(400).json({ message: "Vehicle already exists in this society" });
-      }
-      const newVehicle = await Vehicle.create({
-          vehicleNumber,
-          fastagNumber,
-          vehicleType,
-          ownerName,
-          ownerContact,
-          societyId,
-          unitName
-      });
+    if (!vehicleNumber || !vehicleType || !ownerName || !ownerContact) {
+      return res.status(400).json({ message: "All fields are required except fastagNumber" });
+    }
 
-      return res.status(201).json({
-          message: "Vehicle created successfully for Society",
-          vehicle: newVehicle
-      });
+    const existingVehicle = await Vehicle.findOne({ where: { vehicleNumber, societyId } });
+    if (existingVehicle) {
+      return res.status(400).json({ message: "Vehicle already exists in this society" });
+    }
 
+    const newVehicle = await Vehicle.create({
+      vehicleNumber,
+      fastagNumber,
+      vehicleType,
+      ownerName,
+      ownerContact,
+      societyId,
+    });
+
+    return res.status(201).json({
+      message: "Vehicle created successfully for Society",
+      vehicle: newVehicle,
+    });
   } catch (err) {
-      console.error("Error creating vehicle:", err);
-
-      if (err.name === "SequelizeValidationError") {
-          return res.status(400).json({
-              message: "Validation error",
-              errors: err.errors.map(e => e.message)
-          });
-      }
-
-      return res.status(500).json({ message: "Internal server error", error: err.message });
+    console.error("Error creating vehicle:", err);
+    if (err.name === "SequelizeValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        errors: err.errors.map((e) => e.message),
+      });
+    }
+    return res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
 exports.createVehicleByUserId = async (req, res) => {
@@ -234,25 +228,27 @@ exports.createVehicleByUserId = async (req, res) => {
       return res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
+
 exports.getVehicleBySocietyId = async (req, res) => {
   try {
-      const { societyId } = req.params;
+    const { societyId } = req.params;
 
-      const vehicles = await Vehicle.findAll({
-          where: { societyId },
-          include: [{ model: Unit, attributes: ["unitName"] }]
-      });
+    const vehicles = await Vehicle.findAll({
+      where: { societyId },
+      // include: [{ model: Unit, attributes: ["unitName"] }],
+    });
 
-      if (!vehicles.length) {
-          return res.status(404).json({ message: "No vehicles found for this society" });
-      }
+    if (!vehicles.length) {
+      return res.status(404).json({ message: "No vehicles found for this society" });
+    }
 
-      res.status(200).json({ vehicles });
+    res.status(200).json({ vehicles });
   } catch (error) {
-      console.error("Error fetching vehicles by societyId:", error);
-      res.status(500).json({ message: "Internal server error" });
+    console.error("Error fetching vehicles by societyId:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 exports.getVehicleByUserId = async (req, res) => {
   try {
     const { userId } = req.params;

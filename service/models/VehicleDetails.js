@@ -1,3 +1,4 @@
+
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const User = require('./User');
@@ -12,7 +13,7 @@ const Vehicle = sequelize.define(
       primaryKey: true,
     },
     societyId: {
-      type: DataTypes.INTEGER,  // ✅ Ensure it matches customerId
+      type: DataTypes.INTEGER,  
       references: {
         model: Customer,
         key: "customerId",
@@ -29,8 +30,8 @@ const Vehicle = sequelize.define(
     },
     vehicleNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+      allowNull: true,
+      unique: false,
       validate: {
         len: [6, 12],
       },
