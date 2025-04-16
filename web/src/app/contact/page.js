@@ -14,47 +14,6 @@ import {
   FaApple,
 } from "react-icons/fa";
 
-// const ContactUs = () => {
-//   const [formData, setFormData] = useState({
-//     lookingFor: "",
-//     name: "",
-//     mobile: "",
-//     email: "",
-//     company: "",
-//     address: {
-//       line1: "",
-//       line2: "",
-//       locality: "",
-//       state: "",
-//       pinCode: "",
-//     },
-//     details: "",
-//   });
-
-// const handleChange = (e) => {
-//   const { name, value } = e.target;
-//   setFormData((prevData) => ({
-//     ...prevData,
-//     [name]: value,
-//   }));
-// };
-
-// const handleAddressChange = (e) => {
-//   const { name, value } = e.target;
-//   setFormData((prevData) => ({
-//     ...prevData,
-//     address: {
-//       ...prevData.address,
-//       [name]: value,
-//     },
-//   }));
-// };
-
-// const handleSubmit = (e) => {
-//   e.preventDefault();
-//   // Handle form submission logic here, like sending to a server or showing a success message
-//   console.log(formData);
-// };
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -73,13 +32,6 @@ const ContactUs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // emailjs
-    //   .send(
-    //     "service_9irunus",
-    //     "template_gbquq9q",
-    //     formData,
-    //     "ta2fgL1nL7jyvSr4W"
-    //   )
     emailjs.send(
       "service_9irunus",
       "template_gbquq9q",

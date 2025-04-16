@@ -222,22 +222,22 @@ const SideBarMenu = {
     //     },
     //   ],
     // },
-    // {
-    //   name: "Document Management",
-    //   isAvailable: true,
-    //   icon:FaFileAlt ,
-    //   children: [
-    //     {
-    //       name: "Document Upload Facility",
-    //       url: "document/upload",
-    //     },
+    {
+      name: "Document Management",
+      isAvailable: true,
+      icon:FaFileAlt ,
+      children: [
+        {
+          name: "Document Upload Facility",
+          url: "document/upload",
+        },
 
-    //     {
-    //       name: "Document List",
-    //       url: "document/view",
-    //     },
-    //   ],
-    // },
+        {
+          name: "Document List",
+          url: "document/view",
+        },
+      ],
+    },
     //  {
     //   name: "Invoice Management",
     //   isAvailable: true,

@@ -20,8 +20,8 @@ const AddUser = () => {
    const [page, setPage] = useState(0);
    const [pageSize, setPageSize] = useState(5);
    const [transformedData, setTransformedData] = useState([]);
-   const [totalPages, setTotalPages] = useState(0);
- const [total, setTotal] = useState(0);
+   const [totalPages] = useState(0);
+ const [total] = useState(0);
   const [unitAllocationSearch, setUnitAllocationSearch] = useState({
    
 
@@ -154,7 +154,7 @@ const AddUser = () => {
 
   useEffect(() => {
     fetchRoles();
-  }, []);
+  }, [fetchRoles]);
 
   const submitProfileUser = async () => {
     if (!selectedRoleId) {
@@ -236,7 +236,7 @@ const AddUser = () => {
     getBuildings();
     getFloors();
     getUnitName();
-  }, []);
+  }, [getBuildings,getFloors,getUnitName]);
 
   const getUnitName = () => {
     getAllUnitHandler()
@@ -319,17 +319,17 @@ const AddUser = () => {
     }));
   }
 
-  function onUnitNumberChange(e) {
-    const { name, value } = e.target;
-    setDefineUnit({
-      ...defineUnit,
-      [name]: value,
-    });
-    setUnitName((prev) => ({
-      ...prev,
-      unitNumber: value,
-    }));
-  }
+  // function onUnitNumberChange(e) {
+    // const { name, value } = e.target;
+    // setDefineUnit({
+      // ...defineUnit,
+      // [name]: value,
+    // });
+    // setUnitName((prev) => ({
+      // ...prev,
+      // unitNumber: value,
+    // }));
+  // }
 
 const handleSearch= async () => {
     try {
