@@ -1,5 +1,5 @@
 "use client";
-import Footer from "@/views/Footer/Footer";
+import Footer from "@/views/footer/Footer";
 import Navbar from "@/views/navbar/Navbar";
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
