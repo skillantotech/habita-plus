@@ -1,10 +1,204 @@
 
+// const { User, Address, } = require("../models");
+// const {
+//   getAllUsersService,
+//   getUserByIdService,
+// } = require("../services/userService");
+
+
+// // const bcrypt = require("bcrypt");
+
+// const { validationResult } = require("express-validator");
+// const { generateRandomPassword } = require("../utils/password");
+
+// const createAddress = async (data) => {
+//   await Address.create(data);
+// };
+
+// const createSocietyModerator = async (req, res) => {
+//   console.log("Create Society Moderator called !");
+//   try {
+//     const { address, email, ...customerdata } = req.body;
+
+//     const existingUser = await User.findOne({ where: { email } });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "Email already in use" });
+//     }
+//     const addressData = await Address.create(address);
+//     const addressId = addressData.addressId;
+//     console.log(addressId);
+//     // const password = generateRandomPassword(6);
+//     const password = "admin";
+//     console.log(customerdata);
+
+//     const result = await User.create({
+//       ...customerdata,
+//       email,
+//       addressId,
+//       password,
+//       livesHere: true,
+//       primaryContact: true,
+//       isManagementCommittee: true,
+//       managementDesignation: "admin",
+//     });
+
+//     res
+//       .status(201)
+//       .json({ message: "Society Moderator created successfully", result });
+//   } catch (error) {
+//     console.error("Error creating user:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+
+// const createSocietyResident = async (req, res) => {
+//   console.log("Create Society Resident called");
+//   try {
+//     const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId } = req.body;
+
+//     const societyId = req.user.societyId; 
+
+//     if (!societyId) {
+//       return res.status(403).json({ message: "Unauthorized or invalid society context" });
+//     }
+
+//     const existingUser = await User.findOne({ where: { email } });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "Email already in use" });
+//     }
+//     const addressData = await Address.create(address);
+//     const addressId = addressData.id;
+
+//     const password = "himansu"; // Default password
+
+//     const residentDetails = {
+//       salutation,
+//       firstName,
+//       lastName,
+//       password,
+//       countryCode: address.countryCode || 91,
+//       mobileNumber,
+//       alternateNumber,
+//       email,
+//       roleId,
+//       livesHere: true,
+//       primaryContact: true,
+//       isManagementCommittee: false,
+//       managementDesignation: "Resident",
+//       status: "active",
+//       addressId,
+//       societyId, // Automatically assign logged-in user's societyId
+//     };
+
+//     // Create the resident user
+//     const result = await User.create(residentDetails);
+
+//     res
+//       .status(201)
+//       .json({ message: "Society Resident created successfully", result });
+//   } catch (error) {
+//     console.error("Error creating society resident:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+// const getResidentBySocityId = async (req, res) => {
+//   console.log("Get Resident By Society ID called");
+//   try {
+//     const { societyId } = req.params;
+
+//     if (!societyId) {
+//       return res.status(400).json({ message: "Society ID is required" });
+//     }
+
+//     const residents = await User.findAll({
+//       where: {
+//         societyId,
+//         isManagementCommittee: false,
+//       },
+//       attributes: [
+//         "salutation",
+//         "firstName",
+//         "lastName",
+//         "email",
+//         "mobileNumber",
+//         "roleId",
+//         "status",
+//         "addressId",
+//         "primaryContact",
+//         "livesHere",
+//       ],
+//     });
+
+//     if (!residents || residents.length === 0) {
+//       return res.status(404).json({ message: "No residents found for the given Society ID" });
+//     }
+//     res.status(200).json({ message: "Residents fetched successfully", residents });
+//   } catch (error) {
+//     console.error("Error fetching residents:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+
+// const createUser = async (req, res) => {
+//   try {
+//     const { address, ...customerdata } = req.body;
+//     console.log(req.body);
+
+//     const addressData = createAddress(address);
+//     const addressId = addressData._id;
+//     console.log(address);
+
+//     const result = await User.create({ ...customerdata, addressId });
+//     if (result)
+//       res.status(201).json({ message: "User created successfully", result });
+//     else throw new Error("Error creating user");
+//   } catch (error) {
+//     console.error("Error creating user:", error);
+//     res.status(500).json({ error: error });
+//   }
+// };
+
+// const getAllUsers = async (req, res) => {
+//   try {
+//     const users = await getAllUsersService();
+//     return res.status(200).json(users);
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
+
+// const getUserById = async (req, res) => {
+//   try {
+//     const user = await getUserByIdService(req.params.id);
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+//     return res.status(200).json(user);
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
+
+
+// module.exports = {
+//   createUser,
+//   getAllUsers,
+//   getUserById,
+//   createSocietyModerator,
+//   // createResident,
+//   createSocietyResident,
+//   getResidentBySocityId,
+// };
+
+
 const { User, Unit } = require("../models");
 const { getAllUsersService, getUserByIdService } = require("../services/userService");
-const sendEmail = require("../utils/sendEmail");
 //const { createUnit, getUnit, getAllUnits } = require("../controllers/unitController.js");
 const addressService = require("../services/addressService");
-// 
+
 const createSocietyModerator = async (req, res) => {
   try {
     const { address, email, ...customerData } = req.body;
@@ -39,68 +233,6 @@ const createSocietyModerator = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-// const createSocietyModerator = async (req, res) => {
-  // try {
-    // const { email, address, isModerator, ...customerData } = req.body;
-// 
-    // //Check if email already exists
-    // const existingUser = await User.findOne({ where: { email } });
-    // if (existingUser) {
-      // return res.status(400).json({ message: "Email already in use" });
-    // }
-// 
-    // let addressId = null;
-    // if (isModerator && address) {
-      // const addressData = await addressService.createAddress(address);
-      // console.log("Address Created:", addressData); // Debugging
-      // if (!addressData || !addressData.addressId) {
-        // return res.status(500).json({ error: "Failed to create address" });
-      // }
-      // addressId = addressData.addressId;
-    // }
-// 
-    // let password = null;
-    // let resetToken = null;
-    // let resetTokenExpires = null;
-// 
-    // if (isModerator) {
-      // password = "Himansu"; // Replace with a secure password strategy
-      // resetToken = require("crypto").randomBytes(16).toString("hex");
-      // resetTokenExpires = Date.now() + 3600000; // 1 hour
-    // }
-// 
-    // console.log("Creating user with data:", { ...customerData, email, addressId });
-// 
-    // const result = await User.create({
-      // ...customerData,
-      // email,
-      // addressId,
-      // password,
-      // livesHere: true,
-      // primaryContact: false,
-      // isModerator,
-      // resetToken,
-      // resetTokenExpires,
-      // isManagementCommittee: true,
-      // managementDesignation: "admin",
-    // });
-// 
-    // if (!isModerator) {
-      // const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
-      // await sendEmail(email, "Set Your Password", `Click here to set your password: ${resetLink}`);
-    // }
-// 
-    // res.status(201).json({
-      // message: isModerator
-        // ? "Society Moderator created successfully"
-        // : "Admin created. An email has been sent to set the password.",
-      // user: result, // Fixed variable name
-    // });
-  // } catch (error) {
-    // console.error("Error creating user:", error);
-    // res.status(500).json({ error: "Internal Server Error", details: error.message });
-  // }
-// };
 
 const createSocietyResident = async (req, res) => {
   try {
@@ -160,6 +292,59 @@ const createSocietyResident = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// const getResidentBySocietyId = async (req, res) => {
+  // try {
+    // const { societyId } = req.params;
+// 
+    // if (!societyId) {
+      // return res.status(400).json({ message: "Society ID is required" });
+    // }
+// 
+    // const residents = await User.findAll({
+      // where: {
+        // societyId,
+        // isManagementCommittee: false,
+      // },
+      // attributes: [
+        // "salutation",
+        // "firstName",
+        // "lastName",
+        // "email",
+        // "mobileNumber",
+        // "roleId",
+        // "status",
+        // "addressId",
+        // "primaryContact",
+        // "livesHere",
+        // "unitId",
+        // "userId",
+      // ],
+    // include:[
+      // {
+        // model:Unit,
+        // attributes:["unitId","unitName","unitNumber","unitsize"],
+      // },
+    // ],
+  // });
+// 
+    // if (!residents || residents.length === 0){
+      // return res.status(404).json({ message: "No residents found for the given Society ID" });
+    // }
+// 
+    // if (!residents || residents.length === 0) {
+      // return res.status(404).json({ message: "No residents found for the given Society ID" });
+    // }
+// 
+    // res.status(200).json({
+      // message: "Residents fetched successfully",
+      // residents,
+    // });
+  // } catch (error) {
+    // console.error("Error fetching residents:", error);
+    // res.status(500).json({ error: error.message });
+  // }
+// };
 
 const getResidentBySocietyId = async (req, res) => {
   try {

@@ -22,13 +22,13 @@ const userRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
 const jobProfileRouter = require("./routes/jobProfileRoutes");
 const customerRoutes = require("./routes/customerRoutes");
-const parkingRoutes = require("./routes/parkingRoutes")
-const gateAllocationRoutes = require("./routes/gateAllocationRoutes.js")
+const parkingRoutes = require("./routes/parkingRoutes");
+const gateAllocationRoutes = require("./routes/gateAllocationRoutes.js");
 const subscriptionPlanRoutes = require("./routes/subscriptionPlanRoutes");
 const roleRouter = require("./routes/roleRoutes");
 const adminRouter = require("./routes/adminRoutes");
 const buildingRouter = require("./routes/buildingRoutes");
-const filterRoutes = require("./routes/filterRoutes")
+const filterRoutes = require("./routes/filterRoutes");
 const floorRouter = require("./routes/floorRoutes");
 const facilityManagement = require("./routes/facilityManagementRoutes");
 const unitTypeRouter = require("./routes/unitTypeRoutes");
@@ -83,7 +83,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/gate", gateRouter);  // Corrected variable name here as 
 
 //gateAllocation routes
-// app.use("/api/gateAllocation",gateAllocationRouter); // Corrected variable name here as 
+// app.use("/api/gateAllocation",gateAllocationRouter); // Corrected variable name here as
 
 // Static folder for uploaded files (optional, for serving files)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -97,7 +97,7 @@ app.use("/api/floor", floorRouter);
 app.use("/api/unitType", unitTypeRouter);
 app.use("/api/unit", unitRouter);
 
-app.use("/api/jobProfile",jobProfileRouter)
+app.use("/api/jobProfile",jobProfileRouter);
 
 // app.use create user ref group superadmin api
 app.use("/api/refusergroup", refUserGroupRouter);
@@ -107,9 +107,6 @@ app.use("/api/noticeAnnouncement", noticeAnnouncementRouter);
 
 // visitor management
 app.use("/api/visitormanagement", visitorManagementRouter);
-
-// Facility management
-app.use("/api/facilityManagement", facilityManagement);
 
 // software helpdesk
 app.use("/api/softwarehelpdesk", softwareHelpDeskRouter);
@@ -134,8 +131,8 @@ app.use(errorHandler);
 
 app.use("/api/filter",filterRoutes);
 
-// // facilityManagement
-// app.use("/api",facilityManagement);
+// facilityManagement
+app.use("/api/facilityManagement",facilityManagement);
 
 // Parking
 app.use("/api",parkingRoutes);

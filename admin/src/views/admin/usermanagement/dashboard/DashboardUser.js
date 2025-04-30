@@ -72,10 +72,10 @@ const DashboardUser = () => {
           <div>
             <h3 className="text-xl font-semibold text-green-700">{approvedUsersCount + unapprovedUsersCount}</h3>
             <p className="text-lg text-gray-500">Total Users</p>
-            <p><a href="http://localhost:3001/user/unapproved" className="text-sm text-gray-500 hover:underline">
+            <p><a href={`${process.env.REACT_APP_PUBLIC_BASE_URL}user/unapproved`} className="text-sm text-gray-500 hover:underline">
             {unapprovedUsersCount} Unapproved Users
             </a></p>
-            <p><a href="http://localhost:3001/user/approved" className="text-sm text-gray-500 hover:underline">
+            <p><a href={`${process.env.REACT_APP_PUBLIC_BASE_URL}user/approved`} className="text-sm text-gray-500 hover:underline">
             {approvedUsersCount} Approved Users
             </a></p>
             {/* <p className="text-xs text-gray-400">11 Never Logged In</p> */}
@@ -88,7 +88,7 @@ const DashboardUser = () => {
           <div>
             <h3 className="text-xl font-semibold text-green-700">{unitCount}</h3>
             <p className="text-lg text-gray-500">Total Units</p>
-            <p><a href=" http://localhost:3001/unit/view" className="text-sm text-gray-500 hover:underline">
+            <p><a href={`${process.env.REACT_APP_PUBLIC_BASE_URL}unit/view`} className="text-sm text-gray-500 hover:underline">
             {unitCount} Unit List
             </a></p>
             

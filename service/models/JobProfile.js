@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Customer = require('./Customer');
 const Role = require("./RoleModel");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const JobProfile = sequelize.define('JobProfile', {
     profileId: {
@@ -28,8 +28,8 @@ const JobProfile = sequelize.define('JobProfile', {
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: true,
-        // unique: true, // Ensure email is unique
+        allowNull: false,
+        unique: true, // Ensure email is unique
         validate: {
             isEmail: true,
         },
