@@ -33,7 +33,7 @@ const UnitAllocationForUser = () => {
         }));
         console.log(optionData);
         setBuildingOptions([
-          { label: "select building", value: "" },
+          { label: "Select Building", value: "" },
           ...optionData,
         ]);
       })
@@ -52,7 +52,7 @@ const UnitAllocationForUser = () => {
           shortForm: el.shortForm,
         }));
 
-        setFloorOptions([{ label: "select Floor", value: "" }, ...optionData]);
+        setFloorOptions([{ label: "Select Floor", value: "" }, ...optionData]);
       })
       .catch((err) => {
         console.log(err);
@@ -138,7 +138,7 @@ const UnitAllocationForUser = () => {
   }
 
   return (
-    <div className="p-10 my-5 border rounded-lg bg-gray-100">
+    <div className=" my-5 rounded-lg">
       <div className="grid grid-cols-3 gap-5 items-center py-6">
         <Select
           label="Tower /Building (Name / No.)"
@@ -164,7 +164,7 @@ const UnitAllocationForUser = () => {
           label={"Unit Number"}
           type="text"
           name="unitNumber"
-          placeholder="Enter Your Floor No"
+          placeholder="Enter Unit No"
           size="lg"
           value={defineUnit.unitNumber}
           onChange={onUnitNumberChange}

@@ -26,18 +26,18 @@ export const MenuLinks = [
     access: ["resident", "security"],
     click: navigateToCommunity,
   },
-  {
-    url: "find",
-    name: "Find",
-    icon: FaSearch,
-    access: ["resident", "security"],
-    click: navigateToFind,
-  },
-  {
-    url: "more",
-    name: "More",
-    icon: FaEllipsisH,
-    access: ["resident", "security"],
-    click: navigateToMore,
-  },
+  // {
+  //   url: "find",
+  //   name: "Find",
+  //   icon: FaSearch,
+  //   access: ["resident", "security"],
+  //   click: navigateToFind,
+  // },
+  // {
+  //   url: "more",
+  //   name: "More",
+  //   icon: FaEllipsisH,
+  //   access: ["resident", "security"],
+  //   click: navigateToMore,
+  // },
 ];

@@ -11,11 +11,11 @@ const VisitorRelationshipHandler = () => {
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user.Customer.customerId);
   const senderId = useSelector((state) => state.auth.user.userId);
+ 
 
   const RelationshipHandler = async (data) => {
     console.log("relationship", data);
-    console.log(societyId, senderId);
-
+    console.log(societyId, senderId); 
     return await CreateVisitorRelationshipService(
       { Visit_relation_Description: data, societyId, senderId },
       token

@@ -1,3 +1,2 @@
-import Visitor from "./Visitor";
 
-export default Visitor
+export {default} from "./Visitor"

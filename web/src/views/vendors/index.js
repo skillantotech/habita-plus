@@ -1,3 +1,2 @@
-import Vendor from "./Vendor";
 
-export default Vendor;
+export {default} from "./Vendor";

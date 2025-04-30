@@ -1,294 +1,246 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { MdOutlineCancel } from "react-icons/md";
 import Input from "../../../../components/shared/Input";
 import UrlPath from "../../../../components/shared/UrlPath";
-import PageHeading from "../../../../components/shared/PageHeading";
-import { FaCamera } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
-import imageCompression from "browser-image-compression";
 import Button from "../../../../components/ui/Button";
-import { MdOutlineCancel } from "react-icons/md";
 
-const GateAllocation = () => {
-  const paths = ["User", "Gate Allocation"];
-  const Heading = ["Gate Allocation"];
-  const fileInputRef = useRef(null);
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const [photomsg, setPhotomsg] = useState("");
-  const [unitnumber, setUnitnumber] = useState(" ");
-  const [tower, setTower] = useState("");
-  const [floor, setFloor] = useState("");
-  const [unit, setUnit] = useState("");
-  const [submittedData, setSubmittedData] = useState([]);
-  const [countryCode, setCountryCode] = useState(""); // New state for country code
-  const [mobileNumber, setMobileNumber] = useState("");
+import GateHandler from "../../../../handlers/GateHandler";
+import ProfileHandler from "../../../../handlers/ProfileHandler";
+import toast from "react-hot-toast";
 
-  // const handleAddField = () => {
-  //   setSubmittedData([
-  //     ...submittedData,
-  //     {
-  //       tower,
-  //       floor,
-  //       unit,
-  //       unitnumber, // Fixed the reference here
-  //     },
-  //   ]);
-  //   console.log(submittedData);
+function GateAllocation() {
+    const paths = ["Gate Management", "Guard Profile Creation", "Gate Allocation"];
 
-  //   setTower("");
-  //   setFloor("");
-  //   setUnit("");
-  //   setUnitnumber("");
-  // };
+    const [gateName, setGateName] = useState("");
+    const [guardName, setGuardName] = useState("");
+    const [allocatedGate, setAllocatedGate] = useState([]); //Onbord gate Allocation Data
 
-  const handleAddField = () => {
-    if (tower.trim() && floor.trim() && unit.trim()) {
-      const combinedUnitNumber = concatinput();
-      setSubmittedData([
-        ...submittedData,
-        {
-          tower,
-          floor,
-          unit,
-          unitnumber: combinedUnitNumber,
-        },
-      ]);
+    const [gateData, setGateData] = useState([]);  // Comming Gate data
+    const [securityUserData, setSecurityUserData] = useState([]); // Comming Security Data
 
-      setTower("");
-      setFloor("");
-      setUnit("");
-      // setUnitnumber("");
-    } else {
-      alert("Please fill in all the field before adding.");
-    }
-  };
+    const { getGateListHandler } = GateHandler();
+    const { getGateUserList } = ProfileHandler();
+    const { makeGateAllocation } = GateHandler();
 
-  const concatinput = () => {
-    return tower + floor + unit;
-  };
+    const allocateGateHandler = () => {
+        // Store current values to use in allocation
+        const currentGate = gateName;
+        const currentGuard = guardName;
 
-  const handleRemoveField = (indexToRemove) => {
-    setSubmittedData((prevData) =>
-      prevData.filter((_, index) => index !== indexToRemove)
-    );
-  };
+        if (!currentGate || !currentGuard) {
+            toast.error("Please select both a gate and a guard before allocating.");
+            return;
+        }
 
-  const handleIconClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        setPhotomsg(
-          "The image size is above 1MB. Please choose a smaller file."
+        // Check if this combination already exists
+        const isDuplicate = allocatedGate.some(
+            allocation => allocation.gate === currentGate && allocation.allocatedTo === currentGuard
         );
-        return;
-      } else {
-        setPhotomsg("");
-      }
 
-      try {
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true,
-        };
+        if (isDuplicate) {
+            toast.error("This gate and guard combination has already been allocated.");
+            return;
+        }
 
-        const compressedFile = await imageCompression(file, options);
-        const base64 = await convertToBase64(compressedFile);
-        setProfilePhoto(base64);
-      } catch (error) {
-        console.error("Error compressing the image:", error);
-      }
-    }
-  };
+        // Add new allocation using the stored current values
+        setAllocatedGate(prevAllocations => [
+            ...prevAllocations,
+            {
+                gate: currentGate,
+                allocatedTo: currentGuard,
+                // Add these for display purposes
+                // gateName: gateData.find(g => g.gateId === currentGate)?.gateName,
+                // guardName: securityUserData.find(s => s.profileId === currentGuard)?.firstName
+            }
+        ]);
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+        console.log(allocatedGate);
 
-  const countryCodes = [
-    { code: "+1", country: "United States" },
-    { code: "+44", country: "United Kingdom" },
-    { code: "+91", country: "India" },
-    // Add more country codes as needed
-  ];
-  return (
-    <div className="px-5 ">
-      <div className="text-sm font-semibold my-2 flex items-center gap-2 text-gray-200">
-        <UrlPath paths={paths} />
-      </div>
-      <PageHeading heading={Heading} />
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        <div className="text-xl font-sans font-semibold text-lime">
-          Profile Details
-        </div>
-        <div className="flex flex-row mt-5">
-          <div className="flex items-center gap-5">
-            <div
-              className="relative h-28 w-28 rounded-full border-2 border-lime"
-              style={{
-                backgroundImage: profilePhoto ? `url(${profilePhoto})` : "none",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <FaCamera
-                onClick={handleIconClick}
-                className="absolute bottom-0 right-0 bg-lime text-white text-[30px] p-2 rounded-full cursor-pointer"
-                size={38}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-              />
+
+        // Reset selection fields after allocation is done
+        setGateName("");
+        setGuardName("");
+    };
+
+
+    const removeAllocation = (index) => {
+        setAllocatedGate(prevAllocations =>
+            prevAllocations.filter((_, i) => i !== index)
+        );
+    };
+
+    const transformGateData = (response) => {
+        if (!response?.data) return [];
+
+        return response.data.map(element => ({
+            ...element,
+            gateNumbar: element.gateNumber,
+            gateName: element.gateName,
+            societyId: element.societyId,
+            gateId: element.gateId
+        }));
+    };
+
+
+    const transformSecurityUserData = (response) => {
+        if (!response || !Array.isArray(response)) return [];
+
+        return response.map(element => ({
+            profileId: element.profileId, // Keep profileId if needed
+            firstName: element.firstName || '', // Default to empty string if undefined
+            lastName: element.lastName || '',
+            email: element.email || '',
+            mobileNo: element.mobileNo || '', // Include mobile number if needed
+            profilePhoto: element.profilePhoto || null, // Handle profile photo
+            idProof: element.idProof || null, // Handle ID proof
+            roleId: element.roleId || null, // Include roleId
+            status: element.status || 'inactive', // Default status if needed
+            createdAt: element.createdAt || null, // Include createdAt
+            updatedAt: element.updatedAt || null // Include updatedAt
+        }));
+    };
+
+
+    const countryCodes = [
+        { gateNo: "1", gateName: "Gate One" },
+        { gateNo: "44", gateName: "Gate Fourtyfour" },
+        { gateNo: "91", gateName: "Gate Nintynine" },
+        { gateNo: "86", gateName: "Gate Eightysix" },
+        // Add more country codes as needed
+    ];
+
+    useEffect(() => {
+        getGateListHandler()
+            .then((res) => {
+                if(res && res.data){
+                    setGateData(transformGateData(res.data));
+                }else{
+                    setGateData([]);
+                }
+            }).catch((error)=>{
+                console.error("Error fetching gate list:", error);
+                setGateData([]);
+            });
+
+            getGateUserList()
+            .then((res) => {
+                setSecurityUserData(transformSecurityUserData(res.data));
+            }).catch((error)=>{
+                console.log(error);
+                setSecurityUserData([]);
+            })
+
+    }, [])
+
+    // console.log(gateData);
+    // console.log("Index Zero: ",gateData[0]);
+
+    // console.log("Gate user Data: ", securityUserData);
+
+
+    const handleSubmit = async() => {
+        console.log("Form Submit called!!");
+        if(allocatedGate.length === 0){
+            toast.error("Plz Add atleast one gate!");
+            return;
+        }
+
+
+        try {
+            await makeGateAllocation(allocatedGate);
+            setAllocatedGate([]);
+            // toast.success("Gate added Successfully!");
+        }catch(error){
+            console.log("Error in form submition: ", error);
+        }
+    };
+
+
+    return (
+        <>
+            <UrlPath paths={paths} />
+
+            <div className="p-10 my-5 border rounded-lg bg-gray-100">
+                <div className="text-xl font-sans font-semibold text-lime">
+                    Gate Allocation
+                </div>
+
+                <div className="grid grid-cols-3 gap-5 items-center">
+                    <select
+                        value={gateName}
+                        onChange={(e) => setGateName(e.target.value)}
+                        className="w-[15rem] mt-8 block border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
+                    >
+                        <option>
+                            Select Your Gate No.
+                        </option>
+                        {gateData.map((item) => (
+                            <option key={item.gateNumbar} value={item.gateId}>
+                                {item.gateNumbar}. {item.gateName}
+                            </option>
+                        ))}
+                    </select>
+
+
+
+                    <select
+                        value={guardName}
+                        onChange={(e) => setGuardName(e.target.value)}
+                        className="w-[15rem] mt-8 block border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
+                    >
+                        <option>
+                            Select Guard Profile
+                        </option>
+                        {securityUserData.map((item) => (
+                            <option key={item.profileId} value={item.profileId}>
+                                {item.firstName} {item.lastName} 
+                            </option>
+                        ))}
+                    </select>
+
+
+                    <div className="mt-8">
+                        <Button
+                            onClick={allocateGateHandler}
+                            className="flex items-center">
+                            <FaPlus className="mr-2" /> Allocate
+                        </Button>
+                    </div>
+
+                </div>
+
+                <div className="flex justify-center">
+                    <div className="mt-4">
+                        {allocatedGate.map((value, index) => (
+                            <div
+                                key={index}
+                                className="justify-center w-[28rem] relative p-4 mb-4 border rounded-lg bg-white shadow-md"
+                            >
+                                <MdOutlineCancel
+                                    onClick={() => removeAllocation(index)}
+                                    className="absolute right-3 top-3 text-red-600 cursor-pointer text-xl"
+                                />
+                                <p className="font-medium text-gray-700">
+                                    <strong>Gate:</strong> {value.gate} (AllocatedTo User:{" "}
+                                    {value.allocatedTo})
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="max-w-md mx-auto mt-6 flex justify-center">
+                    <Button
+                        onClick={handleSubmit} 
+                        size="md">
+                        Submit
+                    </Button>
+                </div>
+
             </div>
-            <div>
-              <h2>Choose profile photo</h2>
-              <div className="text-red-700">{photomsg}</div>
-            </div>
-          </div>
-        </div>
+        </>
+    )
+}
 
-        <div className="grid grid-cols-3 gap-5 items-center py-6">
-          <div>
-            <label className="block  text-sm font-medium text-gray-900 dark:text-white">
-              MR./MRS.
-            </label>
-            <select
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected>MR .</option>
-              <option>MRS .</option>
-            </select>
-          </div>
-          <Input
-            label={<div>First Name</div>}
-            type="text"
-            placeholder={"Enter Your First Name"}
-            size={"lg"}
-          />
-          <Input
-            label={<div>Last Name</div>}
-            type="text"
-            placeholder={"Enter Your Last Name"}
-            size={"lg"}
-          />
-        </div>
-        <div className="grid grid-cols-3 items-center gap-5">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex flex-col">
-              <label className="block text-gray-700">Country Code</label>
-              <select
-                value={countryCode}
-                onChange={(e) => setCountryCode(e.target.value)}
-                className="mt-1 block w-full border-gray-300 py-[15px] rounded-md shadow-sm focus:border-turquoise focus:ring focus:ring-turquoise focus:ring-opacity-50"
-              >
-                <option value="" disabled>
-                  Select your country code
-                </option>
-                {countryCodes.map((item) => (
-                  <option key={item.code} value={item.code}>
-                    {item.code} - {item.country}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <Input
-              label={<div>Mobile no.</div>}
-              type="number"
-              placeholder={"Enter Your Mobile Number"}
-              value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
-              size={"lg"}
-            />
-          </div>
-
-          <Input
-            label={<div>Email</div>}
-            type="email"
-            placeholder={"Enter Your Email"}
-            size={"lg"}
-          />
-        </div>
-      </div>
-
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        <div className="text-xl font-sans font-semibold text-lime">
-          Gate Allocation
-        </div>
-
-        <div className="grid grid-cols-3 gap-5 items-center">
-          <Input
-            label={"Gate No."}
-            type="text"
-            placeholder={"Select Your Gate No."}
-            size={"lg"}
-          />
-        </div>
-        <div className="grid grid-cols-4 mt-5 ">
-          {submittedData.map((data, index) => (
-            <div
-              key={index}
-              className="relative p-5 m-2 border rounded-lg bg-white"
-            >
-              <MdOutlineCancel
-                onClick={() => handleRemoveField(index)}
-                className="absolute  right-2 top-1 text-red-700 cursor-pointer text-xl"
-              />
-
-              <p>
-                <strong>Tower/Block:</strong> {data.tower}
-              </p>
-              <p>
-                <strong>Floor Number:</strong> {data.floor}
-              </p>
-              <p>
-                <strong>Unit Number:</strong> {data.unit}
-              </p>
-              <p>
-                <strong>Select Unit Number:</strong> {data.unitnumber}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        <div className="text-xl font-sans font-semibold text-lime">
-          Role Allocation
-        </div>
-        <div className="grid grid-cols-6 gap-5 items-center my-5">
-          <div className="flex flex-row items-center gap-3">
-            <label className="text-lg">Security</label>
-            <input type="radio" name="drone" checked className="text-lg" />
-          </div>
-          <div className=" flex flex-row items-center gap-3">
-            <label>Supervisor</label>
-            <input type="radio" name="drone" checked />
-          </div>
-          <div className=" flex flex-row items-center gap-3">
-            <label>Facility Manager</label>
-            <input type="radio" name="drone" checked />
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-center mt-5">
-        <Button className="max-w-sm" type="submit" size="lg">
-          Add User
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-export default GateAllocation;
+export default GateAllocation

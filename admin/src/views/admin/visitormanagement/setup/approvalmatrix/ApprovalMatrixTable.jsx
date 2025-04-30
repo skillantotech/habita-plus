@@ -1,41 +1,49 @@
 import React, { useEffect, useState } from "react";
 import UrlPath from "../../../../../components/shared/UrlPath";
 import PageHeading from "../../../../../components/shared/PageHeading";
-import Button from "../../../../../components/ui/Button";
 import ReusableTable from "../../../../../components/shared/ReusableTable";
 import VisitorApprovedMatrixHandler from "../../../../../handlers/VisitorApprovedMatrixHandler";
 
-const ActionData = ({ data, updateModal, deleteModal, updateForm }) => {
-  const onUpdateRelation = () => {
-    // dispatch(setCustomerId(data.customerId));
-    // dispatch(setFormOperationType('view'));
-    updateForm(data);
-    console.log(data.Visit_relation_Description);
-    updateModal();
-  };
-  const onDeleteRelation = () => {
-    // dispatch(setCustomerId(data.customerId));
-    // dispatch(setFormOperationType('edit'));
-    updateForm(data);
+const ActionData = ({ data, updateForm }) => {
+  const [selectedOption, setSelectedOption] = useState("");
 
-    console.log(data.Visit_relation_Description);
-    deleteModal();
+  const onOptionChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+    console.log(`Selected: ${value}, Data: ${data.Visit_relation_Description}`);
+    // You can also call appropriate handlers based on the selection
+    // For example:
+    if (value === "yes") {
+      console.log("Yes selected");
+      // Perform Yes action
+    } else if (value === "no") {
+      console.log("No selected");
+      // Perform No action
+    }
   };
 
   return (
-    <div className="flex gap-2">
-      <button
-        className="px-2 py-1 text-xs bg-lime text-white rounded-md hover:bg-opacity-90"
-        // onClick={onUpdateRelation}
-      >
-        update
-      </button>
-      <button
-        className="px-2 py-1 text-xs bg-gray-900 text-white rounded-md hover:bg-opacity-90"
-        // onClick={onDeleteRelation}
-      >
-        delete
-      </button>
+    <div className="flex items-center gap-4">
+      <label className="flex items-center gap-1">
+        <input
+          type="radio"
+          value="yes"
+          checked={selectedOption === "yes"}
+          onChange={onOptionChange}
+          className="form-radio text-lime-600 focus:ring-lime-500"
+        />
+        <span className="text-sm text-gray-700">Yes</span>
+      </label>
+      <label className="flex items-center gap-1">
+        <input
+          type="radio"
+          value="no"
+          checked={selectedOption === "no"}
+          onChange={onOptionChange}
+          className="form-radio text-red-500 focus:ring-red-500"
+        />
+        <span className="text-sm text-gray-700">No</span>
+      </label>
     </div>
   );
 };
@@ -63,8 +71,6 @@ const ApprovalMatrixTable = () => {
             actions: (
               <ActionData
                 data={el}
-                // updateModal={() => setShowUpdateModal(true)}
-                // deleteModal={() => setDeleteModal(true)}
                 updateForm={setUpdateFormData}
               />
             ),
@@ -75,15 +81,16 @@ const ApprovalMatrixTable = () => {
       }
     };
     fetchApprovedMatrix();
-  }, []);
+  }, [page, pageSize]);
 
   const columns = [
-    { Header: "Management Committee", accessor: "firstName" },
+    { Header: "First Name", accessor: "firstName" },
     { Header: "Role", accessor: "managementDesignation" },
     { Header: "Actions", accessor: "actions" },
   ];
+
   return (
-    <div className="px-5 ">
+    <div className="px-5">
       <div className="text-sm font-semibold my-2 flex items-center gap-2 text-gray-200">
         <UrlPath paths={paths} />
       </div>
@@ -98,10 +105,8 @@ const ApprovalMatrixTable = () => {
           data={matrixData}
           pageIndex={page}
           pageSize={pageSize}
-          // totalCount={total}
-          // totalPages={totalPages}
-          // setPageIndex={(index) => setPage(index)}
-          // setPageSize={(size) => setPageSize(size)}
+          setPageIndex={(index) => setPage(index)}
+          setPageSize={(size) => setPageSize(size)}
         />
       </div>
     </div>

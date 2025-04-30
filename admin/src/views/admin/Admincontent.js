@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import AddUser from "./usermanagement/adduser/AddUser";
 import UnapprovedUser from "./usermanagement/unapproveduser/UnapprovedUser";
 import ApprovedUser from "./usermanagement/approveduser/ApprovedUser";
+import DashboardUser from "./usermanagement/dashboard/DashboardUser";
+
 import GeneralSetting from "./usermanagement/generalsetting/GeneralSetting";
 import UnitList from "./unitdetails/unitlist/UnitList";
 import DeactivateUser from "./usermanagement/deactivateuser/DeactivateUser";
@@ -10,7 +12,7 @@ import DefineUnit from "./unitdetails/defineunit/DefineUnit";
 import DefineStructer from "./unitdetails/definestructer/DefineStructer";
 import AddnewNotice from "./noticeannouncement/addnewnotice/AddnewNotice";
 import NoticeList from "./noticeannouncement/noticelist/NoticeList";
-import DefineVisitorcatagories from "./visitormanagement/definevisitorcatagories/DefineVisitorcatagories";
+// import DefineVisitorcatagories from "./visitormanagement/definevisitorcatagories/DefineVisitorcatagories";
 import AddVisitor from "./visitormanagement/addvisitor/AddVisitor";
 import VisitorList from "./visitormanagement/visitorlist/VisitorList";
 import AddnewDiscussion from "./discussionforum/addnewdiscussion/AddnewDiscussion";
@@ -18,11 +20,15 @@ import DiscussionDetails from "./discussionforum/discussiondetails/DiscussionDet
 import DefineGate from "./gatemanagement/definegate/DefineGate";
 import GateAllocation from "./gatemanagement/gateallocation/GateAllocation";
 import GateList from "./gatemanagement/gatelist/GateList";
+
 import DocumentUploadFacility from "./documentmanagement/documentuploadfacility/DocumentUploadFacility";
 import AddNewVendor from "./vendormanagement/addnewvendor/AddNewVendor";
 import AddNewParkingSlot from "./parkingmanagement/addnewparkingslot/AddNewParkingSlot";
 import AddNewBookingReqest from "./parkingmanagement/addnewbookingrequest/AddNewBookingReqest";
 import AddNewFacility from "./facilitymanagement/addnewfacility/AddNewFacility";
+import FacilityList from "./facilitymanagement/facility/FacilityList";
+   
+
 import AddNewBookingRequest from "./facilitymanagement/addnewbookingrequest/AddNewBookingRequest";
 import VendorList from "./vendormanagement/vendorlist/VendorList";
 import FacilityBookingDetails from "./facilitymanagement/bookingdetails/FacilityBookingDetails";
@@ -43,6 +49,12 @@ import TicketList from "./socityhelpdesk/ticketlist/TicketList";
 import ApprovalMatrixVisitor from "./visitormanagement/setup/approvalmatrix/ApprovalMatrixVisitor";
 import DefineVisitorCatagories from "./visitormanagement/setup/definevisitorcatagories/DefineVisitorCatagories";
 import CreateTicketForm from "./socityhelpdesk/createticket/CreateTicketForm";
+import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation";
+//import ViewGateUserDetails from "./gatemanagement/approvedgateusers/ViewGateUserDetails";
+import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
+import ParkingList from "./parkingmanagement/parkingDetails/ParkingList";
+
+
 // import CreateResident from "./resident/create/CreateResident";
 // import CreateFloorInformation from "./floorinformation/create/CreateFloorInformation";
 // import CreateVendor from "./vendorinformation/create/CreateVendor";
@@ -91,7 +103,7 @@ const Admincontent = () => {
       <Route path="/employee/create" element={<CreateEmployee />} />
       <Route path="/employee/view" element={<div> View employee</div>} /> */}
       <Route path="/" element={<div>Admin content</div>} />
-      <Route path="/user" element={<div>dashboard user page</div>} />
+      <Route path="/user" element={<DashboardUser />} />
       <Route path="/user/unapproved" element={<UnapprovedUser />} />
       <Route path="/user/adduser" element={<AddUser />} />
       <Route path="/user/approved" element={<ApprovedUser />} />
@@ -119,7 +131,9 @@ const Admincontent = () => {
       <Route path="/discussion/list" element={<DiscussionDetails />} />
       <Route path="/gate/definegate" element={<DefineGate />} />
       <Route path="/gate/allocation" element={<GateAllocation />} />
+        <Route path="/gate/guardCreation" element={<GuardUserCreation />} />
       <Route path="/gate/view" element={<GateList />} />
+      <Route path="/gate/approvedusers" element={<ApprovedGateUser/>} />
       <Route path="/document/upload" element={<DocumentUploadFacility />} />
       <Route path="/document/view" element={<div>Document List</div>} />
 
@@ -137,7 +151,7 @@ const Admincontent = () => {
       <Route path="/vendor/view" element={<VendorList />} />
       {/* parking management */}
       <Route path="/parking/newslot" element={<AddNewParkingSlot />} />
-      <Route path="/parking/list" element={<div>Parking List</div>} />
+      <Route path="/parking/list" element={<ParkingList/>}/>
       <Route
         path="/parking/bookingdetails"
         element={<ParkingBookingDetails />}
@@ -147,7 +161,7 @@ const Admincontent = () => {
 
       {/* facility management */}
       <Route path="/facility/new" element={<AddNewFacility />} />
-      <Route path="/facility/list" element={<div>Parking List</div>} />
+      <Route path="/facility/list" element={<FacilityList />} />
       <Route path="/facility/booking" element={<FacilityBookingDetails />} />
       <Route path="/facility/request" element={<AddNewBookingRequest />} />
       {/* Socity Admin Confugaration */}

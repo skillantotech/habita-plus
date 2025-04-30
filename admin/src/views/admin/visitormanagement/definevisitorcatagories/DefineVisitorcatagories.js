@@ -48,7 +48,7 @@ const DefineVisitorcatagories = () => {
             </select>
           </div>
           <div>
-            <Button className="max-w-sm" type="submit" size="md">
+            <Button className="max-w-sm" type="" size="md">
               Submit
             </Button>
           </div>
@@ -57,7 +57,7 @@ const DefineVisitorcatagories = () => {
           <div>Visitor Relationship</div>
           <div>
             <Input
-              // label={<div>First Name</div>}
+              // labelsubmit={<div>First Name</div>}
               type="text"
               placeholder={"Visitor Relationship"}
               size={"lg"}

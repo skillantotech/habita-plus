@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const Customer = require("./Customer");
+ const Building = require("./Building");
 
 const UnitType = sequelize.define(
   "unitType",
@@ -18,14 +19,14 @@ const UnitType = sequelize.define(
       },
       allowNull: false,
     },
-    // buildingId: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Building,
-    //     key: "buildingId",
-    //   },
-    //   allowNull: true,
-    // },
+    buildingId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Building,
+        key: "buildingId",
+      },
+      allowNull: true,
+    },
     unitTypeName: {
       type: DataTypes.STRING,
       allowNull: false,

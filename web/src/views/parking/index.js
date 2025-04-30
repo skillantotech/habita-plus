@@ -1,2 +1,1 @@
-import Parking from "./Parking";
-export default Parking;
+export {default} from "./Parking";

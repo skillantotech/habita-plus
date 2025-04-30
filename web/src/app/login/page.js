@@ -1,4 +1,5 @@
-import Login from "@/views/login/Login";
+"use client";
+import Login from "@/views/login";
 import React from "react";
 
 const Page = () => {

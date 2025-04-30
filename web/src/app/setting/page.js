@@ -1,6 +1,6 @@
 "use client";
 
-import Setting from "@/views";
+import Setting from "@/views/setting";
 const Page = () => {
   return (
     <main>

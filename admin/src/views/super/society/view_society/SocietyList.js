@@ -40,7 +40,7 @@ const ActionData = ({ data, openModal }) => {
         className="px-2 py-1 text-xs bg-gray-900 text-white rounded-md hover:bg-opacity-90"
         onClick={updateButtonClickHandler}
       >
-        edit
+        Edit
       </button>
     </div>
   );

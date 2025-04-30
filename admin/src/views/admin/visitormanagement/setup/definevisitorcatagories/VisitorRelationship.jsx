@@ -7,41 +7,44 @@ import VisitorRelationshipEdit from "./VisitorRelationshipEdit";
 import ReusableTable from "../../../../../components/shared/ReusableTable";
 import toast from "react-hot-toast";
 import VisitorRelationshipDelete from "./VisitorRelationshipDelete";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 
-const ActionData = ({ data, updateModal, deleteModal, updateForm }) => {
+
+ const ActionData = ({ data, updateModal, deleteModal, updateForm }) => {
   const onUpdateRelation = () => {
-    // dispatch(setCustomerId(data.customerId));
-    // dispatch(setFormOperationType('view'));
     updateForm(data);
-    console.log(data.Visit_relation_Description);
     updateModal();
   };
   const onDeleteRelation = () => {
-    // dispatch(setCustomerId(data.customerId));
-    // dispatch(setFormOperationType('edit'));
     updateForm(data);
-
-    console.log(data.Visit_relation_Description);
     deleteModal();
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1 relative">
       <button
-        className="px-2 py-1 text-xs bg-lime text-white rounded-md hover:bg-opacity-90"
+        className="relative px-2 py-1 text-xs text-lime rounded-md hover:bg-opacity-90 group"
         onClick={onUpdateRelation}
       >
-        update
+        <FaEdit className="text-lg" />
+        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 text-xs bg-lime text-white px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          Update
+        </span>
       </button>
+
       <button
-        className="px-2 py-1 text-xs bg-gray-900 text-white rounded-md hover:bg-opacity-90"
+        className="relative px-2 py-1 text-xs text-red-500 rounded-md hover:bg-opacity-90 group"
         onClick={onDeleteRelation}
       >
-        delete
+        <FaTrashAlt className="text-lg" />
+        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 text-xs bg-red-500 text-white px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          Delete
+        </span>
       </button>
     </div>
   );
 };
+
 
 const VisitorRelationship = () => {
   const [relationship, setRelationShip] = useState("");
@@ -147,14 +150,14 @@ const VisitorRelationship = () => {
   return (
     <div>
       <div className="grid grid-cols-3 gap-4">
-        <div>Visitor Relationship</div>
+        <div>Visitor Category</div>
         <div>
           <Input
             // label={<div>First Name</div>}
             type="text"
             value={relationship}
             onChange={handleInput}
-            placeholder={"Visitor Relationship"}
+            placeholder={"Visitor Category"}
             size={"lg"}
           />
         </div>

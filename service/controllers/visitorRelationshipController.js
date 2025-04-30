@@ -35,7 +35,6 @@ exports.createVisitorRelation = async (req, resp) => {
       senderId,
     });
 
-    // Send success response
     resp.status(201).json({
       message: "RefUserGroup created successfully",
       data: new_Visit_relation_Description,
@@ -57,21 +56,14 @@ exports.getVisitorData = async (req, res) => {
       return sendErrorResponse(res, "Enter Socity Id", 400);
     }
 
-    //   pagination handler
     const pagination = {
       page: parseInt(req.query.page) || 0,
       pageSize: parseInt(req.query.pageSize) || 10,
     };
     const whereClause = { isDeleted: false };
-    // if (disscussionheading) {
-    //   whereClause.noticeHeading = { [Op.like]: `%${disscussionheading}%` }; // Case-insensitive search
-    // }
     if (societyId) {
       whereClause.societyId = societyId;
     }
-    // if (userGroupId) {
-    //   whereClause.userGroupId = userGroupId;
-    // }
 
     const { count, rows } = await visitorRelationship.findAndCountAll({
       where: whereClause,
@@ -101,7 +93,7 @@ exports.deleteVisitorData = async (req, res) => {
     }
 
     await visitor.update({ isDeleted: true });
-    // await visitor.destroy();
+
     res.status(200).json({ message: "Visitor relation deleted successfully" });
   } catch (err) {
     console.error("Error deleting notice:", err);
@@ -114,32 +106,27 @@ exports.deleteVisitorData = async (req, res) => {
 exports.updateVisitorData = async (req, res) => {
   console.log("update param", req.params);
 
-  // console.log("Visit_relation_Id", Visit_relation_Id);
+
 
   try {
     const { Visit_relation_Id } = req.params;
-
-    // Perform the update operation using Sequelize
     const [updatedRows] = await visitorRelationship.update(req.body, {
       where: { Visit_relation_Id },
     });
 
-    // Log how many rows were updated
     console.log("Number of updated rows:", updatedRows);
 
-    // Check if any rows were updated
     if (updatedRows === 0) {
       return res
         .status(404)
         .json({ error: "Notice not found or no changes were made." });
     }
 
-    // Send a success response if updated
     return res
       .status(201)
       .json({ message: "Visitor Relationship updated successfully." });
   } catch (error) {
-    // Handle any errors during the update process
+  
     return res.status(400).json({ error: error.message });
   }
 };

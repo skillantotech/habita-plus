@@ -1,6 +1,7 @@
+
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { createFloorService, getFloorService } from "../services/floorService";
+import { createFloorService, getFloorBySocietyIdService } from "../services/floorService";
 
 const FloorHandler = () => {
   const token = useSelector((state) => state.auth.token);
@@ -28,8 +29,12 @@ const FloorHandler = () => {
       });
   };
 
-  const getFloorHandler = async (data) => {
-    return await getFloorService({ societyId, ...data }, token);
+  const getFloorHandler = async () => {
+    return await getFloorBySocietyIdService( societyId, token)
+    .then((res)=> res)
+    .catch((err)=>{
+      console.error("Error featching floor:",err)
+    })
   };
 
   return { createFloorHandler, getFloorHandler };

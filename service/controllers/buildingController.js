@@ -64,3 +64,32 @@ exports.getBuildings = async (req, res) => {
     return sendErrorResponse(res, "Internal server error", 500, err.message);
   }
 };
+
+exports.getBuildingsBySocietyId = async (req, res, next) => {
+  try {
+    const { societyId } = req.params;
+
+    if (!societyId) {
+      return sendErrorResponse(res, "Society ID is required", 400); // Updated validation
+    }
+
+    console.log("Fetching buildings for Society ID:", societyId); // Debugging log
+
+    const buildings = await Building.findAll({ where: { societyId } });
+
+    if (!buildings || buildings.length === 0) { // Corrected validation
+      return sendErrorResponse(res, "No buildings found for this society", 404);
+    }
+
+    return sendSuccessResponse(
+      res,
+      "Buildings fetched successfully",
+      buildings,
+      200
+    );
+  } catch (err) {
+    console.error("Error fetching buildings by society ID:", err);
+    return sendErrorResponse(res, "Internal server error", 500, err.message);
+  }
+};
+

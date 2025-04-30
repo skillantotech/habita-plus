@@ -11,7 +11,7 @@ const visitorRelationship = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    Visit_relation_Description: {
+    Visit_relation_Description: {  // visitor category
       type: DataTypes.STRING,
       allowNull: false,
     },

@@ -1,17 +1,33 @@
-import { SideBarMenu } from "../../config/SideBarConfig";
+import  SideBarMenu  from "../../config/SideBarConfig";
 import Accordion from "../../components/ui/Accordion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const SubSection = ({ data, onClick, isActive }) => {
   return (
-    <div
+    // <div
+    //   onClick={() => onClick(data.url)}
+    //   className={`p-1 rounded-md cursor-pointer ${
+    //     isActive ? "bg-lime text-gray-700" : "text-gray-300 "
+    //   }`} // Apply style when active
+    // >
+    //   {data.name}
+    // </div>
+      <div
       onClick={() => onClick(data.url)}
-      className={`p-1 rounded-md cursor-pointer ${
-        isActive ? "bg-lime text-gray-700" : "text-gray-300 "
+      className={`p-1 rounded-md cursor-pointer flex items-center space-x-2 ${
+        isActive ? "bg-lime text-gray-700" : "text-gray-300"
       }`} // Apply style when active
     >
-      {data.name}
+      {/* Icon with fixed width and height */}
+      {data.icon && (
+        <img
+          src={data.icon}
+          alt={data.name}
+         className="object-contain w-6 h-6"
+        />
+      )}
+      <span>{data.name}</span>
     </div>
   );
 };
@@ -34,9 +50,9 @@ const Dashboardleftcontent = ({ role = "" }) => {
   };
 
   return (
-    // <section className="bg-sidebar h-full px-5 py-2">
+    // <section className="h-full px-5 py-2 bg-sidebar">
     //   <div className="h-full overflow-y-auto no-scrollbar">
-    //     <div className="space-y-2 w-full">
+    //     <div className="w-full space-y-2">
     //       {MENU.map((item, index) => (
     //         <Accordion
     //           key={index}
@@ -58,9 +74,9 @@ const Dashboardleftcontent = ({ role = "" }) => {
     //   </div>
     // </section>
 
-    <section className="bg-sidebar h-full px-5 py-2">
+    <section className="h-full px-5 py-2 bg-sidebar">
       <div className="h-full overflow-y-auto no-scrollbar">
-        <div className="space-y-2 w-full">
+        <div className="w-full space-y-2">
           {MENU.map((item, index) => (
             <Accordion
               key={index}
@@ -69,7 +85,12 @@ const Dashboardleftcontent = ({ role = "" }) => {
                   className="py-2 font-bold cursor-pointer"
                   onClick={() => toggleSection(index)} // Toggle section on click
                 >
-                  {item.name}
+                  <div className="flex items-center space-x-2">
+                    <item.icon className="text-2xl text-lime-500" /> 
+                    <span>{item.name}</span>
+                  </div>
+                  
+                   {/* {item.name}  */}
                 </div>
               }
             >
@@ -86,7 +107,7 @@ const Dashboardleftcontent = ({ role = "" }) => {
 
                       {/* Check if the current section has sub-children */}
                       {data.children && data.children.length > 0 && (
-                        <div className="ml-4 space-y-1">
+                        <div className="ml-4 space-y-1 ">
                           {data.children.map((subData, subIndex) => (
                             <SubSection
                               key={subIndex}

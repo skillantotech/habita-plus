@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 export const createFloorService = (data, token) => {
@@ -12,14 +13,14 @@ export const createFloorService = (data, token) => {
   });
 };
 
-export const getFloorService = (data, token) => {
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/floor`;
+export const getFloorBySocietyIdService = (societyId, token) => {
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/floor/${societyId}`;
 
   return axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    query: { data },
+    // query: { data },
   });
 };

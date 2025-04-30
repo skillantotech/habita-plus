@@ -44,23 +44,9 @@ body {
 }
 
 /* navbar css */
-.nav-item {
-  position: relative;
-}
 
-.nav-item::after {
-  position: absolute;
-  content: "";
-  height: 3px;
-  width: 0;
-  background-color: #078ba5;
-  left: 0;
-  bottom: 0;
-  transition: 0.3s;
-}
-.nav-item:hover::after {
-  width: 100%;
-}
+
+
 
 /* animations  */
 

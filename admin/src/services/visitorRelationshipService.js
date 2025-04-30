@@ -3,7 +3,7 @@ import axios from "axios";
 export const CreateVisitorRelationshipService = (data, token) => {
   console.log("service", data);
 
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitorrelationship`;
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitor-relationship`;
   return axios.post(url, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -13,7 +13,7 @@ export const CreateVisitorRelationshipService = (data, token) => {
 };
 
 export const getVisitorRelationshipService = (data, token) => {
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitorrelationship`;
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitor-relationship`;
 
   return axios.get(url, {
     headers: {
@@ -24,7 +24,7 @@ export const getVisitorRelationshipService = (data, token) => {
 };
 
 export const deleteVisitorRelationService = (data, token) => {
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitorrelationship/${data}`;
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitor-relationship/${data}`;
   return axios.delete(url, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -34,7 +34,7 @@ export const deleteVisitorRelationService = (data, token) => {
 };
 
 export const updateVisitorRelationService = (data, token) => {
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitorrelationship/${data.Visit_relation_Id}`;
+  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/visitormanagement/visitor-relationship/${data.Visit_relation_Id}`;
   return axios.put(url, data, {
     headers: {
       Authorization: `Bearer ${token}`,
