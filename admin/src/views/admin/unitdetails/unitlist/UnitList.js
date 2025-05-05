@@ -114,7 +114,7 @@ const UnitList = () => {
 
   return (
     <div>
-      <UrlPath paths={["users", "Unit List"]} />
+      <UrlPath paths={["Unit Details", "Unit List"]} />
       <PageHeading heading={["Unit List"]} />
       <ReusableTable
         columns={columns}

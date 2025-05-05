@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useTable, usePagination } from 'react-table';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import { useTable, usePagination } from "react-table";
+import PropTypes from "prop-types";
 
 const ReusableTable = ({
   columns,
@@ -10,7 +10,7 @@ const ReusableTable = ({
   totalCount,
   totalPages,
   setPageIndex,
-  setPageSize
+  setPageSize,
 }) => {
   const {
     getTableProps,
@@ -24,7 +24,7 @@ const ReusableTable = ({
     nextPage,
     previousPage,
     setPageSize: internalSetPageSize,
-    state: { pageIndex: internalPageIndex, pageSize: internalPageSize }
+    state: { pageIndex: internalPageIndex, pageSize: internalPageSize },
   } = useTable(
     {
       columns,
@@ -45,41 +45,47 @@ const ReusableTable = ({
   }, [pageSize, internalSetPageSize]);
 
   const onNextPage = () => {
-    setPageIndex(parseInt(pageIndex)+1)
+    setPageIndex(parseInt(pageIndex) + 1);
   };
 
   const onPreviousPage = () => {
-    setPageIndex(parseInt(pageIndex)-1)
+    setPageIndex(parseInt(pageIndex) - 1);
   };
 
   return (
     <div>
-      <table {...getTableProps()} className="min-w-full table-auto border-collapse border border-gray-300">
+      <table
+        {...getTableProps()}
+        className="min-w-full table-auto border-collapse border border-gray-300"
+      >
         <thead className="bg-gray-200">
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th
                   {...column.getHeaderProps()}
                   className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-600"
                 >
-                  {column.render('Header')}
+                  {column.render("Header")}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200">
-          {page.map(row => {
+        <tbody
+          {...getTableBodyProps()}
+          className="bg-white divide-y divide-gray-200"
+        >
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => (
+                {row.cells.map((cell) => (
                   <td
                     {...cell.getCellProps()}
                     className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700"
                   >
-                    {cell.render('Cell')}
+                    {cell.render("Cell")}
                   </td>
                 ))}
               </tr>
@@ -96,18 +102,18 @@ const ReusableTable = ({
             disabled={!canPreviousPage}
             className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 disabled:opacity-50"
           >
-            {'<'}
+            {"<"}
           </button>
           <button
             onClick={onNextPage}
             disabled={!canNextPage}
             className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 disabled:opacity-50"
           >
-            {'>'}
+            {">"}
           </button>
         </div>
 
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <span className="text-sm text-gray-700">
             Page <strong>{pageIndex + 1} of {totalPages}</strong>
           </span>
@@ -124,18 +130,45 @@ const ReusableTable = ({
               className="ml-2 border rounded-md w-16 text-center"
             />
           </span>
+        </div> */}
+
+        <div className="flex items-center">
+          <span className="text-sm text-gray-700">
+            Page{" "}
+            <strong>
+              {totalPages - pageIndex} of {totalPages}
+            </strong>
+          </span>
+          <span className="ml-4 text-sm text-gray-700">
+            | Go to page:
+            <input
+              type="number"
+              min={1}
+              max={totalPages}
+              value={totalPages - pageIndex}
+              onChange={(e) => {
+                const inputValue = Number(e.target.value);
+                const newPageIndex = totalPages - inputValue;
+                if (newPageIndex >= 0 && newPageIndex < totalPages) {
+                  setPageIndex(newPageIndex);
+                  gotoPage(newPageIndex);
+                }
+              }}
+              className="ml-2 border rounded-md w-16 text-center"
+            />
+          </span>
         </div>
 
         <select
           value={internalPageSize}
-          onChange={e => {
+          onChange={(e) => {
             const newSize = Number(e.target.value);
             setPageSize(newSize);
             internalSetPageSize(newSize);
           }}
           className="ml-4 border rounded-md p-1"
         >
-          {[10, 20, 30, 40, 50].map(size => (
+          {[10, 20, 30, 40, 50].map((size) => (
             <option key={size} value={size}>
               Show {size}
             </option>
@@ -158,3 +191,4 @@ ReusableTable.propTypes = {
 };
 
 export default ReusableTable;
+

@@ -4,7 +4,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import CalenderSettingForm from "./CalenderSettingForm";
 
 const CalenderSetting = () => {
-  const paths = ["User", "Calender Setting"];
+  const paths = ["Socity Admin Confugaration", "Calender Setting"];
   const Heading = ["Calender Setting"];
   return (
     <div className="px-5">

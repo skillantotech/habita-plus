@@ -54,6 +54,8 @@ import GuardUserCreation from "./gatemanagement/guardcreation/GuardUserCreation"
 import ApprovedGateUser from "./gatemanagement/approvedgateusers/ApprovedGateUser";
 import ParkingList from "./parkingmanagement/parkingDetails/ParkingList";
 import DocumentList from "./documentmanagement/documentlist/DocumentList";
+import ComplainEntryForm from "./complain/addcomplain/ComplainEntryForm";
+import ComplainList from "./complain/complainlist/ComplainList";
 
 
 // import CreateResident from "./resident/create/CreateResident";
@@ -137,6 +139,10 @@ const Admincontent = () => {
       <Route path="/gate/approvedusers" element={<ApprovedGateUser/>} />
       <Route path="/document/upload" element={<DocumentUploadFacility />} />
       <Route path="/document/view" element={<DocumentList/>} />
+
+      {/* complain management */}
+      <Route path="/complain/upload" element={<ComplainEntryForm />} />
+      <Route path="/complain/view" element={<ComplainList/>} />
 
       {/* Invoice */}
       <Route path="/invoice/newcharge" element={<DefineNewCharge />} />

@@ -23,7 +23,7 @@ const DeactivateUser = () => {
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
 
 
-  const paths = ["User", "Deactivate Users"];
+  const paths = ["User Management", "Deactivate Users"];
   const Heading = ["Deactivate Users"];
 
   useEffect(() => {

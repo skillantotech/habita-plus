@@ -1,16 +1,17 @@
-"use client"; // If using Next.js App Router
+
+
 
 import React, { useEffect, useMemo, useState } from "react";
-import DocumentHandler from "@/handlers/DocumentHandler";
-import UserGroupHandler from "@/handlers/UseGroupHandler";
+import DocumentHandler from "../../../../handlers/DocumentHandler";
+import UserGroupHandler from "../../../../handlers/UseGroupHandler";
 import { FaFilePdf, FaFileImage, FaTrashAlt } from "react-icons/fa";
 import { FiEye, FiDownload, FiFile, FiFileText } from "react-icons/fi";
-import ReusableTable from "@/components/shared/ReusableTable";
+import ReusableTable from "../../../../components/shared/ReusableTable";
 
 // Constant for "Self" user group
 const MY_DOCUMENTS_ID = "__self__";
 
-const DocumentList = () => {
+const DocumentListTable = () => {
   const [userGroupId, setUserGroupId] = useState("");
   const [documents, setDocuments] = useState([]);
   const [userGroups, setUserGroups] = useState([]);
@@ -26,6 +27,7 @@ const DocumentList = () => {
 
   const { getUserGroupHandler } = UserGroupHandler();
 
+  // Load user groups once
   useEffect(() => {
     const loadGroups = async () => {
       try {
@@ -38,6 +40,7 @@ const DocumentList = () => {
     loadGroups();
   }, []);
 
+  // Fetch and filter documents
   useEffect(() => {
     const fetchDocuments = async () => {
       setLoading(true);
@@ -70,16 +73,18 @@ const DocumentList = () => {
     fetchDocuments();
   }, [userGroupId, pageSize]);
 
+  // Paginated docs with reverse order
   const pagedDocs = useMemo(() => {
-    const reversed = [...documents].reverse();
+    const reversed = [...documents].reverse(); // reverse document order
     const start = pageIndex * pageSize;
     return reversed.slice(start, start + pageSize);
   }, [pageIndex, pageSize, documents]);
 
   const totalPages = Math.ceil(documents.length / pageSize);
 
+  // Delete handler
   const handleDelete = async (documentId) => {
-    if (typeof window !== "undefined" && window.confirm("Are you sure?")) {
+    if (window.confirm("Are you sure you want to delete this document?")) {
       const res = await deleteDocumentHandler(documentId);
       if (res?.status === 200) {
         setDocuments((prevDocs) =>
@@ -90,11 +95,14 @@ const DocumentList = () => {
   };
 
   const handleDownload = async (url) => {
-    if (typeof window === "undefined") return;
-
     try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Network error");
+      const response = await fetch(url, {
+        // Include this only if needed:
+        // headers: { Authorization: `Bearer ${yourToken}` },
+        // credentials: 'include',
+      });
+
+      if (!response.ok) throw new Error("Network response was not ok");
 
       const blob = await response.blob();
       const contentDisposition = response.headers.get("Content-Disposition");
@@ -118,7 +126,7 @@ const DocumentList = () => {
       link.remove();
       window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
-      console.warn("Download failed:", error);
+      console.warn("Fetch download failed, falling back to simple link.", error);
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "");
@@ -135,6 +143,7 @@ const DocumentList = () => {
         Header: "S.No",
         Cell: ({ row }) =>
           documents.length - (pageIndex * pageSize + row.index),
+
         className: "text-center",
       },
       {
@@ -148,7 +157,9 @@ const DocumentList = () => {
         Cell: ({ value }) => {
           const filePath = value || "";
           const fileName = filePath.split(/[/\\]/).pop();
-          const extension = fileName?.split(".").pop()?.toLowerCase();
+          const extension = fileName?.includes(".")
+            ? fileName.split(".").pop().toLowerCase()
+            : "";
 
           const iconMap = {
             pdf: <FaFilePdf className="inline mr-1 text-red-600" />,
@@ -160,14 +171,19 @@ const DocumentList = () => {
             docx: <FiFileText className="inline mr-1 text-indigo-600" />,
           };
 
-          const icon = iconMap[extension] || (
-            <FiFile className="inline mr-1 text-gray-400" />
-          );
+          const icon =
+            iconMap[extension] || (
+              <FiFile className="inline mr-1 text-gray-400" />
+            );
           const displayExt = extension ? `.${extension}` : "—";
 
-          return <span className="flex items-center">{icon} {displayExt}</span>;
+          return (
+            <span className="flex items-center">
+              {icon} {displayExt}
+            </span>
+          );
         },
-        className: "text-left",
+        className: "text-left", 
       },
       {
         Header: "Uploaded On",
@@ -198,16 +214,16 @@ const DocumentList = () => {
             <button
               onClick={() => handleDelete(row.original.documentId)}
               title="Delete"
-              className="text-red-600 hover:text-red-800"
+              className="text-red-600 hover:text-red-800 "
             >
               <FaTrashAlt size={16} />
             </button>
           </div>
         ),
-        className: "text-left",
+        className: "text-left", 
       },
     ],
-    [pageIndex, pageSize, documents]
+    [pageIndex, pageSize]
   );
 
   const activeGroupName =
@@ -264,6 +280,4 @@ const DocumentList = () => {
   );
 };
 
-export default DocumentList;
-
-
+export default DocumentListTable;

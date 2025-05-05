@@ -6,7 +6,7 @@ import Button from "../../../../components/ui/Button";
 import EmailConfugarationForm from "./EmailConfugarationForm";
 
 const EmailConfugaration = () => {
-  const paths = ["User", "Email Confugaration"];
+  const paths = ["Socity Admin Confugaration", "Email Confugaration"];
   const Heading = ["Email Confugaration"];
 
   return (

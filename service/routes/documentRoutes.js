@@ -13,4 +13,9 @@ documentRouter.put("/user/:documentId",documentController.updateDocumentByUserId
 
 documentRouter.delete("/:documentId",documentController.deleteDocument);
 
+// documentRouter.delete("/society/:societyId/:documentId", documentController.deleteDocumentBySocietyId);
+
+// documentRouter.delete("/user/:userId/:documentId",documentController.deleteDocumentByUserId);
+
+
 module.exports = documentRouter;

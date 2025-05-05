@@ -19,6 +19,7 @@ const SideBarMenu = {
    
     {
       name: "Building Management",
+      
       isAvailable: true,
        icon: FaBuilding,
       children: [
@@ -235,6 +236,22 @@ const SideBarMenu = {
         {
           name: "Document List",
           url: "document/view",
+        },
+      ],
+    },
+    {
+      name: "Complain Management",
+      isAvailable: true,
+      icon:FaFileAlt ,
+      children: [
+        {
+          name: "Add New Complain",
+          url: "complain/upload",
+        },
+
+        {
+          name: "Complain List",
+          url: "complain/view",
         },
       ],
     },

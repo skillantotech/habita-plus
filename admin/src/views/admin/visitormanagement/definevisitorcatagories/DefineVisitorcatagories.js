@@ -6,7 +6,7 @@ import Button from "../../../../components/ui/Button";
 // import Select from "../../../../components/ui/Select";
 
 const DefineVisitorcatagories = () => {
-  const paths = ["user", "Define Visitor catagories"];
+  const paths = ["Visitors Management", "Define Visitor catagories"];
   const Heading = ["Define Visitor catagories"];
   const visitorOptions = ["Recurring", "Onetime"];
   return (

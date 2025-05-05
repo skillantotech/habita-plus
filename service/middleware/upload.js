@@ -37,34 +37,36 @@ module.exports = upload;
 // const multer = require("multer");
 // const path = require("path");
 
+// // Configure storage settings
 // const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, "uploads/");
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, `${Date.now()}-${file.originalname}`);
-//     }
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + "-" + file.originalname);
+//   },
 // });
 
+// // File type filter
 // const fileFilter = (req, file, cb) => {
-//     console.log("Uploaded file type:", file.mimetype); // Debugging log
+//   const filetypes = /jpeg|jpg|png|gif|pdf/;
+//   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+//   const mimetype = filetypes.test(file.mimetype);
 
-//     const allowedTypes = [
-//         "image/jpeg", "image/jpg", "image/png", 
-//         "application/pdf", "video/mp4", "video/avi"
-//     ];
-
-//     if (allowedTypes.includes(file.mimetype)) {
-//         cb(null, true);
-//     } else {
-//         cb(new Error(`Invalid file type: ${file.mimetype}. Allowed: jpeg, jpg, png, pdf, mp4, avi.`));
-//     }
+//   if (extname && mimetype) {
+//     cb(null, true);
+//   } else {
+//     cb(new Error("Only image or PDF files are allowed"));
+//   }
 // };
 
-// const upload = multer({ 
-//     storage, 
-//     fileFilter,
-//     limits: { fileSize: 20 * 1024 * 1024 } // 20MB max size
+// // Multer upload
+// const upload = multer({
+//   storage,
+//   fileFilter,
+//   limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
 // });
 
 // module.exports = upload;
+
+

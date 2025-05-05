@@ -24,7 +24,7 @@ const ApprovedUser = () => {
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
 
-  const paths = ["User", "Approved Users"];
+  const paths = ["User Management", "Approved Users"];
   const Heading = ["Approved Users"];
 
   useEffect(() => {

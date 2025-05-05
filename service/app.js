@@ -13,6 +13,8 @@ app.use(cors());
 
 //
 app.use(bodyParser.json());
+
+app.use('/upload', express.static(path.join(__dirname, 'uploads')));
 //
 const errorHandler = require("./middleware/errorHandler");
 
@@ -62,6 +64,10 @@ const unitRouter = require("./routes/unitRoutes");
 const softwareHelpDeskRouter = require("./routes/softwareHelpDeskRouter");
 const refTicketStatusRouter = require("./routes/refTicketStatusRouter");
 const documentRouter = require("./routes/documentRoutes.js");
+
+
+
+
 
 // testing apis
 app.get("/", (req, res) => {
@@ -140,6 +146,7 @@ app.use("/api/filter", filterRoutes);
 
 // Parking
 app.use("/api", parkingRoutes);
+
 app.use("/api/documents",documentRouter)
 
 

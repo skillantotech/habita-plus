@@ -12,35 +12,30 @@ import BuildingHandler from "../../../../handlers/BuildingHandler";
 import UserRoleHandler from "../../../../handlers/UserRoleHandler";
 import UnitHandler from "../../../../handlers/UnitHandler";
 import ReusableTable from "../../../../components/shared/ReusableTable";
-import { FaEye} from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 
 const AddUser = () => {
-  const paths = ["User", "Add"];
+  const paths = ["User Management", "Add"];
   const Heading = ["Add Resident User"];
-   const [page, setPage] = useState(0);
-   const [pageSize, setPageSize] = useState(5);
-   const [transformedData, setTransformedData] = useState([]);
-   const [totalPages, setTotalPages] = useState(0);
- const [total, setTotal] = useState(0);
-  const [unitAllocationSearch, setUnitAllocationSearch] = useState({
-   
-
-  });
-    const handleSearchChange = (e) => {
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [transformedData, setTransformedData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [unitAllocationSearch, setUnitAllocationSearch] = useState({});
+  const handleSearchChange = (e) => {
     const { name, value } = e.target;
     setUnitAllocationSearch({ ...unitAllocationSearch, [name]: value });
   };
 
   const societyId =
     useSelector((state) => state.auth.user?.Customer?.customerId) || "";
-  const unitId =
-    useSelector((state) => state.auth.user?.Unit?.unitId) || "";
+  const unitId = useSelector((state) => state.auth.user?.Unit?.unitId) || "";
   const countryCodesList =
     useSelector((state) => state.countryCode.countryCodes) || [];
 
   const { createSocietyResidentUserHandler } = UserHandler();
   const { getUserRolesHandler } = UserRoleHandler();
-
 
   const [roles, setRoles] = useState([]);
   const [selectedRoleId, setSelectedRoleId] = useState(null);
@@ -68,7 +63,7 @@ const AddUser = () => {
     remark: "",
     societyId: "",
     roleId: "",
-    unitId: "", 
+    unitId: "",
   });
 
   const selectOption = {
@@ -94,7 +89,7 @@ const AddUser = () => {
       setFormData((prev) => ({ ...prev, societyId }));
     }
   }, [societyId]);
-    useEffect(() => {
+  useEffect(() => {
     if (unitId) {
       setFormData((prev) => ({ ...prev, unitId }));
     }
@@ -168,7 +163,6 @@ const AddUser = () => {
       ...formData,
       societyId,
       roleId: selectedRoleId,
-     
     };
 
     console.log("FormData before submission:", updatedFormData);
@@ -243,8 +237,8 @@ const AddUser = () => {
     getAllUnitHandler()
       .then((res) => {
         const optionData = res.data.data.map((el) => ({
-           label: el.unitName,
-           value: el.unitId,
+          label: el.unitName,
+          value: el.unitId,
         }));
         setUnitOptions([
           { label: "Select Unit Name", value: "" },
@@ -275,10 +269,10 @@ const AddUser = () => {
   };
 
   const submitHandler = async () => {
-       const unitId = unitName.buildingId + unitName.floorId + unitName.unitNumber;
-       setUnits((prev) => [...prev, unitId]);
-       // setFormData((prev) => ({ ...prev, unitId })); // Update unitId in formData
-      resetFormData();
+    const unitId = unitName.buildingId + unitName.floorId + unitName.unitNumber;
+    setUnits((prev) => [...prev, unitId]);
+    // setFormData((prev) => ({ ...prev, unitId })); // Update unitId in formData
+    resetFormData();
   };
 
   const onBuildingChange = (e) => {
@@ -305,7 +299,7 @@ const AddUser = () => {
       floorId: bName.shortForm.toUpperCase(),
     }));
   }
-    function onUnitChange(e) {
+  function onUnitChange(e) {
     const { name, value } = e.target;
     setDefineUnit({
       ...defineUnit,
@@ -319,9 +313,9 @@ const AddUser = () => {
       unitId: bName?.shortForm?.toUpperCase() || "",
     }));
   }
-function handleView(id){
-  console.log(id);
-}
+  function handleView(id) {
+    console.log(id);
+  }
   function onUnitNumberChange(e) {
     const { name, value } = e.target;
     setDefineUnit({
@@ -334,7 +328,7 @@ function handleView(id){
     }));
   }
 
-const handleSearch= async () => {
+  const handleSearch = async () => {
     try {
       const result = await getAllUnitHandler(unitAllocationSearch);
       setTransformedData(result.data.data || []);
@@ -343,19 +337,17 @@ const handleSearch= async () => {
     }
   };
 
- const columns = [
+  const columns = [
     {
       Header: "Sl. No",
       accessor: "serialNumber",
       Cell: ({ row }) => page * pageSize + row.index + 1,
     },
-    { Header: "Building", 
-      accessor: "buildingId" },
-    { Header: "Floor",
-       accessor: "floorId" },
-   
+    { Header: "Building", accessor: "buildingId" },
+    { Header: "Floor", accessor: "floorId" },
+
     { Header: "Unit Name", accessor: "unitName" },
-    
+
     {
       Header: "Action",
       accessor: "action",
@@ -411,17 +403,19 @@ const handleSearch= async () => {
       </div>
 
       <PageHeading heading={Heading} />
- {/* <form> */}
+      {/* <form> */}
       <div className="p-10 my-5 bg-gray-100 border rounded-lg">
         <div className="font-sans text-xl font-semibold text-lime">
           Profile Details
         </div>
 
- 
         <div className="grid items-center grid-cols-3 gap-3 py-6">
-       
           <Select
-            label={<span>Salutation<span className="text-red-500">*</span></span>}           
+            label={
+              <span>
+                Salutation<span className="text-red-500">*</span>
+              </span>
+            }
             options={selectOption.salutation}
             value={formData.salutation}
             onChange={handleInputChange}
@@ -431,7 +425,11 @@ const handleSearch= async () => {
             className="py-[14px]"
           />
           <Input
-           label={<span>First Name <span className="text-red-500">*</span></span>}
+            label={
+              <span>
+                First Name <span className="text-red-500">*</span>
+              </span>
+            }
             type="text"
             name="firstName"
             value={formData.firstName}
@@ -440,7 +438,11 @@ const handleSearch= async () => {
             size={"lg"}
           />
           <Input
-            label={<span>Last Name <span className="text-red-500">*</span></span>}
+            label={
+              <span>
+                Last Name <span className="text-red-500">*</span>
+              </span>
+            }
             type="text"
             name="lastName"
             value={formData.lastName}
@@ -453,7 +455,11 @@ const handleSearch= async () => {
         {/* mobile and country codes */}
         <div className="grid grid-cols-4 gap-3">
           <Select
-            label={<span>Country Code<span className="text-red-500">*</span></span>} 
+            label={
+              <span>
+                Country Code<span className="text-red-500">*</span>
+              </span>
+            }
             options={countryCodesList}
             value={formData.countryCode}
             onChange={handleInputChange}
@@ -461,7 +467,11 @@ const handleSearch= async () => {
             className="py-[14px]"
           />
           <Input
-            label={<span>Mobile No. (Primary)<span className="text-red-500">*</span></span>} 
+            label={
+              <span>
+                Mobile No. (Primary)<span className="text-red-500">*</span>
+              </span>
+            }
             type="number"
             placeholder="Enter Mobile Number"
             name="mobileNumber"
@@ -470,7 +480,11 @@ const handleSearch= async () => {
             size="lg"
           />
           <Select
-           label={<span>Country Code<span className="text-red-500">*</span></span>} 
+            label={
+              <span>
+                Country Code<span className="text-red-500">*</span>
+              </span>
+            }
             options={countryCodesList}
             value={formData.alternateCountryCode}
             onChange={handleInputChange}
@@ -478,7 +492,11 @@ const handleSearch= async () => {
             className="py-[14px]"
           />
           <Input
-            label={<span>Alternate Mobile No.<span className="text-red-500">*</span></span>} 
+            label={
+              <span>
+                Alternate Mobile No.<span className="text-red-500">*</span>
+              </span>
+            }
             type="number"
             placeholder="Enter Alt. Mobile Number"
             name="alternateNumber"
@@ -489,7 +507,11 @@ const handleSearch= async () => {
         </div>
         <div className="grid items-center grid-cols-3 gap-5">
           <Input
-           label={<span>Email<span className="text-red-500">*</span></span>} 
+            label={
+              <span>
+                Email<span className="text-red-500">*</span>
+              </span>
+            }
             type="email"
             name="email"
             value={formData.email}
@@ -497,17 +519,16 @@ const handleSearch= async () => {
             placeholder={"Enter Email"}
             size={"lg"}
           />
-        
         </div>
 
- {/* <div className="p-10 my-5 bg-gray-100 border rounded-lg"> */}
+        {/* <div className="p-10 my-5 bg-gray-100 border rounded-lg"> */}
         <div className="mt-10 font-sans text-xl font-semibold text-lime">
           Address Details
         </div>
         <div className="grid items-center grid-cols-3 gap-3 py-6 ">
           <Input
-          // label={<span>Address line 1<span className="text-red-500">*</span></span>}
-           label={<span>Address line 1</span>} 
+            // label={<span>Address line 1<span className="text-red-500">*</span></span>}
+            label={<span>Address line 1</span>}
             name="addressLine1"
             value={formData.address.addressLine1}
             onChange={handleInputChange}
@@ -515,7 +536,7 @@ const handleSearch= async () => {
             size={"lg"}
           />
           <Input
-           label={<span>Address line 2</span>} 
+            label={<span>Address line 2</span>}
             type="text"
             name="addressLine2"
             value={formData.address.addressLine2}
@@ -526,7 +547,7 @@ const handleSearch= async () => {
         </div>
         <div className="grid items-center grid-cols-3 gap-5">
           <Input
-           label={<span>State</span>} 
+            label={<span>State</span>}
             type="text"
             name="state"
             value={formData.address.state}
@@ -535,7 +556,7 @@ const handleSearch= async () => {
             size={"lg"}
           />
           <Input
-            label={<span>City</span>} 
+            label={<span>City</span>}
             type="text"
             name="city"
             value={formData.address.city}
@@ -544,7 +565,7 @@ const handleSearch= async () => {
             size={"lg"}
           />
           <Input
-            label={<span>Pin</span>} 
+            label={<span>Pin</span>}
             type="number"
             name="zipCode"
             value={formData.address.zipCode}
@@ -553,7 +574,7 @@ const handleSearch= async () => {
             size={"lg"}
           />
           <Input
-            label={<span>Country</span>} 
+            label={<span>Country</span>}
             type="text"
             name="country"
             value={formData.address.country}
@@ -563,31 +584,31 @@ const handleSearch= async () => {
           />
         </div>
         <div className="mt-10 font-sans text-xl font-semibold text-lime">
-          Role Allocation 
+          Role Allocation
         </div>
-  <div className="mt-2 mb-2 font-sans text-lg font-semibold text-gray-700">
-  Role <span className="text-red-500">*</span>
-</div>
+        <div className="mt-2 mb-2 font-sans text-lg font-semibold text-gray-700">
+          Role <span className="text-red-500">*</span>
+        </div>
         <div className="flex flex-wrap items-center gap-4 py-2 my-2">
-  {roles.length > 0 ? (
-    roles.map((role) => (
-      <div key={role.value} className="flex items-center gap-2">
-        <input
-          type="radio"
-          name="role"
-          value={role.value}
-          checked={selectedRoleId === role.value}
-          onChange={() => handleRadioChange(role.value)}
-          className="cursor-pointer"
-        />
-        <label className="cursor-pointer">{role.label}</label>
-      </div>
-    ))
-  ) : (
-    <div>No roles available</div>
-  )}
-</div>
-   
+          {roles.length > 0 ? (
+            roles.map((role) => (
+              <div key={role.value} className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="role"
+                  value={role.value}
+                  checked={selectedRoleId === role.value}
+                  onChange={() => handleRadioChange(role.value)}
+                  className="cursor-pointer"
+                />
+                <label className="cursor-pointer">{role.label}</label>
+              </div>
+            ))
+          ) : (
+            <div>No roles available</div>
+          )}
+        </div>
+
         <div className="space-y-4">
           <div className="flex flex-row items-center gap-3 ">
             <label>Lives Here?</label>
@@ -640,58 +661,52 @@ const handleSearch= async () => {
             />
           </div>
         </div>
-      {/* </div> */}
-
-         
+        {/* </div> */}
       </div>
-
-     
 
       <div className="p-10 my-5 bg-gray-100 border rounded-lg">
         <div className="font-sans text-xl font-semibold text-lime">
           Unit Allocation
         </div>
- <div className="my-5 rounded-lg ">
-      <div className="grid items-center grid-cols-4 gap-5 py-6">
-        <Select
-          label="Tower /Building (Name / No.)"
-          options={buildingOptions}
-          value={defineUnit.buildingId}
-          
-           onChange={(e) => {
-    onBuildingChange(e);
-    handleSearchChange(e);
-  }}
-          name="buildingId"
-          color="blue"
-          size="md"
-          className="py-[14px]"
-        />
-        <Select
-          label="Select Floor"
-          options={floorOptions}
-          value={defineUnit.floorId}
-          
-           onChange={(e) => {
-    onFloorChange(e);
-    handleSearchChange(e);
-  }}
-          name="floorId"
-          color="blue"
-          size="md"
-          className="py-[14px]"
-        />
-      <Select
-          label="Select Unit Name"
-          options={unitOptions}
-          value={defineUnit.unitId}
-         onChange={(e) => {
-    onUnitChange(e);
-    handleSearchChange(e);
-  }}
-          name="unitId"
-        />
-        {/* <Input
+        <div className="my-5 rounded-lg ">
+          <div className="grid items-center grid-cols-4 gap-5 py-6">
+            <Select
+              label="Tower /Building (Name / No.)"
+              options={buildingOptions}
+              value={defineUnit.buildingId}
+              onChange={(e) => {
+                onBuildingChange(e);
+                handleSearchChange(e);
+              }}
+              name="buildingId"
+              color="blue"
+              size="md"
+              className="py-[14px]"
+            />
+            <Select
+              label="Select Floor"
+              options={floorOptions}
+              value={defineUnit.floorId}
+              onChange={(e) => {
+                onFloorChange(e);
+                handleSearchChange(e);
+              }}
+              name="floorId"
+              color="blue"
+              size="md"
+              className="py-[14px]"
+            />
+            <Select
+              label="Select Unit Name"
+              options={unitOptions}
+              value={defineUnit.unitId}
+              onChange={(e) => {
+                onUnitChange(e);
+                handleSearchChange(e);
+              }}
+              name="unitId"
+            />
+            {/* <Input
           label={"Unit Number"}
           type="text"
           name="unitNumber"
@@ -700,56 +715,59 @@ const handleSearch= async () => {
           value={defineUnit.unitNumber}
           onChange={onUnitNumberChange}
         /> */}
-        {/* <div>
+            {/* <div>
           <h3 className="">
             <strong>Unit Name</strong> :{" "}
             {`${unitName.buildingId}${unitName.floorId}${unitName.unitNumber}`}{" "}
           </h3>
         </div> */}
-         <Button onClick={handleSearch}>Search</Button>
+            <Button onClick={handleSearch}>Search</Button>
+          </div>
+
+          <ReusableTable
+            columns={columns}
+            data={transformedData}
+            pageIndex={page}
+            pageSize={pageSize}
+            totalCount={total}
+            totalPages={totalPages}
+            setPageIndex={setPage}
+            setPageSize={setPageSize}
+          />
+
+          <div className="flex justify-center mt-5">
+            <Button
+              className="max-w-sm"
+              type="submit"
+              onClick={submitHandler}
+              size="lg"
+            >
+              Add Unit
+            </Button>
+          </div>
+
+          <div className="mt-5">
+            <h5>Unit Names List</h5>
+            <div className="grid grid-cols-3 gap-3 py-5">
+              {units.map((el) => (
+                <div className="p-2 text-center bg-gray-200 border rounded-md">
+                  <span className="font-bold text-turquoise">{el}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-
-    <ReusableTable
-        columns={columns}
-        data={transformedData}
-        pageIndex={page}
-        pageSize={pageSize}
-        totalCount={total}
-        totalPages={totalPages}
-        setPageIndex={setPage}
-        setPageSize={setPageSize}
-      />
-
-
-
       <div className="flex justify-center mt-5">
         <Button
           className="max-w-sm"
-          type="submit"
-          onClick={submitHandler}
+          type="button"
+          onClick={submitProfileUser}
           size="lg"
         >
-          Add Unit
+          Add Profile
         </Button>
       </div>
-
-      <div className="mt-5">
-        <h5>Unit Names List</h5>
-        <div className="grid grid-cols-3 gap-3 py-5">
-          {units.map((el) => (
-            <div className="p-2 text-center bg-gray-200 border rounded-md">
-              <span className="font-bold text-turquoise">{el}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-        </div>
-        <div className="flex justify-center mt-5">
-          <Button className="max-w-sm" type="button" onClick={submitProfileUser} size="lg">
-            Add Profile
-          </Button>
-        </div>
       {/* </form> */}
     </div>
   );

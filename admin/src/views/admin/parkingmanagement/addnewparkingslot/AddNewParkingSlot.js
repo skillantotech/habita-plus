@@ -20,7 +20,7 @@ const AddNewParkingSlot = () => {
 export default AddNewParkingSlot;
 
 const AddNewParkingSlotForm = () => {
-  const paths = ["User", "Add New Parking Slot"];
+  const paths = ["Parking Management", "Add New Parking Slot"];
   const heading = ["Add New Parking Slot"];
 
   const { createParkingHandler } = ParkingHandler() ;

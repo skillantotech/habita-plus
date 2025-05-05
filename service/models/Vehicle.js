@@ -36,14 +36,14 @@ const Vehicle = sequelize.define(
       },
       allowNull: true,
     },
-    vehicleNumber: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        len: [6, 12],
-      },
-    },
+  vehicleNumber: {
+  type: DataTypes.STRING,
+  allowNull: false,
+  // unique: true, 
+  validate: {
+    len: [6, 12],
+  },
+},
     fastagNumber: {
       type: DataTypes.STRING,
       allowNull: true,

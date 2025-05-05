@@ -1,7 +1,6 @@
+'use client';
 
-
-import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import toast from 'react-hot-toast';
 import {
   createDocumentBySocietyService,
   createDocumentByUserService,
@@ -10,13 +9,9 @@ import {
   updateDocumentBySocietyService,
   updateDocumentByUserService,
   deleteDocumentService,
-} from "../services/documentService";
+} from '@/services/documentService';
 
-const DocumentHandler = () => {
-  const token = useSelector((state) => state.auth.token);
-  const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
-  const userId = useSelector((state) => state.auth.user?.userId);
-
+const useDocumentHandler = ({ token, societyId, userId }) => {
   const buildFormData = (data) => {
     const formData = new FormData();
     if (data.documentName) formData.append("documentName", data.documentName);
@@ -25,16 +20,11 @@ const DocumentHandler = () => {
     return formData;
   };
 
-  // ===== SOCIETY =====
-  const createDocumentBySocietyHandler = async (data) => {
+  const createDocumentBySociety = async (data) => {
     try {
       const formData = buildFormData(data);
       const res = await createDocumentBySocietyService(formData, societyId, token);
-
-      if (res.status === 201) {
-        toast.success("Document created for society.");
-      }
-
+      if (res.status === 201) toast.success("Document created for society.");
       return res;
     } catch (err) {
       toast.error("Failed to create society document.");
@@ -42,29 +32,21 @@ const DocumentHandler = () => {
     }
   };
 
-  const getDocumentBySocietyHandler = async () => {
+  const getDocumentBySociety = async () => {
     try {
       const res = await getDocumentBySocietyService(societyId, token);
-
-      if (res.status === 200) {
-        return res.data;
-      }
+      if (res.status === 200) return res.data;
     } catch (err) {
       toast.error("Failed to fetch society documents.");
       console.error(err);
     }
   };
 
-  // ===== USER =====
-  const createDocumentByUserHandler = async (data) => {
+  const createDocumentByUser = async (data) => {
     try {
       const formData = buildFormData(data);
       const res = await createDocumentByUserService(formData, userId, token);
-
-      if (res.status === 201) {
-        toast.success("Document created for user.");
-      }
-
+      if (res.status === 201) toast.success("Document created for user.");
       return res;
     } catch (err) {
       toast.error("Failed to create user document.");
@@ -72,32 +54,23 @@ const DocumentHandler = () => {
     }
   };
 
-  const getDocumentByUserHandler = async () => {
+  const getDocumentByUser = async () => {
     try {
       const res = await getDocumentByUserService(userId, token);
-
-      if (res.status === 200) {
-        return res.data;
-      }
+      if (res.status === 200) return res.data;
     } catch (err) {
       toast.error("Failed to fetch user documents.");
       console.error(err);
     }
   };
 
-  // ===== COMMON =====
-  const updateDocumentHandler = async (data, documentId, isSociety = true) => {
+  const updateDocument = async (data, documentId, isSociety = true) => {
     try {
       const formData = buildFormData(data);
-
       const res = isSociety
         ? await updateDocumentBySocietyService(formData, documentId, token)
         : await updateDocumentByUserService(formData, documentId, token);
-
-      if (res.status === 200) {
-        toast.success("Document updated successfully.");
-      }
-
+      if (res.status === 200) toast.success("Document updated successfully.");
       return res;
     } catch (err) {
       toast.error("Failed to update document.");
@@ -105,14 +78,10 @@ const DocumentHandler = () => {
     }
   };
 
-  const deleteDocumentHandler = async (documentId) => {
+  const deleteDocument = async (documentId) => {
     try {
       const res = await deleteDocumentService(documentId, token);
-
-      if (res.status === 200) {
-        toast.success("Document Permanently Deleted.");
-      }
-
+      if (res.status === 200) toast.success("Document permanently deleted.");
       return res;
     } catch (err) {
       toast.error("Failed to delete document.");
@@ -121,13 +90,14 @@ const DocumentHandler = () => {
   };
 
   return {
-    createDocumentBySocietyHandler,
-    getDocumentBySocietyHandler,
-    createDocumentByUserHandler,
-    getDocumentByUserHandler,
-    updateDocumentHandler,
-    deleteDocumentHandler,
+    createDocumentBySociety,
+    getDocumentBySociety,
+    createDocumentByUser,
+    getDocumentByUser,
+    updateDocument,
+    deleteDocument,
   };
 };
 
-export default DocumentHandler;
+export default useDocumentHandler;
+

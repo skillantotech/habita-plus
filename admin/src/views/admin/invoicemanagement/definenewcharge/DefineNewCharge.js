@@ -5,7 +5,7 @@ import Button from "../../../../components/ui/Button";
 import Input from "../../../../components/shared/Input";
 
 const DefineNewCharge = () => {
-  const paths = ["user", "Define New Charge"];
+  const paths = ["Invoice Management", "Define New Charge"];
   const Heading = ["Define New Charge"];
   return (
     <div>

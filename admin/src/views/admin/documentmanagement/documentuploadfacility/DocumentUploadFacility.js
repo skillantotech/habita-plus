@@ -113,7 +113,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import DocumentUploadFacilityForm from "./DocumentUploadFaciltyForm";
 
 const DocumentUploadFacility = () => {
-  const paths = ["user", "Document Upload Facility"];
+  const paths = ["Document Management", "Document Upload Facility"];
   const Heading = ["Document Upload Facility"];
   return (
     <div className="px-5">
