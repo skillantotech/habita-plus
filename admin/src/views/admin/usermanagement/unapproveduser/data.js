@@ -30,7 +30,7 @@ const UnapprovedUser = () => {
     unitId: "",
   });
 
-  const paths = ["User", "Unapproved Users"];
+  const paths = ["User Management", "Unapproved Users"];
   const Heading = ["Unapproved Users"];
 
   const token = useSelector((state) => state.auth.token);

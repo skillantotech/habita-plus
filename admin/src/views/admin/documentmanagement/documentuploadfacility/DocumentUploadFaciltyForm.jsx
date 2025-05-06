@@ -144,59 +144,7 @@ const DocumentUploadFacilityForm = () => {
   return (
     <div className="px-5">
       <div className="p-10 my-5 border rounded-lg bg-gray-100">
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block font-semibold mb-1">Document Name</label>
-            <input
-              type="text"
-              name="documentName"
-              value={form.documentName}
-              onChange={handleChange}
-              placeholder="Enter document name"
-              className={`border p-2 w-full rounded ${
-                errors.documentName ? "border-red-500" : ""
-              }`}
-            />
-            {errors.documentName && (
-              <p className="text-red-500 text-sm">{errors.documentName}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block font-semibold mb-1">Upload Document</label>
-            <div className="flex items-center gap-2">
-              <Button type="file" onClick={handleUploadClick}>
-                Choose File
-              </Button>
-              {documentPreview && (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm truncate max-w-[180px]">
-                    {documentPreview}
-                  </span>
-                  <MdOutlineCancel
-                    className="text-red-500 cursor-pointer"
-                    onClick={() => {
-                      setForm((prev) => ({ ...prev, document: null }));
-                      setDocumentPreview(null);
-                      if (fileInputRef.current)
-                        fileInputRef.current.value = "";
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="hidden"
-              accept=".pdf,.doc,.docx,image/*"
-            />
-            {errors.document && (
-              <p className="text-red-500 text-sm">{errors.document}</p>
-            )}
-          </div>
-        </div> */}
+   
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
   <div className="col-span-1 sm:col-span-2">
     <label className="block font-semibold mb-1">Document Name</label>
@@ -241,68 +189,6 @@ const DocumentUploadFacilityForm = () => {
     </div>
   )} 
 </div>
-
-
-{/* <div className="mb-5">
-  {documentPreview && (
-    <div className="flex items-center gap-2 mt-1">
-      <span className="text-sm truncate max-w-[180px]">{documentPreview}</span>
-      <MdOutlineCancel
-        className="text-red-500 cursor-pointer"
-        onClick={() => {
-          setForm((prev) => ({ ...prev, document: null }));
-          setDocumentPreview(null);
-          if (fileInputRef.current) fileInputRef.current.value = "";
-        }}
-      />
-    </div>
-  )}
-  <input
-    type="file"
-    ref={fileInputRef}
-    onChange={handleFileChange}
-    className="hidden"
-    accept=".pdf,.doc,.docx,image/*"
-  />
-  {errors.document && (
-    <p className="text-red-500 text-sm mt-1">{errors.document}</p>
-  )}
-</div> */}
-
-   
-
-{/* <div className="mb-5">
-  <label className="block font-semibold mb-1">Selected File</label>
-  {documentPreview ? (
-    <div className="flex items-center gap-2">
-      <span className="text-sm truncate max-w-[180px]">{documentPreview}</span>
-      <MdOutlineCancel
-        className="text-red-500 cursor-pointer"
-        onClick={() => {
-          setForm((prev) => ({ ...prev, document: null }));
-          setDocumentPreview(null);
-          if (fileInputRef.current) fileInputRef.current.value = "";
-        }}
-      />
-    </div>
-  ) : (
-    <span className="text-sm text-gray-500">No file chosen</span>
-  )}
-  <input
-    type="file"
-    ref={fileInputRef}
-    onChange={handleFileChange}
-    className="hidden"
-    accept=".pdf,.doc,.docx,image/*"
-  />
-  {errors.document && (
-    <p className="text-red-500 text-sm mt-1">{errors.document}</p>
-  )}
-</div> */}
-
-
-
-
 
         <div className="mt-6 font-sans text-lg font-semibold text-gray-700">
           Applicable For <span className="text-red-500">*</span>

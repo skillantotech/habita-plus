@@ -4,7 +4,7 @@ import PageHeading from "../../../../components/shared/PageHeading";
 import FacilityListTable from "./FacilityListTable";
 
 const FacilityList = () => {
-  const paths = ["Facility", "Facility List"];
+  const paths = ["Facility Management", "Facility List"];
   const Heading = ["Facility List"];
   return (
     <div className="px-5">

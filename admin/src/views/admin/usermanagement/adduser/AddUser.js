@@ -15,7 +15,7 @@ import ReusableTable from "../../../../components/shared/ReusableTable";
 import { FaEye } from "react-icons/fa";
 
 const AddUser = () => {
-  const paths = ["User Management", "Add"];
+  const paths = ["User Management", "Add Resident User"];
   const Heading = ["Add Resident User"];
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);

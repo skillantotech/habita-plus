@@ -9,7 +9,7 @@ import DefineUnitForm from "./DefineUnitForm";
 const DefineUnit = () => {
   // const [gate, setGate] = useState("");
   // const [showallgate, setShowallgate] = useState([]);
-  const paths = ["Unit Details", "Define Unit"];
+  const paths = ["Building Management", "Define Unit"];
   const Heading = ["Define Units"];
 
   // const addgateHandler = () => {

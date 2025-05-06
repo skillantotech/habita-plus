@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const DashboardUser = () => {
 
-  const paths = ["User", "Add"];
+  const paths = ["User Management", "Dashboard User"];
   const { getAllApprovedUserDataHandler, getResidentBySocietyIdHandler } = UserHandler();
   const { getUnitsHandler } = DefineUnitHandler();
 
