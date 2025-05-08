@@ -13,9 +13,7 @@ const Header = () => {
   const user = useSelector((state) => state.auth.user);
   const { logoutHandler } = AuthHandler();
   // console.log(user);
-
-
-
+  
   const handleLogout = async () => {
     await logoutHandler();
     setIsopen(!isopen); 
