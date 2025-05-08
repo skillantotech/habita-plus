@@ -1,5 +1,4 @@
 
-
 const SocietyModeratorList = () =>{
     <div>Moderator List</div>
 }

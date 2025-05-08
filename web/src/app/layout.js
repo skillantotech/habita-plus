@@ -21,3 +21,29 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+// import { Inter } from "next/font/google";
+// import ReduxProvider from "@/redux/ReduxProvider";
+// import FirstClient from "./FirstClientLayout";
+// import { Toaster } from "react-hot-toast";
+
+
+// const inter = Inter({ subsets: ["latin"] });
+
+// export const metadata = {
+//   title: "HabitatPlus - A better society",
+//   description: "A friendly ecosystem for apartment living.",
+// };
+
+// export default function RootLayout({ children }) {
+//   return (
+//     <html lang="en">
+//       <body className={inter.className}>
+//         <ReduxProvider>
+//           <FirstClient>{children}</FirstClient>
+//           <Toaster />
+//         </ReduxProvider>
+//       </body>
+//     </html>
+//   );
+// }

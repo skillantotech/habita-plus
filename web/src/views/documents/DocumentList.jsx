@@ -1,4 +1,4 @@
-"use client"; // If using Next.js App Router
+"use client"; 
 
 import React, { useEffect, useMemo, useState } from "react";
 import DocumentHandler from "@/handlers/DocumentHandler";

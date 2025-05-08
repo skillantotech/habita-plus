@@ -1,6 +1,6 @@
 import axios from "axios";
 export const userGroupNoticeService = (data, token) => {
-  const url = `${process.env.REACT_APP_PUBLIC_API_URL}/refusergroup`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/refusergroup`;
 
   return axios.get(url, {
     headers: {

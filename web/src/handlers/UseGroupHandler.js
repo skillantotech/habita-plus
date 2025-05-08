@@ -1,29 +1,26 @@
-// import toast from "react-hot-toast";
+"use client";
 
 import { useSelector } from "react-redux";
-import { userGroupNoticeService } from "../services/UserGroupService";
-
+import { userGroupNoticeService } from "@/services/UserGroupService"; 
 
 const UserGroupHandler = () => {
   const token = useSelector((state) => state.auth.token);
   const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
-  // const societyId = useSelector((state) => state.auth.user.Customer.customerId);
-  // const senderId = useSelector((state) => state.auth.user.userId);
+  // console.log("societyId", societyId);
 
   const getUserGroupHandler = async () => {
-    console.log("get user handler user group");
-
-    return await userGroupNoticeService({ societyId }, token)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const res = await userGroupNoticeService({ societyId }, token);
+      return res;
+    } catch (err) {
+      console.error("Failed to fetch user groups:", err);
+    }
   };
+
   return {
     getUserGroupHandler,
   };
 };
 
 export default UserGroupHandler;
+

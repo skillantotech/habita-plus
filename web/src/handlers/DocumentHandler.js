@@ -1,6 +1,8 @@
-'use client';
+"use client"; 
 
-import toast from 'react-hot-toast';
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+
 import {
   createDocumentBySocietyService,
   createDocumentByUserService,
@@ -9,9 +11,13 @@ import {
   updateDocumentBySocietyService,
   updateDocumentByUserService,
   deleteDocumentService,
-} from '@/services/documentService';
+} from "@/services/documentService"; 
 
-const useDocumentHandler = ({ token, societyId, userId }) => {
+const DocumentHandler = () => {
+  const token = useSelector((state) => state.auth.token);
+  // const societyId = useSelector((state) => state.auth.user?.Customer?.customerId);
+  const societyId = 2;
+
   const buildFormData = (data) => {
     const formData = new FormData();
     if (data.documentName) formData.append("documentName", data.documentName);
@@ -20,7 +26,7 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
     return formData;
   };
 
-  const createDocumentBySociety = async (data) => {
+  const createDocumentBySocietyHandler = async (data) => {
     try {
       const formData = buildFormData(data);
       const res = await createDocumentBySocietyService(formData, societyId, token);
@@ -32,7 +38,7 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
     }
   };
 
-  const getDocumentBySociety = async () => {
+  const getDocumentBySocietyHandler = async () => {
     try {
       const res = await getDocumentBySocietyService(societyId, token);
       if (res.status === 200) return res.data;
@@ -42,7 +48,7 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
     }
   };
 
-  const createDocumentByUser = async (data) => {
+  const createDocumentByUserHandler = async (data) => {
     try {
       const formData = buildFormData(data);
       const res = await createDocumentByUserService(formData, userId, token);
@@ -54,7 +60,7 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
     }
   };
 
-  const getDocumentByUser = async () => {
+  const getDocumentByUserHandler = async () => {
     try {
       const res = await getDocumentByUserService(userId, token);
       if (res.status === 200) return res.data;
@@ -64,7 +70,7 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
     }
   };
 
-  const updateDocument = async (data, documentId, isSociety = true) => {
+  const updateDocumentHandler = async (data, documentId, isSociety = true) => {
     try {
       const formData = buildFormData(data);
       const res = isSociety
@@ -78,10 +84,10 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
     }
   };
 
-  const deleteDocument = async (documentId) => {
+  const deleteDocumentHandler = async (documentId) => {
     try {
       const res = await deleteDocumentService(documentId, token);
-      if (res.status === 200) toast.success("Document permanently deleted.");
+      if (res.status === 200) toast.success("Document Permanently Deleted.");
       return res;
     } catch (err) {
       toast.error("Failed to delete document.");
@@ -90,14 +96,16 @@ const useDocumentHandler = ({ token, societyId, userId }) => {
   };
 
   return {
-    createDocumentBySociety,
-    getDocumentBySociety,
-    createDocumentByUser,
-    getDocumentByUser,
-    updateDocument,
-    deleteDocument,
+    createDocumentBySocietyHandler,
+    getDocumentBySocietyHandler,
+    createDocumentByUserHandler,
+    getDocumentByUserHandler,
+    updateDocumentHandler,
+    deleteDocumentHandler,
   };
 };
 
-export default useDocumentHandler;
+export default DocumentHandler;
+
+
 

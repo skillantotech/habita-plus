@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL; // Make sure this is defined in your `.env.local`
+const API_URL = process.env.NEXT_PUBLIC_API_URL; 
 
 export const createDocumentBySocietyService = (formData, societyId, token) => {
   const url = `${API_URL}/documents/society/${societyId}`;
