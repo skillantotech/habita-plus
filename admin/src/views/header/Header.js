@@ -14,6 +14,12 @@ const Header = () => {
   const { logoutHandler } = AuthHandler();
   // console.log(user);
 
+
+
+  const handleLogout = async () => {
+    await logoutHandler();
+    setIsopen(!isopen); 
+  };
   const toggleDropdown = () => {
     setIsopen(!isopen);
   };
@@ -62,25 +68,28 @@ const Header = () => {
               className="rounded-full"
               onClick={toggleDropdown}
             />
-          </div>
-          {isopen && (
-            <div className="absolute top-full mt-1 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="py-1">
-                <span className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
-                  Profile
-                </span>
-                <span className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
-                  Contact Us
-                </span>
-                <span
-                  onClick={logoutHandler}
-                  className="block px-4 py-2 text-base text-red-500 hover:bg-gray-200"
-                >
-                  Logout
-                </span>
+            {isopen && (
+              <div className="absolute top-full mt-1 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="py-1">
+                  <span className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
+                    Profile
+                  </span>
+                  <span onClick={contactMe} className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
+                    Contact Us
+                  </span>
+                  <span
+                    onClick={handleLogout}
+                    className="block px-6 py-2 text-base text-red-500 hover:bg-gray-200"
+                  >
+                    Logout
+                  </span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+
+          </div>
+
           <span className="text-white">{user?.email}</span>
         </div>
       </div>

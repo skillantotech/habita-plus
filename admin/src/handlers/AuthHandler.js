@@ -19,7 +19,7 @@ const AuthHandler = () => {
           setLocalStorage(res.data);
           toast.success("Successfully logged in!");
           customNavigation('/');
-          return;
+          return; 
         })
         .catch((err) => {
           console.log(err);
