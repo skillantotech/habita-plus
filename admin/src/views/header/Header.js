@@ -72,7 +72,7 @@ const Header = () => {
                   <span className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
                     Profile
                   </span>
-                  <span onClick={contactMe} className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
+                  <span className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200">
                     Contact Us
                   </span>
                   <span
