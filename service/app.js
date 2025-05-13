@@ -68,6 +68,7 @@ const visitorManagementRouter = require("./routes/visitorManagementRouter");
 const unitRouter = require("./routes/unitRoutes");
 const softwareHelpDeskRouter = require("./routes/softwareHelpDeskRouter");
 const refTicketStatusRouter = require("./routes/refTicketStatusRouter");
+const passwordRouter = require("./routes/passwordRoutes.js");
 
 // testing apis
 app.get("/", (req, res) => {
@@ -78,6 +79,7 @@ app.get("/getenv", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/password",passwordRouter);
 app.use("/api/auth", authRouter);
 app.use("/api", customerRoutes);
 app.use("/api", subscriptionPlanRoutes);

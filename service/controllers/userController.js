@@ -2,6 +2,9 @@ const { User, Unit } = require("../models");
 const { getAllUsersService, getUserByIdService } = require("../services/userService");
 //const { createUnit, getUnit, getAllUnits } = require("../controllers/unitController.js");
 const addressService = require("../services/addressService");
+const XLSX = require("xlsx");
+const fs = require("fs");
+const Role = require("../models");
 
 const createSocietyModerator = async (req, res) => {
   try {
@@ -37,7 +40,6 @@ const createSocietyModerator = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const createSocietyResident = async (req, res) => {
   try {
     const { address, email, salutation, firstName, lastName, mobileNumber, alternateNumber, roleId, unitId } = req.body;
@@ -97,6 +99,86 @@ const createSocietyResident = async (req, res) => {
   }
 };
 
+//BulkCreateResidents
+
+const bulkCreateResidents = async (req, res) =>{
+  try{
+      const { societyId } = req.params;
+      if(!req.file){
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      const workbook = XLSX.readFile(req.file.path);
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(sheet);
+
+      const create = [];
+      const skipped = [];
+
+      for (const row of data){
+        const{
+          salutation, firstName, lastName, password, countryCode, mobileNumber, alternateNumber, email, roleId, unitId, 
+          "address.street": street, "address.city":city,
+          "address.state": state, "address.zipCode": zipCode,
+          "address.address1":address1, "address.address2":address2,
+        } = row;
+        if(!email || !firstName || !lastName || !unitId || !roleId ||
+          !mobileNumber){
+            skipped.push({ email, reason:"Missing required fields"});
+            continue;
+          }
+        const exists = await User.findOne({ where: { email } });
+        if(exists){
+          skipped.push({ email, reason: "Email already exists" });
+          continue;
+        }
+
+        const role = await Role.findByPk(roleId);
+        if(!role){
+          skipped.push({ email, reason: "Role not found" });
+          continue;
+        }
+
+        const addressData = await addressService.createAddress({
+          street, city, state, zipCode, address1, address2
+        });
+
+        const user = await User.create({
+          salutation, 
+          firstName,
+          lastName,
+          countryCode: countryCode || 91, 
+          alternateCountryCode,
+          mobileNumber, 
+          alternateNumber, 
+          email,
+          password:"admin1",
+          roleId,
+          unitId,
+          societyId,
+          addressId: addressData.addressId,
+          livesHere: true,
+          primaryContact: true,
+          inManagementCommittee: false,
+          managementDesignation:"Resident",
+          status: "active",
+        })
+        create.push(user);
+      }
+
+      fs.unlikeSync(req.file.path); // clear up uploaded File
+
+      res.status(201).json({
+        message: "Users created successfully",
+        createdCount: create.length,
+        skipped,
+});
+      ///////////////////////////////////////////////////////////////
+
+  } catch (error) {
+    console.error("Bulk create error:", error);
+    res.status(500).json({message:"Internal Error", error: error.message });
+  }
+}
 
 const getResidentBySocietyId = async (req, res) => {
   try {
@@ -236,6 +318,7 @@ module.exports = {
   getUserById,
   createSocietyModerator,
   createSocietyResident,
+  bulkCreateResidents,
   getResidentBySocietyId,
   updateResidentBySocietyId,
 };

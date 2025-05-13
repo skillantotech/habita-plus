@@ -1,4 +1,4 @@
-// File: E:\habita-plus-himansu\habita-plus-subhashree\web\src\app\layout.js
+// File: E:\habita-plus-himansu\update\habita-plus\web\src\app\layout.js
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
