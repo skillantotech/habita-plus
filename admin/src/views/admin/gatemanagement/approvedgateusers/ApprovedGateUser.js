@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaFilter, FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import { IoPersonOutline } from "react-icons/io5";
-import { FaCar } from "react-icons/fa";
 import PageHeading from "../../../../components/shared/PageHeading";
 import ReusableTable from "../../../../components/shared/ReusableTable";
 import ViewGateUserDetails from "./ViewGateUserDetails";
+import EditGateUserDetails from "./EditGateUserDetails";
 
 import ProfileHandler from "../../../../handlers/ProfileHandler";
 import GateHandler from "../../../../handlers/GateHandler";
@@ -24,10 +24,16 @@ const ApprovedGateUser = () => {
 
   // on View Handler
   const [viewmodal, setViewModal] = useState(false);
+  const [editmodal, setEditModal] = useState(false);
+  const [isDeleteBtn, setIsDeleteBtn] = useState(false)
   const [showViewFormData, setShowViewFormData] = useState(null);
+  const [showEditFormData, setShowEditFormData] = useState(null);
   const toggleViewNoticeDetailModal = () => {
     setViewModal((prev) => !prev); // Toggle modal visibility
   };
+  const toggleEditModal = () => {
+    setEditModal((prev) => !prev);
+  }
 
 
 
@@ -64,6 +70,7 @@ const ApprovedGateUser = () => {
     getGateUserList().then((res) => {
       if (Array.isArray(res.data)) {
         setGuardProfile(transformSecurityUserData(res.data));
+        console.log(res.data);
         setTotalCount(res.data.length);
       } else {
         setGuardProfile([]);
@@ -139,6 +146,34 @@ const ApprovedGateUser = () => {
     // console.log("Found Guard",foundGuard);
     // console.log(typeof (foundGuard));
     setShowViewFormData(foundGuard);
+    setIsDeleteBtn(false);
+    setViewModal(true);
+  }
+
+  const onEditHandler = (idValue) => {
+    console.log("Edit clicked: ", idValue);
+    const findGuardById = (guardProfile, targetId) => {
+      return guardProfile.find(guard => guard.profileId === targetId);
+    };
+
+    const foundGuard = findGuardById(guardProfile, idValue);
+    // console.log("Found Guard",foundGuard);
+    // console.log(typeof (foundGuard));
+    setShowEditFormData(foundGuard);
+    setEditModal(true);
+  }
+
+  const onDeleteHandler = (idValue) => {
+    console.log("Delete clicked: ", idValue);
+    const findGuardById = (guardProfile, targetId) => {
+      return guardProfile.find(guard => guard.profileId === targetId);
+    };
+
+    const foundGuard = findGuardById(guardProfile, idValue);
+    // console.log("Found Guard",foundGuard);
+    // console.log(typeof (foundGuard));
+    setShowViewFormData(foundGuard);
+    setIsDeleteBtn(true);
     setViewModal(true);
   }
 
@@ -152,15 +187,23 @@ const ApprovedGateUser = () => {
     { Header: "MOBILE NO.", accessor: "mobileNo" },
     { Header: "EMAIL", accessor: "email" },
     {
-      Header: "VIEW",
+      Header: "Action",
       accessor: "profileId",
       Cell: ({ value }) => (
-        <button
-          onClick={() => onViewHandler(value)}
-          className="px-1 py-1 text-blue-600 hover:text-blue-800 font-medium"
-        >
-          Details
-        </button>
+        <div className="flex space-x-4">
+          <FaEye
+            onClick={() => onViewHandler(value)}
+            className="text-lg text-yellow-600 hover:text-yellow-700 cursor-pointer"
+          />
+          <FaEdit
+            onClick={() => onEditHandler(value)}
+            className="text-lg text-green-500 hover:text-green-700 cursor-pointer"
+          />
+          <FaTrashAlt
+            onClick={() => onDeleteHandler(value)}
+            className="text-lg text-red-500 hover:text-red-700 cursor-pointer"
+          />
+        </div>
       )
     }
   ];
@@ -205,10 +248,17 @@ const ApprovedGateUser = () => {
       </div>
 
 
-      {setViewModal && (<ViewGateUserDetails
+      {viewmodal && (<ViewGateUserDetails
+        deleteButton={isDeleteBtn}
         isOpen={viewmodal} // Modal open state
         onClose={toggleViewNoticeDetailModal} // Close modal handler
         formData={showViewFormData} // The data to display in the modal
+      />)}
+
+      {editmodal && (<EditGateUserDetails
+        isOpen={editmodal}
+        onClose={toggleEditModal}
+        formData={showEditFormData}
       />)}
 
     </div>

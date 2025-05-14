@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Dialog from "../../../../components/ui/Dialog";
+import Input from "../../../../components/shared/Input";
 import ProfileHandler from "../../../../handlers/ProfileHandler";
 
-function ViewGateUserDetails({deleteButton, isOpen, onClose, formData }) {
+function EditGateUserDetails({ isOpen, onClose, formData }) {
+
     const [noticeViewForm, setNoticeViewForm] = useState(formData);
     const {removeGuardUser} = ProfileHandler();
 
@@ -23,18 +25,26 @@ function ViewGateUserDetails({deleteButton, isOpen, onClose, formData }) {
           return word.charAt(0).toUpperCase() + word.slice(1);
         });
         return capitalizedWords.join(' ');
-      }
-    
-    function removeGateUser(profileId){
-        // console.log("Profile ID triggerred", profileId);
-        removeGuardUser(profileId);
     }
-      
+    
+    function updateGateUser(profileId){
+        // console.log("Profile ID triggerred", profileId);
+        // removeGuardUser(profileId);
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNoticeViewForm({
+            ...noticeViewForm,
+            [name]: value
+        });
+    };
+
 
     return (
         <>
             <Dialog isOpen={isOpen} onClose={onClose} className="h-full w-full overflow-auto p-10" contentClassName={`w-full h-full bg-white lg:max-w-6xl rounded-lg overflow-auto scrollbar p-5`} overlayClassName="backdrop-blur">
-                
+
 
                 <div className="flex mt-28 justify-center">
                     <div className="flex">
@@ -43,18 +53,19 @@ function ViewGateUserDetails({deleteButton, isOpen, onClose, formData }) {
 
 
                     <div className="flex-col ml-40 space-y-4 text-gray-800">
-                        <p className="text-xl">Name: &nbsp; {noticeViewForm?.firstName} {noticeViewForm?.lastName}</p>
-                        <p className="text-xl">Status: &nbsp; {noticeViewForm?.status}</p>
+                        <Input label="First Name" type="text" name='firstName' value={noticeViewForm?.firstName} onChange={handleInputChange} />
+                        <Input label="Last Name" type="text" name='lastName' value={noticeViewForm?.lastName} />
+                        {/* <p className="text-xl">Status: &nbsp; {noticeViewForm?.status}</p> */}
                         <p className="text-xl">Job Role: {formatString(noticeViewForm?.roleCategory)}</p>
-                        <p className="text-xl">Email: {noticeViewForm?.email}</p>
-                        <p className="text-xl">Mobile Number: {noticeViewForm?.mobileNo}</p>
+                        <Input label="Email" type="text" name="email" value={noticeViewForm?.email} onChange={handleInputChange}/>
+                        <Input label="Mobile" type="text" name="mobileNo" value={noticeViewForm?.mobileNo} onChange={handleInputChange}/>
                     </div>
                 </div>
 
+                <div className=" flex justify-center mt-8">
+                    <button onClick={() => updateGateUser(noticeViewForm?.profileId)} className="bg-teal-600 text-white px-4 py-2 rounded-md hover:bg-teal-800 focus:outline-none">Submit</button>
+                </div>
 
-                {deleteButton && (<div className=" flex justify-center mt-8">
-                    <button onClick={()=> removeGateUser(noticeViewForm?.profileId)} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none">Remove User</button>
-                </div>)}
 
 
             </Dialog>
@@ -62,4 +73,4 @@ function ViewGateUserDetails({deleteButton, isOpen, onClose, formData }) {
     )
 }
 
-export default ViewGateUserDetails
+export default EditGateUserDetails

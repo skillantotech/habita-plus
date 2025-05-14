@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaEye} from "react-icons/fa";
 import UrlPath from "../../../../components/shared/UrlPath";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
@@ -155,12 +155,11 @@ const ApprovedGateUser = () => {
       Header: "VIEW",
       accessor: "profileId",
       Cell: ({ value }) => (
-        <button
-          onClick={() => onViewHandler(value)}
-          className="px-1 py-1 text-blue-600 hover:text-blue-800 font-medium"
-        >
-          Details
-        </button>
+        <div className="flex space-x-4">
+        <FaEye 
+        onClick={() => onViewHandler(value)}
+        className="text-lg text-yellow-600 hover:text-yellow-700 cursor-pointer"/>
+        </div>
       )
     }
   ];
