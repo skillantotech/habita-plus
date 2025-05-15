@@ -6,7 +6,7 @@ import ProfileHandler from "../../../../handlers/ProfileHandler";
 function EditGateUserDetails({ isOpen, onClose, formData }) {
 
     const [noticeViewForm, setNoticeViewForm] = useState(formData);
-    const {removeGuardUser} = ProfileHandler();
+    const { editGuardUser } = ProfileHandler();
 
     useEffect(() => {
         setNoticeViewForm(formData); // Set the form data when component mounts or formData changes
@@ -28,8 +28,15 @@ function EditGateUserDetails({ isOpen, onClose, formData }) {
     }
     
     function updateGateUser(profileId){
-        // console.log("Profile ID triggerred", profileId);
-        // removeGuardUser(profileId);
+        const dataToSubmit = {
+            profileId: profileId,
+            firstName: noticeViewForm?.firstName,
+            lastName: noticeViewForm?.lastName,
+            email: noticeViewForm?.email,
+            mobileNumber: noticeViewForm?.mobileNo,
+        }
+        editGuardUser(dataToSubmit);
+        
     }
 
     const handleInputChange = (e) => {
@@ -54,7 +61,7 @@ function EditGateUserDetails({ isOpen, onClose, formData }) {
 
                     <div className="flex-col ml-40 space-y-4 text-gray-800">
                         <Input label="First Name" type="text" name='firstName' value={noticeViewForm?.firstName} onChange={handleInputChange} />
-                        <Input label="Last Name" type="text" name='lastName' value={noticeViewForm?.lastName} />
+                        <Input label="Last Name" type="text" name='lastName' value={noticeViewForm?.lastName} onChange={handleInputChange} />
                         {/* <p className="text-xl">Status: &nbsp; {noticeViewForm?.status}</p> */}
                         <p className="text-xl">Job Role: {formatString(noticeViewForm?.roleCategory)}</p>
                         <Input label="Email" type="text" name="email" value={noticeViewForm?.email} onChange={handleInputChange}/>

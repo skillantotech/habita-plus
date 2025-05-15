@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FaCreativeCommons } from "react-icons/fa";
-import { GuardUserCreationService, RemoveGuardProfile, gateUserListService } from "../services/profileService"
+import { GuardUserCreationService, RemoveGuardProfile, gateUserListService, EditGuardUser } from "../services/profileService"
 
 const ProfileHandler = () => {
   const token = useSelector((state) => state.auth.token);
@@ -72,8 +72,23 @@ const ProfileHandler = () => {
     })
   }
 
+  const editGuardUser = async (data) => {
+    const prfId = data.profileId;
+    const {profileId, ...payload} = data;
+    return await EditGuardUser(payload, token, prfId)
+    .then((res)=>{
+      if(res.status === 200){
+        toast.success("Details Changed Successfully !!")
+      }
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+
   return {
     GuardRelationshipHandler,
+    editGuardUser,
     getGateUserList,
     removeGuardUser,
   };
