@@ -259,7 +259,13 @@ const bcrypt = require("bcrypt");
 // USER LOGIN
 const loginUser = async (req, res) => {
   try {
+    console.log("REQ.BODY:", req.body); // Debug log
+
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required." });
+    }
 
     const user = await User.findOne({
       where: { email },
@@ -278,7 +284,7 @@ const loginUser = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(404).json({ message: "Entered password is incorrect!" });
+      return res.status(401).json({ message: "Entered password is incorrect!" });
     }
 
     // Special roles redirect
@@ -377,7 +383,8 @@ const jobProfileLogin = async (req, res) => {
 
     const payload =
       profile.role.roleCategory === "society_security_guard" ||
-      profile.role.roleCategory === "society_facility_manager"
+      profile.role.roleCategory === "society_facility_manager"||
+      profile.role.roleCategory === "society_security_supervisor"
         ? { email, password }
         : { profileId: profile.profileId, email: profile.email };
 

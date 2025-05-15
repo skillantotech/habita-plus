@@ -1,10 +1,10 @@
-const { User, Unit } = require("../models");
+const { User, Unit, Role } = require("../models");
 const { getAllUsersService, getUserByIdService } = require("../services/userService");
 //const { createUnit, getUnit, getAllUnits } = require("../controllers/unitController.js");
 const addressService = require("../services/addressService");
 const XLSX = require("xlsx");
 const fs = require("fs");
-const Role = require("../models");
+const bcrypt = require("bcrypt");
 
 const createSocietyModerator = async (req, res) => {
   try {
@@ -101,84 +101,110 @@ const createSocietyResident = async (req, res) => {
 
 //BulkCreateResidents
 
-const bulkCreateResidents = async (req, res) =>{
-  try{
-      const { societyId } = req.params;
-      if(!req.file){
-        return res.status(400).json({ message: "No file uploaded" });
-      }
-      const workbook = XLSX.readFile(req.file.path);
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const data = XLSX.utils.sheet_to_json(sheet);
+const bulkCreateResidents = async (req, res) => {
+  try {
+    const { societyId } = req.params;
 
-      const create = [];
-      const skipped = [];
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
 
-      for (const row of data){
-        const{
-          salutation, firstName, lastName, password, countryCode, mobileNumber, alternateNumber, email, roleId, unitId, 
-          "address.street": street, "address.city":city,
-          "address.state": state, "address.zipCode": zipCode,
-          "address.address1":address1, "address.address2":address2,
-        } = row;
-        if(!email || !firstName || !lastName || !unitId || !roleId ||
-          !mobileNumber){
-            skipped.push({ email, reason:"Missing required fields"});
-            continue;
-          }
-        const exists = await User.findOne({ where: { email } });
-        if(exists){
-          skipped.push({ email, reason: "Email already exists" });
-          continue;
-        }
+    const workbook = XLSX.readFile(req.file.path);
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const data = XLSX.utils.sheet_to_json(sheet);
 
-        const role = await Role.findByPk(roleId);
-        if(!role){
-          skipped.push({ email, reason: "Role not found" });
-          continue;
-        }
+    const created = [];
+    const skipped = [];
 
-        const addressData = await addressService.createAddress({
-          street, city, state, zipCode, address1, address2
-        });
+    for (const row of data) {
+      const {
+        salutation,
+        firstName,
+        lastName,
+        countryCode,
+        alternateCountryCode,
+        mobileNumber,
+        alternateNumber,
+        email,
+        roleId,
+        unitId,
+        "address.street": street,
+        "address.city": city,
+        "address.state": state,
+        "address.zipCode": zipCode,
+        "address.address1": address1,
+        "address.address2": address2,
+      } = row;
 
-        const user = await User.create({
-          salutation, 
-          firstName,
-          lastName,
-          countryCode: countryCode || 91, 
-          alternateCountryCode,
-          mobileNumber, 
-          alternateNumber, 
-          email,
-          password:"admin1",
-          roleId,
-          unitId,
-          societyId,
-          addressId: addressData.addressId,
-          livesHere: true,
-          primaryContact: true,
-          inManagementCommittee: false,
-          managementDesignation:"Resident",
-          status: "active",
-        })
-        create.push(user);
+      if (!email || !firstName || !lastName || !unitId || !roleId || !mobileNumber) {
+        skipped.push({ email, reason: "Missing required fields" });
+        continue;
       }
 
-      fs.unlikeSync(req.file.path); // clear up uploaded File
+      const exists = await User.findOne({ where: { email } });
+      if (exists) {
+        skipped.push({ email, reason: "Email already exists" });
+        continue;
+      }
 
-      res.status(201).json({
-        message: "Users created successfully",
-        createdCount: create.length,
-        skipped,
-});
-      ///////////////////////////////////////////////////////////////
+      const role = await Role.findByPk(roleId);
+      if (!role) {
+        skipped.push({ email, reason: "Role not found" });
+        continue;
+      }
 
+      const addressData = await addressService.createAddress({
+        street,
+        city,
+        state,
+        zipCode,
+        address1,
+        address2,
+      });
+
+      // const plainPassword = row.password || "Himansu1";
+      // const hashedPassword = await bcrypt.hash(plainPassword, 10);
+      const password = "Himansu1";
+
+      const user = await User.create({
+        salutation,
+        firstName,
+        lastName,
+        countryCode: countryCode || 91,
+        alternateCountryCode,
+        mobileNumber,
+        alternateNumber,
+        email,
+        //  password: hashedPassword,
+        password,
+        roleId,
+        unitId,
+        societyId,
+        addressId: addressData.addressId,
+        livesHere: true,
+        primaryContact: true,
+        inManagementCommittee: false,
+        managementDesignation: "Resident",
+        status: "active",
+      });
+
+      created.push(user);
+    }
+
+    fs.unlinkSync(req.file.path); // Clear uploaded file
+
+    res.status(201).json({
+      message: "Residents bulk uploaded successfully",
+      createdCount: created.length,
+      skipped,
+    });
   } catch (error) {
-    console.error("Bulk create error:", error);
-    res.status(500).json({message:"Internal Error", error: error.message });
+    console.error("Bulk resident creation failed:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
-}
+};
+
+      ///////////////////////////////////////////////////////////////
 
 const getResidentBySocietyId = async (req, res) => {
   try {

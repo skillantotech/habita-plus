@@ -12,16 +12,27 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    const allowedFileTypes = /jpeg|jpg|png|pdf|xlsx|csv/;
-    const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = file.mimetype.includes("excel") || file.mimetype.includes("spresdsheetml") || allowedFileTypes.test(file.mimetype);
+    const allowedExtensions = /jpeg|jpg|png|pdf|xlsx|csv/;
+    const extname = allowedExtensions.test(path.extname(file.originalname).toLowerCase());
+
+    const allowedMimetypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+        "text/csv"
+    ];
+    
+    const mimetype = allowedMimetypes.includes(file.mimetype);
 
     if (extname && mimetype) {
         cb(null, true);
     } else {
-        cb(new Error('Only image files (jpeg, jpg, png) and PDF , Excel(.xlsx), or CSV files are allowed.'));
+        cb(new Error("Only image files (jpeg, jpg, png) and PDF, Excel(.xlsx), or CSV files are allowed."));
     }
 };
+
 
 
 const upload = multer({
