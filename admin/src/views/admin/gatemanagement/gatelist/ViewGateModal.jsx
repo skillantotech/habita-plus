@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Dialog from "../../../../components/ui/Dialog";
 import Input from "../../../../components/shared/Input";
+import GateHandler from "../../../../handlers/GateHandler";
 
-function ViewGateModal({ isOpen, onClose, gateData }) {
+function ViewGateModal({ isOpen, onClose, gateData, gateId }) {
     const [userViewForm, setUserViewForm] = useState(gateData);
-    let gatename = userViewForm.gateName;
+
+    const { getChangeGateName } = GateHandler();
 
     useEffect(() => {
         setUserViewForm(gateData);
@@ -17,6 +19,15 @@ function ViewGateModal({ isOpen, onClose, gateData }) {
             [name]: value
         });
     };
+
+    const onSubmitGn = () => {
+        const dataToSubmit = {
+        gateId: gateId,
+        gateName: userViewForm.gateName,
+        gateNumber: userViewForm.gateNumbar,
+    };
+    getChangeGateName(dataToSubmit);
+    }
 
     return (
         <>
@@ -52,7 +63,7 @@ function ViewGateModal({ isOpen, onClose, gateData }) {
                 </div>
 
                 <div className="flex justify-end mb-6 mt-12 mr-10">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded">
+                    <button onClick={onSubmitGn} className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded">
                         Submit
                     </button>
                 </div>

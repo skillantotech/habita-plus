@@ -13,6 +13,7 @@ const GateList = () => {
   const [totalGate, setTotalGate] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGate, setSelectedGate] = useState(null);
+  const [gateId, setGateId] = useState(null);
 
   const [data, setData] = useState([]);
 
@@ -23,6 +24,7 @@ const GateList = () => {
     setTotalGate(response.data.length)
     return response.data.map(element => ({
       ...element,
+      gateId: element.gateId,
       gateNumbar: element.gateNumber,
       gateName: element.gateName,
       societyId: element.societyId
@@ -37,13 +39,15 @@ const GateList = () => {
 
 
   const handleEdit = (gate) =>{
-    console.log(gate.values);    
+    console.log(gate);
+    setGateId(gate.original.gateId);
     setSelectedGate(gate.values);
     setIsModalOpen(true);
   }
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedGate(null);
+    setGateId(null);
   }
 
 
@@ -68,6 +72,7 @@ const GateList = () => {
       if (res && res.data) { // Check if res and res.data exist
         const transformedData = transformGateData(res.data);
         setData(transformedData);
+        console.log(data);        
         setTotalCount(res.data.total || 0);
         setTotalPages(res.data.totalPages || 0);
       }else{
@@ -123,6 +128,7 @@ const GateList = () => {
         isOpen = {isModalOpen}
         onClose = {closeModal}
         gateData={selectedGate}
+        gateId = {gateId}
         />
       )}
     </div>
