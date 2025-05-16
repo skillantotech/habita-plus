@@ -36,7 +36,7 @@ function EditGateUserDetails({ isOpen, onClose, formData }) {
             mobileNumber: noticeViewForm?.mobileNo,
         }
         editGuardUser(dataToSubmit);
-        
+        onClose(false);
     }
 
     const handleInputChange = (e) => {

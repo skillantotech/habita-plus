@@ -36,7 +36,9 @@ function ViewGateUserDetails({ deleteButton, isOpen, onClose, formData }) {
         <>
             <Dialog isOpen={isOpen} onClose={onClose} className="h-full w-full overflow-auto p-10" contentClassName={`w-full h-full bg-white lg:max-w-6xl rounded-lg overflow-auto scrollbar p-5`} overlayClassName="backdrop-blur">
 
-                <div className="flex justify-center mt-10 gap-4">
+
+                {deleteButton && (
+                    <div className="flex justify-center mt-10 gap-4">
                     <GoAlertFill className="text-3xl mt-3 text-red-500"/>
                     <button className="bg-yellow-500 p-3 rounded-lg">
                         <h3 className="text-2xl text-black">
@@ -45,6 +47,7 @@ function ViewGateUserDetails({ deleteButton, isOpen, onClose, formData }) {
                     </button >
                     <GoAlertFill className="text-3xl mt-3 text-red-500"/>
                 </div>
+                )}
 
 
                 <div className="flex mt-28 justify-center">

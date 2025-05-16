@@ -3,7 +3,7 @@ import Dialog from "../../../../components/ui/Dialog";
 import Input from "../../../../components/shared/Input";
 import GateHandler from "../../../../handlers/GateHandler";
 
-function ViewGateModal({ isOpen, onClose, gateData, gateId }) {
+function ViewGateModal({ isOpen, onClose, gateData, gateId, setClose }) {
     const [userViewForm, setUserViewForm] = useState(gateData);
 
     const { getChangeGateName } = GateHandler();
@@ -25,8 +25,9 @@ function ViewGateModal({ isOpen, onClose, gateData, gateId }) {
         gateId: gateId,
         gateName: userViewForm.gateName,
         gateNumber: userViewForm.gateNumbar,
-    };
-    getChangeGateName(dataToSubmit);
+        };
+        getChangeGateName(dataToSubmit);
+        setClose(false);
     }
 
     return (

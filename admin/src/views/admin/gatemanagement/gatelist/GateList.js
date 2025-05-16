@@ -129,6 +129,7 @@ const GateList = () => {
         onClose = {closeModal}
         gateData={selectedGate}
         gateId = {gateId}
+        setClose = {setIsModalOpen}
         />
       )}
     </div>
