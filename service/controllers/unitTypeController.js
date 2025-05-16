@@ -1,9 +1,9 @@
-const { Customer, UnitType,Unit } = require("../models");
+const {  Building,Customer, UnitType,Unit } = require("../models");
 const { sendErrorResponse, sendSuccessResponse } = require("../utils/response");
 exports.createUnitType = async (req, res) => {
   try {
     console.log("Create UnitType controller called");
-    const { societyId, unitTypeName } = req.body;
+    const { societyId, unitTypeName, buildingId} = req.body;
     console.log(req.body);
     if (!societyId) {
       return sendErrorResponse(res, "Society ID is not found", 400);
@@ -12,10 +12,23 @@ exports.createUnitType = async (req, res) => {
     if (!societyExist) {
       return sendErrorResponse(res, "Society does not exist", 404);
     }
+    if (!buildingId){
+      return sendErrorResponse(res, "Building Id is not found", 400);
+    }
+    const buildingExist = await Building.findOne({
+      where:{
+        buildingId: buildingId,
+        societyId: societyId
+      }
+    })
+    if(!buildingExist) {
+      return sendErrorResponse(res, "Building does not exist", 400);
+    }
     const unitTypeExists = await UnitType.findOne({
       where: {
         unitTypeName,
         societyId,
+        buildingId,
       },
     });
     if (unitTypeExists) {

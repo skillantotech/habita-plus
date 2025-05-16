@@ -61,7 +61,7 @@ exports.createFloor = async (req, res) => {
   console.log("create floor controller called");
   try {
     console.log("Create Floor controller called");
-    const { societyId, floorName, shortForm } = req.body;
+    const { societyId, floorName, shortForm, buildingId } = req.body;
     console.log(req.body);
 
     if (!societyId) {
@@ -73,11 +73,25 @@ exports.createFloor = async (req, res) => {
       return sendErrorResponse(res, "Society does not exist", 404);
     }
 
+    if (!buildingId){
+      return sendErrorResponse(res, "Building Id is not found", 400);
+    }
+    const buildingExist = await Building.findOne({
+      where:{
+        buildingId: buildingId,
+        societyId: societyId
+      }
+    });
+    if(!buildingExist) {
+      return sendErrorResponse(res, "Building does not exist", 400);
+    }
+
     const floorExist = await Floor.findOne({
       where: {
         floorName,
         societyId,
         shortForm,
+        buildingId
       },
     });
 
@@ -139,7 +153,7 @@ exports.updateFloor = async(req,res)=>{
   try{
 
     const {floorId} = req.params;
-    const{ floorName, shortForm } = req.body;
+    const{ floorName, shortForm, buildingId } = req.body;
 
     if(!floorId){
       return sendErrorResponse(res,"floor Id is required",400);
@@ -152,7 +166,8 @@ exports.updateFloor = async(req,res)=>{
 
     await floor.update({
       floorName,
-      shortForm
+      shortForm,
+      buildingId
     })
     return sendSuccessResponse(res,"floor updated successfully",floor,200);
 
