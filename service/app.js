@@ -22,6 +22,7 @@ const errorHandler = require("./middleware/errorHandler");
 const passwordReset = require("./routes/resetPasswordRoutes");
 
 const userRouter = require("./routes/userRoutes");
+const familyRouter = require("./routes/familyRoutes.js")
 const authRouter = require("./routes/authRoutes");
 const documentRouter = require("./routes/documentRoutes");
 const discussionRouter = require("./routes/discussion_forum_Routes");
@@ -79,6 +80,7 @@ app.get("/getenv", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/family",familyRouter);
 app.use("/api/password",passwordRouter);
 app.use("/api/auth", authRouter);
 app.use("/api", customerRoutes);
