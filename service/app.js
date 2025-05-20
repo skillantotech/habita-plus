@@ -22,7 +22,7 @@ const errorHandler = require("./middleware/errorHandler");
 const passwordReset = require("./routes/resetPasswordRoutes");
 
 const userRouter = require("./routes/userRoutes");
-const familyRouter = require("./routes/familyRoutes.js")
+const familyRouter = require("./routes/userFamilyRoutes.js")
 const authRouter = require("./routes/authRoutes");
 const documentRouter = require("./routes/documentRoutes");
 const discussionRouter = require("./routes/discussion_forum_Routes");
