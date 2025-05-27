@@ -10,7 +10,7 @@ import ViewGateUserDetails from "./ViewGateUserDetails";
 import ProfileHandler from "../../../../handlers/ProfileHandler";
 import GateHandler from "../../../../handlers/GateHandler";
 
-const ApprovedGateUser = () => {
+const DeactivateGateUser = () => {
   const paths = ["Gate Management", "Unapproved Gate Users"];
   const Heading = ["Unapproved Gate Users"];
 
@@ -214,4 +214,4 @@ const ApprovedGateUser = () => {
   );
 };
 
-export default ApprovedGateUser;
+export default DeactivateGateUser;
